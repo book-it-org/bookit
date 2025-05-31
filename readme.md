@@ -189,6 +189,7 @@ Rode isso ao clonar o repósitório
 composer install
 cp .env.example .env
 php artisan key:generate
+php artisan vendor:publish --provider="Laravel\Pennant\PennantServiceProvider"
 php artisan migrate
 
 # vue
