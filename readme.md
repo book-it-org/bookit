@@ -47,10 +47,13 @@ Um marketplace de livros usados pensado para as cidades do noroeste capixaba.
 Rode isso ao clonar o repósitório
 
 ```bash
-# backend
+# laravel
 composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
 
-# frontend
+# vue
 yarn
 ```
 
