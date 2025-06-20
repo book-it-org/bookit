@@ -21,7 +21,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('login'), {
+    form.post(route('entrar'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -55,7 +55,7 @@ const submit = () => {
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
+                        <TextLink v-if="canResetPassword" :href="route('senha.recuperar')" class="text-sm" :tabindex="5">
                             Forgot password?
                         </TextLink>
                     </div>
@@ -86,7 +86,7 @@ const submit = () => {
 
             <div class="text-center text-sm text-muted-foreground">
                 Don't have an account?
-                <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
+                <TextLink :href="route('registrar')" :tabindex="5">Sign up</TextLink>
             </div>
         </form>
     </AuthBase>

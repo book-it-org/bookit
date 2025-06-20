@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Password;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PasswordResetLinkController extends Controller
+class ResetarSenhaLinkController extends Controller
 {
     /**
      * Show the password reset link request page.
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('auth/ForgotPassword', [
+        return Inertia::render('auth/RecuperarSenha', [
             'status' => $request->session()->get('status'),
         ]);
     }

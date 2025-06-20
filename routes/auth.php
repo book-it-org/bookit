@@ -1,56 +1,56 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\UsuarioAutenticadoController;
+use App\Http\Controllers\Auth\ConfirmarSenhaController;
+use App\Http\Controllers\Auth\NotificacaoVerificarEmailController;
+use App\Http\Controllers\Auth\AvisoVerificarEmailController;
+use App\Http\Controllers\Auth\NovaSenhaController;
+use App\Http\Controllers\Auth\ResetarSenhaLinkController;
+use App\Http\Controllers\Auth\RegistrarUsuarioController;
+use App\Http\Controllers\Auth\VerificarEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+    Route::get('registrar', [RegistrarUsuarioController::class, 'create'])
+        ->name('registrar');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('registrar', [RegistrarUsuarioController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+    Route::get('entrar', [UsuarioAutenticadoController::class, 'create'])
+        ->name('entrar');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('entrar', [UsuarioAutenticadoController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
+    Route::get('recuperar-senha', [ResetarSenhaLinkController::class, 'create'])
+        ->name('senha.recuperar');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::post('recuperar-senha', [ResetarSenhaLinkController::class, 'store'])
+        ->name('senha.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
+    Route::get('recuperar-senha/{token}', [NovaSenhaController::class, 'create'])
+        ->name('senha.resetar');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+    Route::post('recuperar-senha', [NovaSenhaController::class, 'store'])
+        ->name('senha.salvar');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+    Route::get('verificar-email', AvisoVerificarEmailController::class)
+        ->name('verificacao.avisar');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+    Route::get('verificar-email/{id}/{hash}', VerificarEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+        ->name('verificacao.verificar');
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    Route::post('email/verification-notification', [NotificacaoVerificarEmailController::class, 'store'])
         ->middleware('throttle:6,1')
-        ->name('verification.send');
+        ->name('verificacao.enviar');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
+    Route::get('confirmar-senha', [ConfirmarSenhaController::class, 'show'])
+        ->name('senha.confirmar');
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirmar-senha', [ConfirmarSenhaController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    Route::post('sair', [UsuarioAutenticadoController::class, 'destroy'])
+        ->name('sair');
 });

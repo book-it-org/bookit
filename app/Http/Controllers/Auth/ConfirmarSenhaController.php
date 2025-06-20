@@ -10,14 +10,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ConfirmablePasswordController extends Controller
+class ConfirmarSenhaController extends Controller
 {
     /**
      * Show the confirm password page.
      */
     public function show(): Response
     {
-        return Inertia::render('auth/ConfirmPassword');
+        return Inertia::render('auth/ConfirmarSenha');
     }
 
     /**
@@ -36,6 +36,6 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('home', absolute: false));
     }
 }

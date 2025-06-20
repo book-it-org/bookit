@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AuthenticatedSessionController extends Controller
+class UsuarioAutenticadoController extends Controller
 {
     /**
      * Show the login page.
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
+        return Inertia::render('auth/Entrar', [
+            'canResetPassword' => Route::has('senha.recuperar'),
             'status' => $request->session()->get('status'),
         ]);
     }
@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**

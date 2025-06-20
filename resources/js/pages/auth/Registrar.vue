@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('register'), {
+    form.post(route('registrar'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
@@ -76,7 +76,7 @@ const submit = () => {
 
             <div class="text-center text-sm text-muted-foreground">
                 Already have an account?
-                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Log in</TextLink>
+                <TextLink :href="route('entrar')" class="underline underline-offset-4" :tabindex="6">Log in</TextLink>
             </div>
         </form>
     </AuthBase>

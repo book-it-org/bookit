@@ -14,14 +14,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class NewPasswordController extends Controller
+class NovaSenhaController extends Controller
 {
     /**
      * Show the password reset page.
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('auth/ResetPassword', [
+        return Inertia::render('auth/ResetarSenha', [
             'email' => $request->email,
             'token' => $request->route('token'),
         ]);
@@ -59,7 +59,7 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status == Password::PasswordReset) {
-            return to_route('login')->with('status', __($status));
+            return to_route('entrar')->with('status', __($status));
         }
 
         throw ValidationException::withMessages([
