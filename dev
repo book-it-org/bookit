@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ! -f "./sail" ]; then
+    echo "./sail not found."
+    exit 1
+fi
+
+chmod +x ./sail
+
+./sail up -d "$@"
+./sail exec bookit.dev yarn dev

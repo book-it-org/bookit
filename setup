@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo "\033[0;35m"
+echo "Script de instalação do pojeto Bookit"
+
+echo "\033[0;31m"
+if [ ! -f "./sail" ]; then
+    echo "./sail not found."
+    exit 1
+fi
+
+if [ ! -f "./dev" ]; then
+    echo "./dev not found."
+    exit 1
+fi
+
+if [ ! -f "./.env" ]; then
+    cp .env.example .env
+fi
+
+chmod +x ./sail ./dev
+echo "\033[0m"
+
+docker run --rm \
+ -u "$(id -u):$(id -g)" \
+ -v "$(pwd):/var/www/html" \
+ -w /var/www/html \
+ laravelsail/php83-composer:latest \
+ composer install --ignore-platform-reqs
+
+docker run --rm \
+ -u "$(id -u):$(id -g)" \
+ -v "$(pwd):/var/www/html" \
+ -w /var/www/html \
+ laravelsail/php83-composer:latest \
+ php artisan key:generate
+
+# docker run --rm \
+#  -u "$(id -u):$(id -g)" \
+#  -v "$(pwd):/var/www/html" \
+#  -w /var/www/html \
+#  laravelsail/php83-composer:latest \
+#  php artisan sail:install --with=pgsql
+
+./sail up -d
+./sail artisan migrate
+./sail down

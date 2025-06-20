@@ -6,8 +6,9 @@ Um marketplace de livros usados pensado para as cidades do noroeste capixaba.
 
 - [Tarefas](#tarefas)
 - [Requisitos](#requisitos)
-- [Workflow](#workflow)
+- [Instalação](#instalação)
 - [Comandos](#comandos)
+- [Workflow](#workflow)
 
 ## Tarefas
 
@@ -34,12 +35,103 @@ Um marketplace de livros usados pensado para as cidades do noroeste capixaba.
 - ✅ Definir banco de dados (Postgres)
 - ⬜ Definir infraestrutura na AWS
 
-## Requisitos
+## Requisitos 
+
+Nenhum requisito é necessário caso você rode o projeto utilizando o [setup de instalação](#instalação) - ele utiliza Docker para tudo.
 
 - [xampp junto do php](https://www.apachefriends.org/)
 - [composer](https://getcomposer.org/)
 - [node](https://nodejs.org/)
 - [yarn](https://yarnpkg.com/)
+
+## Instalação
+
+Rode isso ao clonar o repósitório
+
+```bash
+wsl
+sh setup
+```
+
+## Comandos
+
+### Rodar projeto
+
+```bash
+wsl
+./dev
+```
+
+### Instalar package (Laravel)
+
+Instalar qualquer biblioteca
+
+```bash
+composer require nome_do_package
+```
+
+### Instalar package (Vue)
+
+Instalar qualquer biblioteca
+
+```bash
+yarn add nome_do_package
+```
+
+### Criar nova Feature Flag
+
+```bash
+php artisan pennant:define novaFlag
+```
+
+### Criar migração
+
+Criar um novo registro de edição ao banco de dados
+
+```bash
+php artisan make:migration nome_da_migração
+```
+
+### Migrar bancos de dados
+
+Confirmar edições no banco de dados.
+
+Rode sempre que criar novas [migrações](#criar-migração) ou [models](#criar-model) ou quando for trocar de banco de dados (ex.: `MariaDB -> Postgres`)
+
+```bash
+php artisan migrate
+```
+
+### Criar model
+
+Lembre-se de rodar o [migrate](#migrar-bancos-de-dados) ao criar ou editar qualquer model
+
+```bash
+php artisan make:model Coiso
+```
+
+### Criar Controller
+
+```bash
+php artisan make:controller CoisoController
+```
+
+### Criar ServiceProvider
+
+```bash
+php artisan make:provider CoisoServiceProvider
+```
+
+### Criar Middleware
+
+Agem entre as rotas e o usuário
+
+Ordem dos eventos:
+`Cliente -> Middleware -> Backend`
+
+```bash
+php artisan make:middleware CoisoMiddleware
+```
 
 ## Workflow
 
@@ -176,100 +268,4 @@ import { usePage } from '@inertiajs/vue3'
 const page = usePage()
 const { features } = page.props
 </script>
-```
-
-## Comandos
-
-### Fazer setup do projeto 
-
-Rode isso ao clonar o repósitório
-
-```bash
-# laravel
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-
-# vue
-yarn
-```
-
-### Rodar projeto
-
-```bash
-composer run dev
-# ou 
-composer dev
-```
-
-### Instalar package (Laravel)
-
-Instalar qualquer biblioteca
-
-```bash
-composer require nome_do_package
-```
-
-### Instalar package (Vue)
-
-Instalar qualquer biblioteca
-
-```bash
-yarn add nome_do_package
-```
-
-### Criar nova Feature Flag
-
-```bash
-php artisan pennant:define novaFlag
-```
-
-### Criar migração
-
-Criar um novo registro de edição ao banco de dados
-
-```bash
-php artisan make:migration nome_da_migração
-```
-
-### Migrar bancos de dados
-
-Confirmar edições no banco de dados.
-
-Rode sempre que criar novas [migrações](#criar-migração) ou [models](#criar-model) ou quando for trocar de banco de dados (ex.: `MariaDB -> Postgres`)
-
-```bash
-php artisan migrate
-```
-
-### Criar model
-
-Lembre-se de rodar o [migrate](#migrar-bancos-de-dados) ao criar ou editar qualquer model
-
-```bash
-php artisan make:model Coiso
-```
-
-### Criar Controller
-
-```bash
-php artisan make:controller CoisoController
-```
-
-### Criar ServiceProvider
-
-```bash
-php artisan make:provider CoisoServiceProvider
-```
-
-### Criar Middleware
-
-Agem entre as rotas e o usuário
-
-Ordem dos eventos:
-`Cliente -> Middleware -> Backend`
-
-```bash
-php artisan make:middleware CoisoMiddleware
 ```
