@@ -37,12 +37,6 @@ const activeItemStyles = computed(
 );
 
 const generosEmDestaque = useGenerosEmDestaque();
-const generos = computed(() =>
-    generosEmDestaque.value.map((item) => ({
-        ...item,
-        href: `/pesquisa?genero=${item.id}`,
-    })),
-);
 </script>
 
 <template>
@@ -66,15 +60,12 @@ const generos = computed(() =>
                             </SheetHeader>
                             <div class="flex h-full flex-1 flex-col justify-between space-y-4 py-6">
                                 <nav class="-mx-3 space-y-1">
-                                    <div class="text-xs pl-3 text-muted-foreground">
-                                        Gêneros
-                                    </div>
+                                    <div class="text-muted-foreground pl-3 text-xs">Gêneros</div>
                                     <Link
-                                        v-for="item in generos"
+                                        v-for="item in generosEmDestaque"
                                         :key="item.id"
-                                        :href="item.href"
+                                        :href="route('pesquisa', { genero: item.id })"
                                         class="hover:bg-accent flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium"
-                                        :class="activeItemStyles(item.href)"
                                     >
                                         {{ item.nome }}
                                     </Link>
@@ -183,25 +174,20 @@ const generos = computed(() =>
                     <NavigationMenu class="flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch divide-x-1">
                             <NavigationMenuItem
-                                v-for="(item, index) in generos"
-                                :key="index"
+                                v-for="item in generosEmDestaque"
+                                :key="item.id"
                                 class="relative flex h-full items-center"
                             >
-                                <Link :href="item.href">
+                                <Link :href="route('pesquisa', { genero: item.id })">
                                     <NavigationMenuLink
                                         :class="[
                                             navigationMenuTriggerStyle(),
-                                            activeItemStyles(item.href),
                                             'h-9 cursor-pointer px-3',
                                         ]"
                                     >
                                         {{ item.nome }}
                                     </NavigationMenuLink>
                                 </Link>
-                                <div
-                                    v-if="isCurrentRoute(item.href)"
-                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"
-                                ></div>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
