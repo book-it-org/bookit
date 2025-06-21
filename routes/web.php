@@ -17,3 +17,4 @@ require __DIR__ . '/carrinho.php';
 require __DIR__ . '/oferta.php';
 require __DIR__ . '/pedidos.php';
 require __DIR__ . '/chat.php';
+require __DIR__ . '/pesquisa.php';
