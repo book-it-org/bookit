@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppContent from '@/components/AppContent.vue';
-import AppHeader from '@/components/AppHeader.vue';
+import AppContent from '@/components/app/AppContent.vue';
+import AppHeader from '@/components/app/AppHeader.vue';
 </script>
 
 <template>
