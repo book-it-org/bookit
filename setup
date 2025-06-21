@@ -44,4 +44,5 @@ docker run --rm \
 
 ./sail up -d
 ./sail artisan migrate
+./sail yarn
 ./sail down
