@@ -15,3 +15,4 @@ require __DIR__ . '/configuracao.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/carrinho.php';
 require __DIR__ . '/pedidos.php';
+require __DIR__ . '/chat.php';
