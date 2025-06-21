@@ -20,9 +20,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useGenerosEmDestaque } from '@/composables/useGenerosEmDestaque';
 import { getInitials } from '@/composables/useInitials';
-import { NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
+import { Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const page = usePage();
@@ -44,19 +43,6 @@ const generos = computed(() =>
         href: `/pesquisa?genero=${item.id}`,
     })),
 );
-
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Chat',
-        href: '/chat',
-        icon: Folder,
-    },
-    {
-        title: 'Carrinho',
-        href: '/carrinho',
-        icon: BookOpen,
-    },
-];
 </script>
 
 <template>
@@ -72,26 +58,28 @@ const rightNavItems: NavItem[] = [
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" class="w-[300px] p-6">
-                            <SheetTitle class="sr-only">Navigation Menu</SheetTitle>
+                            <SheetTitle class="sr-only">Menu de navegação</SheetTitle>
                             <SheetHeader class="flex justify-start text-left">
                                 <AppLogoIcon
                                     class="size-6 fill-current text-black dark:text-white"
                                 />
                             </SheetHeader>
                             <div class="flex h-full flex-1 flex-col justify-between space-y-4 py-6">
-                                <!-- <nav class="-mx-3 space-y-1">
+                                <nav class="-mx-3 space-y-1">
+                                    <div class="text-xs pl-3 text-muted-foreground">
+                                        Gêneros
+                                    </div>
                                     <Link
-                                        v-for="item in mainNavItems"
-                                        :key="item.title"
+                                        v-for="item in generos"
+                                        :key="item.id"
                                         :href="item.href"
                                         class="hover:bg-accent flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium"
                                         :class="activeItemStyles(item.href)"
                                     >
-                                        <component v-if="item.icon" :is="item.icon" class="h-5 w-5" />
-                                        {{ item.title }}
+                                        {{ item.nome }}
                                     </Link>
                                 </nav>
-                                <div class="flex flex-col space-y-4">
+                                <!-- <div class="flex flex-col space-y-4">
                                     <a
                                         v-for="item in rightNavItems"
                                         :key="item.title"
@@ -100,7 +88,11 @@ const rightNavItems: NavItem[] = [
                                         rel="noopener noreferrer"
                                         class="flex items-center space-x-2 text-sm font-medium"
                                     >
-                                        <component v-if="item.icon" :is="item.icon" class="h-5 w-5" />
+                                        <component
+                                            v-if="item.icon"
+                                            :is="item.icon"
+                                            class="h-5 w-5"
+                                        />
                                         <span>{{ item.title }}</span>
                                     </a>
                                 </div> -->
@@ -122,7 +114,12 @@ const rightNavItems: NavItem[] = [
 
                     <div class="ml-auto flex items-center space-x-2">
                         <template v-if="auth.user">
-                            <Button variant="ghost" size="sm" as-child class="group cursor-pointer">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                as-child
+                                class="group hidden cursor-pointer lg:flex"
+                            >
                                 <Link href="/chat">
                                     <MessageSquareMore
                                         class="size-5 opacity-80 group-hover:opacity-100"
@@ -131,7 +128,12 @@ const rightNavItems: NavItem[] = [
                                 </Link>
                             </Button>
 
-                            <Button variant="ghost" size="sm" as-child class="group cursor-pointer">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                as-child
+                                class="group hidden cursor-pointer lg:flex"
+                            >
                                 <Link href="/carrinho">
                                     <ShoppingCart
                                         class="size-5 opacity-80 group-hover:opacity-100"
