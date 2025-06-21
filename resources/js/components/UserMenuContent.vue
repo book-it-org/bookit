@@ -46,7 +46,7 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" method="post" :href="route('anunciar')" @click="handleLogout" as="button">
+            <Link class="block w-full" :href="route('oferta.anunciar')" @click="handleLogout" as="button">
                 <HandCoins class="mr-2 h-4 w-4" />
                 Anunciar
             </Link>
