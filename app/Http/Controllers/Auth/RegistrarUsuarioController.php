@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Usuarios;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,15 +33,15 @@ class RegistrarUsuarioController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'sobrenome' => 'required|string|max:255',
-            'nome_usuario' => 'required|string|max:255|unique:'.User::class,
+            'nome_usuario' => 'required|string|max:255|unique:'.Usuarios::class,
             'data_nascimento' => 'required|date',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:'.Usuarios::class,
             'senha' => ['required', 'confirmed', Rules\Password::defaults()],
-            'telefone' => 'required|string|max:15|unique:'.User::class,
-            'documento' => 'required|string|max:14|unique:'.User::class
+            'telefone' => 'required|string|max:15|unique:'.Usuarios::class,
+            'documento' => 'required|string|max:14|unique:'.Usuarios::class
         ]);
 
-        $user = User::create([
+        $user = Usuarios::create([
             'nome' => $request->nome,
             'sobrenome' => $request->sobrenome,
             'nome_usuario' => $request->nome_usuario,
