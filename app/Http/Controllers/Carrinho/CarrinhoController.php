@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Generos;
 
 class CarrinhoController extends Controller
 {
@@ -14,6 +15,7 @@ class CarrinhoController extends Controller
      */
     public function mostrar(Request $request): Response
     {
-        return Inertia::render('Carrinho');
+        $generos = Generos::all();
+        return Inertia::render('Carrinho', ['generos' => $generos]);
     }
 }

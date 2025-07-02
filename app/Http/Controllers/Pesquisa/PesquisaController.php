@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Generos;
 
 class PesquisaController extends Controller
 {
@@ -14,6 +15,7 @@ class PesquisaController extends Controller
      */
     public function mostrar(Request $request): Response
     {
-        return Inertia::render('Pesquisa');
+        $generos = Generos::all();
+        return Inertia::render('Pesquisa', ['generos' => $generos]);
     }
 }
