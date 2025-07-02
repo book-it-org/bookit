@@ -42,7 +42,7 @@ const generosEmDestaque = useGenerosEmDestaque();
 <template>
     <div>
         <div class="border-sidebar-border/80 border-b">
-            <div class="mx-auto flex w-full items-center px-4 md:max-w-7xl lg:flex-col">
+            <div class="flex w-full items-center px-4 lg:flex-col">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
                     <Sheet>
@@ -93,7 +93,7 @@ const generosEmDestaque = useGenerosEmDestaque();
                 </div>
 
                 <div
-                    class="flex h-full w-full items-center px-4 py-4 md:max-w-7xl lg:grid lg:grid-cols-3 lg:justify-center"
+                    class="flex h-full w-full items-center px-4 py-4 lg:grid lg:grid-cols-3 lg:justify-center"
                 >
                     <Link :href="route('home')" class="flex items-center gap-x-2">
                         <AppLogo />
@@ -172,7 +172,7 @@ const generosEmDestaque = useGenerosEmDestaque();
 
                 <div class="hidden w-full lg:flex lg:items-center lg:justify-center">
                     <NavigationMenu class="flex h-full items-stretch">
-                        <NavigationMenuList class="flex h-full items-stretch divide-x-1">
+                        <NavigationMenuList class="flex h-full items-stretch">
                             <NavigationMenuItem
                                 v-for="item in generosEmDestaque"
                                 :key="item.id"
