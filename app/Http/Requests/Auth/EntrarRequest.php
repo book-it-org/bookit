@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\Usuarios;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,14 @@ class EntrarRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt($this->only('email', 'senha'), $this->boolean('lembrar_usuario'))) {
+        $email = $this->string('email');
+        $senha = $this->string('senha');
+        $credentials = [
+            'email' => $email,
+            'password' => $senha,
+        ];
+
+        if (!Auth::attempt($credentials, $this->boolean('lembrar_usuario'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

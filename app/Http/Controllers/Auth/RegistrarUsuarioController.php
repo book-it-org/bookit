@@ -30,6 +30,10 @@ class RegistrarUsuarioController extends Controller
      */
     public function registrarUsuario(Request $request): RedirectResponse
     {
+        $request->merge([
+            'senha_confirmation' => $request->confirmacao_senha,
+        ]);
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'sobrenome' => 'required|string|max:255',

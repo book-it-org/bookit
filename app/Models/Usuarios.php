@@ -24,7 +24,8 @@ class Usuarios extends Authenticatable
         'data_nascimento',
         'email',
         'telefone',
-        'documento'
+        'documento',
+        'senha_hash'
     ];
 
     /**
@@ -48,5 +49,10 @@ class Usuarios extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->senha_hash;
     }
 }

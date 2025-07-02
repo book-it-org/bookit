@@ -21,14 +21,15 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('entrar'), {
-        onFinish: () => form.reset('senha'),
-    });
+    form.post(route('entrar'), {});
 };
 </script>
 
 <template>
-    <AuthBase title="Log in to your account" description="Enter your email and senha below to log in">
+    <AuthBase
+        title="Log in to your account"
+        description="Enter your email and senha below to log in"
+    >
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -55,7 +56,12 @@ const submit = () => {
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="senha">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('senha.recuperar')" class="text-sm" :tabindex="5">
+                        <TextLink
+                            v-if="canResetPassword"
+                            :href="route('senha.recuperar')"
+                            class="text-sm"
+                            :tabindex="5"
+                        >
                             Forgot senha?
                         </TextLink>
                     </div>
@@ -73,7 +79,11 @@ const submit = () => {
 
                 <div class="flex items-center justify-between">
                     <Label for="lembrar_usuario" class="flex items-center space-x-3">
-                        <Checkbox id="lembrar_usuario" v-model="form.lembrar_usuario" :tabindex="3" />
+                        <Checkbox
+                            id="lembrar_usuario"
+                            v-model="form.lembrar_usuario"
+                            :tabindex="3"
+                        />
                         <span>Remember me</span>
                     </Label>
                 </div>
@@ -84,7 +94,7 @@ const submit = () => {
                 </Button>
             </div>
 
-            <div class="text-center text-sm text-muted-foreground">
+            <div class="text-muted-foreground text-center text-sm">
                 Don't have an account?
                 <TextLink :href="route('registrar')" :tabindex="5">Sign up</TextLink>
             </div>
