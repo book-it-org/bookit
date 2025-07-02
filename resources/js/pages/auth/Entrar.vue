@@ -16,19 +16,19 @@ defineProps<{
 
 const form = useForm({
     email: '',
-    password: '',
-    remember: false,
+    senha: '',
+    lembrar_usuario: false,
 });
 
 const submit = () => {
     form.post(route('entrar'), {
-        onFinish: () => form.reset('password'),
+        onFinish: () => form.reset('senha'),
     });
 };
 </script>
 
 <template>
-    <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
+    <AuthBase title="Log in to your account" description="Enter your email and senha below to log in">
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -54,26 +54,26 @@ const submit = () => {
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
+                        <Label for="senha">Password</Label>
                         <TextLink v-if="canResetPassword" :href="route('senha.recuperar')" class="text-sm" :tabindex="5">
-                            Forgot password?
+                            Forgot senha?
                         </TextLink>
                     </div>
                     <Input
-                        id="password"
+                        id="senha"
                         type="password"
                         required
                         :tabindex="2"
-                        autocomplete="current-password"
-                        v-model="form.password"
+                        autocomplete="current-senha"
+                        v-model="form.senha"
                         placeholder="Password"
                     />
-                    <InputError :message="form.errors.password" />
+                    <InputError :message="form.errors.senha" />
                 </div>
 
                 <div class="flex items-center justify-between">
-                    <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" v-model="form.remember" :tabindex="3" />
+                    <Label for="lembrar_usuario" class="flex items-center space-x-3">
+                        <Checkbox id="lembrar_usuario" v-model="form.lembrar_usuario" :tabindex="3" />
                         <span>Remember me</span>
                     </Label>
                 </div>
