@@ -11,7 +11,7 @@ class NotificacaoVerificarEmailController extends Controller
     /**
      * Send a new email verification notification.
      */
-    public function store(Request $request): RedirectResponse
+    public function notificarEmail(Request $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended(route('home', absolute: false));

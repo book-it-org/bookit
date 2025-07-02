@@ -15,7 +15,7 @@ class ConfirmarSenhaController extends Controller
     /**
      * Show the confirm password page.
      */
-    public function show(): Response
+    public function mostrar(): Response
     {
         return Inertia::render('auth/ConfirmarSenha');
     }
@@ -23,7 +23,7 @@ class ConfirmarSenhaController extends Controller
     /**
      * Confirm the user's password.
      */
-    public function store(Request $request): RedirectResponse
+    public function confirmarSenha(Request $request): RedirectResponse
     {
         if (! Auth::guard('web')->validate([
             'email' => $request->user()->email,

@@ -18,7 +18,7 @@ class RegistrarUsuarioController extends Controller
     /**
      * Show the registration page.
      */
-    public function create(): Response
+    public function mostrar(): Response
     {
         return Inertia::render('auth/Registrar');
     }
@@ -28,7 +28,7 @@ class RegistrarUsuarioController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function registrarUsuario(Request $request): RedirectResponse
     {
         $request->validate([
             'nome' => 'required|string|max:255',

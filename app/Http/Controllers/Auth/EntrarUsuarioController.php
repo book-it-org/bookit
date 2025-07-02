@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\EntrarRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class UsuarioAutenticadoController extends Controller
+class EntrarUsuarioController extends Controller
 {
     /**
      * Show the login page.
      */
-    public function create(Request $request): Response
+    public function mostrar(Request $request): Response
     {
         return Inertia::render('auth/Entrar', [
             'canResetPassword' => Route::has('senha.recuperar'),
@@ -27,7 +27,7 @@ class UsuarioAutenticadoController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function entrarUsuario(EntrarRequest $request): RedirectResponse
     {
         $request->authenticate();
 
@@ -39,7 +39,7 @@ class UsuarioAutenticadoController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function sairUsuario(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 

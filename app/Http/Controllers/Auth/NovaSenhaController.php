@@ -19,7 +19,7 @@ class NovaSenhaController extends Controller
     /**
      * Show the password reset page.
      */
-    public function create(Request $request): Response
+    public function mostrar(Request $request): Response
     {
         return Inertia::render('auth/ResetarSenha', [
             'email' => $request->email,
@@ -32,7 +32,7 @@ class NovaSenhaController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function salvarSenha(Request $request): RedirectResponse
     {
         $request->validate([
             'token' => 'required',
