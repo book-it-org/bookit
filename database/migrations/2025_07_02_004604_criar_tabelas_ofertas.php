@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('titulo_livro');
             $table->text('autor_livro');
             $table->enum('estado_livro', ['novo', 'usado', 'desgastado']);
-            $table->string('isbn', 13);
+            $table->string('isbn_livro', 13);
             $table->timestamp('data_publicacao_livro');
             $table->timestamps();
         });

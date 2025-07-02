@@ -1,15 +1,26 @@
 <script setup lang="ts">
+import Heading from '@/components/Heading.vue';
 import CardOferta from '@/components/ofertas/CardOferta.vue';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
+import { HandCoins } from 'lucide-vue-next';
 </script>
 
 <template>
-    <Head title="BookIt - Seu marketplace de livros" />
+    <Head title="BookIt - Seus Anúncios" />
     <AppLayout>
         <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <h2 class="font-bold text-2xl">Ofertas sugeridas</h2>
-            <div class="grid w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 ">
+            <div class="flex items-center justify-between">
+                <Heading title="Seus anúncios" />
+                <Button as-child>
+                    <Link :href="route('anunciar')">
+                        <HandCoins />
+                        Anunciar
+                    </Link>
+                </Button>
+            </div>
+            <div class="grid w-full gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                 <CardOferta></CardOferta>
                 <CardOferta></CardOferta>
                 <CardOferta></CardOferta>

@@ -23,18 +23,16 @@ import { getInitials } from '@/composables/useInitials';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { cn } from '@/lib/utils';
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
 
-const isCurrentRoute = computed(() => (url: string) => page.url === url);
+interface Props {
+    limpo: boolean;
+}
 
-const activeItemStyles = computed(
-    () => (url: string) =>
-        isCurrentRoute.value(url)
-            ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
-            : '',
-);
+withDefaults(defineProps<Props>(), { limpo: false });
 
 const generosEmDestaque = useGenerosEmDestaque();
 </script>
@@ -99,11 +97,11 @@ const generosEmDestaque = useGenerosEmDestaque();
                         <AppLogo />
                     </Link>
 
-                    <div class="hidden h-full max-w-xl lg:flex lg:flex-1 lg:items-center">
+                    <div v-if="!limpo" class="hidden h-full max-w-xl lg:flex lg:flex-1 lg:items-center">
                         <Input placeholder="Percy Jackson e o Mar de Monstros..." />
                     </div>
 
-                    <div class="ml-auto flex items-center space-x-2">
+                    <div :class="cn('ml-auto flex items-center space-x-2', limpo && 'col-3')">
                         <template v-if="auth.user">
                             <Button
                                 variant="ghost"
@@ -170,7 +168,7 @@ const generosEmDestaque = useGenerosEmDestaque();
                     </div>
                 </div>
 
-                <div class="hidden w-full lg:flex lg:items-center lg:justify-center">
+                <div v-if="!limpo" class="hidden w-full lg:flex lg:items-center lg:justify-center">
                     <NavigationMenu class="flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch">
                             <NavigationMenuItem

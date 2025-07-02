@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuarios;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+use Database\Seeders\GenerosSeeder;
+use Database\Seeders\IdiomasSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        Usuarios::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            GenerosSeeder::class,
+            IdiomasSeeder::class
         ]);
     }
 }

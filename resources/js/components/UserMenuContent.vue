@@ -46,9 +46,9 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('oferta.anunciar')" as="button">
+            <Link class="block w-full" :href="route('anuncios')" as="button">
                 <HandCoins class="mr-2 h-4 w-4" />
-                Anunciar
+                Anúncios
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem :as-child="true">

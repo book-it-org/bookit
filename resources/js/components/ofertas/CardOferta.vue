@@ -19,17 +19,17 @@ function irParaCarrinho() {
 </script>
 
 <template>
-    <Card class="group relative w-50 gap-2 p-3" @click="irParaOferta">
+    <Card class="group relative w-auto gap-2 p-3" @click="irParaOferta">
         <Card class="bg-white px-0.5">
             <img
                 src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
                 alt=""
         /></Card>
-        <CardHeader class="px-0.5"
-            ><CardTitle class="cursor-pointer font-bold group-hover:underline"
-                >Percy Jackson e o Mar de Monstros</CardTitle
-            ></CardHeader
-        >
+        <CardHeader class="px-0.5">
+            <CardTitle class="cursor-pointer font-bold group-hover:underline leading-6">
+                Percy Jackson e o Mar de Monstros
+            </CardTitle>
+        </CardHeader>
         <CardContent class="px-0.5">
             <CardDescription>Rick Riordan</CardDescription>
         </CardContent>
@@ -42,7 +42,8 @@ function irParaCarrinho() {
             size="icon"
             class="absolute top-4 right-4 hidden group-hover:flex"
             @click.stop="irParaCarrinho"
-            ><ShoppingCart
-        /></Button>
+        >
+            <ShoppingCart />
+        </Button>
     </Card>
 </template>
