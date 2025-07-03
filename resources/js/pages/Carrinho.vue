@@ -10,8 +10,8 @@ import { Head } from '@inertiajs/vue3';
     <Head title="BookIt - Carrinho" />
     <AppLayout>
         <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl">
-            <div class="">
-                <CardOfertaCarrinho></CardOfertaCarrinho>
+            <div class="grid grid-cols-3 gap-4">
+                <CardOfertaCarrinho v-for="index in 5" :key="index"></CardOfertaCarrinho>
             </div>
 
             <Card class="items-center">

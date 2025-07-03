@@ -43,7 +43,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
 </script>
 
 <template>
-    <div>
+    <div class="bg-background w-full">
         <div class="border-sidebar-border/80 border-b">
             <div class="flex w-full items-center px-4 lg:flex-col">
                 <!-- Mobile Menu -->
