@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 
 <template>
     <AppLayout>
-        <div class="grid flex-1 grid-cols-1 gap-8 p-8 sm:grid-cols-7">
+        <div class="grid flex-1 grid-cols-1 gap-8 sm:grid-cols-7">
             <div class="sm:col-span-2">
                 <FiltrosPesquisa />
             </div>

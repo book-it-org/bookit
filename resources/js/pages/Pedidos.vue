@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/vue3';
 <template>
     <Head title="BookIt - Pedidos" />
     <AppLayout>
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl">
             <p>Pedidos</p>
         </div>
     </AppLayout>

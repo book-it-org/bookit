@@ -10,7 +10,10 @@ const className = computed(() => props.class);
 </script>
 
 <template>
-    <main class="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col gap-4 rounded-xl" :class="className">
+    <main
+        class="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-8"
+        :class="className"
+    >
         <slot />
     </main>
 </template>

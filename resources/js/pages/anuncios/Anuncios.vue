@@ -10,7 +10,7 @@ import { HandCoins } from 'lucide-vue-next';
 <template>
     <Head title="BookIt - Seus Anúncios" />
     <AppLayout>
-        <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl">
             <div class="flex items-center justify-between">
                 <Heading title="Seus anúncios" />
                 <Button as-child>

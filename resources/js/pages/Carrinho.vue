@@ -9,7 +9,7 @@ import { Head } from '@inertiajs/vue3';
 <template>
     <Head title="BookIt - Carrinho" />
     <AppLayout>
-        <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div class="container mx-auto flex h-full flex-1 flex-col gap-4 rounded-xl">
             <div class="">
                 <CardOfertaCarrinho></CardOfertaCarrinho>
             </div>
