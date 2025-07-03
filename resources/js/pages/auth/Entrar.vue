@@ -27,10 +27,10 @@ const submit = () => {
 
 <template>
     <AuthBase
-        title="Log in to your account"
-        description="Enter your email and senha below to log in"
+        title="Entrar na sua conta"
+        description="Insira seu email e senha para acessar sua conta."
     >
-        <Head title="Log in" />
+        <Head title="Entrar" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
@@ -39,7 +39,7 @@ const submit = () => {
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -48,21 +48,21 @@ const submit = () => {
                         :tabindex="1"
                         autocomplete="email"
                         v-model="form.email"
-                        placeholder="email@example.com"
+                        placeholder="email@exemplo.com"
                     />
                     <InputError :message="form.errors.email" />
                 </div>
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="senha">Password</Label>
+                        <Label for="senha">Senha</Label>
                         <TextLink
                             v-if="canResetPassword"
                             :href="route('senha.recuperar')"
                             class="text-sm"
                             :tabindex="5"
                         >
-                            Forgot senha?
+                            Esqueceu sua senha?
                         </TextLink>
                     </div>
                     <Input
@@ -70,9 +70,9 @@ const submit = () => {
                         type="password"
                         required
                         :tabindex="2"
-                        autocomplete="current-senha"
+                        autocomplete="current-password"
                         v-model="form.senha"
-                        placeholder="Password"
+                        placeholder="Senha"
                     />
                     <InputError :message="form.errors.senha" />
                 </div>
@@ -84,19 +84,19 @@ const submit = () => {
                             v-model="form.lembrar_usuario"
                             :tabindex="3"
                         />
-                        <span>Remember me</span>
+                        <span>Lembrar usuário</span>
                     </Label>
                 </div>
 
                 <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Log in
+                    Entrar
                 </Button>
             </div>
 
             <div class="text-muted-foreground text-center text-sm">
-                Don't have an account?
-                <TextLink :href="route('registrar')" :tabindex="5">Sign up</TextLink>
+                Não tem uma conta?
+                <TextLink :href="route('registrar')" :tabindex="5">Criar conta</TextLink>
             </div>
         </form>
     </AuthBase>
