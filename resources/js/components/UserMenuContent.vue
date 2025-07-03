@@ -14,6 +14,7 @@ const handleLogout = () => {
 };
 
 defineProps<Props>();
+
 </script>
 
 <template>
@@ -59,6 +60,7 @@ defineProps<Props>();
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
+    <DropdownMenuItem @click="mudarTema"></DropdownMenuItem>
     <DropdownMenuItem :as-child="true">
         <Link class="block w-full" method="post" :href="route('sair')" @click="handleLogout" as="button">
             <LogOut class="mr-2 h-4 w-4" />

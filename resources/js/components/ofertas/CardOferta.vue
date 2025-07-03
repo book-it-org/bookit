@@ -19,12 +19,12 @@ function irParaCarrinho() {
 </script>
 
 <template>
-    <Card class="group relative w-auto gap-2 p-3" @click="irParaOferta">
-        <Card class="bg-white px-0.5">
+    <Card class="group relative w-auto gap-2 p-3 cursor-pointer" @click="irParaOferta">
+        <div class="bg-white p-4 rounded-2xl">
             <img
                 src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
                 alt=""
-        /></Card>
+        /></div>
         <CardHeader class="px-0.5">
             <CardTitle class="cursor-pointer font-bold group-hover:underline leading-6">
                 Percy Jackson e o Mar de Monstros
