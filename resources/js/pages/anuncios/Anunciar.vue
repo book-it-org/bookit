@@ -14,18 +14,14 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AnunciarLayout from '@/layouts/anuncios/AnunciarLayout.vue';
+import { Genero, Idioma } from '@/types/api';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-interface IdiomaGenero {
-    id: number;
-    nome: string;
-}
-
 interface Props {
-    idiomas: IdiomaGenero[];
-    generos: IdiomaGenero[];
+    idiomas: Idioma[];
+    generos: Genero[];
     estados: string[];
 }
 

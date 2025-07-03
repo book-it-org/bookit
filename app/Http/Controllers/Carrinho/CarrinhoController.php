@@ -13,7 +13,7 @@ class CarrinhoController extends Controller
     /**
      * Renderiza a pagina do carrinho
      */
-    public function mostrar(Request $request): Response
+    public function mostrarCarrinho(Request $request): Response
     {
         $generos = Generos::all();
         return Inertia::render('Carrinho', ['generos' => $generos]);

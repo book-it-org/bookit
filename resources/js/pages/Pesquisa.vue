@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+import CardOferta from '@/components/ofertas/CardOferta.vue';
+import PesquisaLayout from '@/layouts/PesquisaLayout.vue';
 import { formatarSearchParam } from '@/utils';
 import { Head } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -20,9 +21,21 @@ const titulo = computed(() => {
 
 <template>
     <Head :title="titulo" />
-    <AppLayout>
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <p>Pesquisa</p>
+    <PesquisaLayout>
+        <div class="grid grid-cols-3 gap-8">
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
+            <CardOferta />
         </div>
-    </AppLayout>
+    </PesquisaLayout>
 </template>

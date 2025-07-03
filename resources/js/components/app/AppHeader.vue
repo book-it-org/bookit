@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppBarraPesquisa from '@/components/app/AppBarraPesquisa.vue';
 import AppLogo from '@/components/app/AppLogo.vue';
 import AppLogoIcon from '@/components/app/AppLogoIcon.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -8,7 +9,6 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -18,23 +18,28 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import UserMenuContent from '@/components/UserMenuContent.vue';
-import { useGenerosEmDestaque } from '@/composables/useGenerosEmDestaque';
 import { getInitials } from '@/composables/useInitials';
+import { cn } from '@/lib/utils';
+import { Genero } from '@/types/api';
+import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { cn } from '@/lib/utils';
-
-const page = usePage();
-const auth = computed(() => page.props.auth);
 
 interface Props {
     limpo: boolean;
 }
 
-withDefaults(defineProps<Props>(), { limpo: false });
+interface PageProps extends InertiaPageProps {
+    generos?: Genero[];
+}
 
-const generosEmDestaque = useGenerosEmDestaque();
+const page = usePage<PageProps>();
+
+const { generos } = page.props;
+const auth = computed(() => page.props.auth);
+
+withDefaults(defineProps<Props>(), { limpo: false });
 </script>
 
 <template>
@@ -97,8 +102,8 @@ const generosEmDestaque = useGenerosEmDestaque();
                         <AppLogo />
                     </Link>
 
-                    <div v-if="!limpo" class="hidden h-full max-w-xl lg:flex lg:flex-1 lg:items-center">
-                        <Input placeholder="Percy Jackson e o Mar de Monstros..." />
+                    <div class="hidden h-full max-w-xl lg:flex lg:flex-1 lg:items-center">
+                        <AppBarraPesquisa v-if="!limpo" />
                     </div>
 
                     <div :class="cn('ml-auto flex items-center space-x-2', limpo && 'col-3')">
@@ -168,11 +173,14 @@ const generosEmDestaque = useGenerosEmDestaque();
                     </div>
                 </div>
 
-                <div v-if="!limpo" class="hidden w-full lg:flex lg:items-center lg:justify-center">
+                <div
+                    v-if="generos && !limpo"
+                    class="hidden w-full lg:flex lg:items-center lg:justify-center"
+                >
                     <NavigationMenu class="flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch">
                             <NavigationMenuItem
-                                v-for="item in generosEmDestaque"
+                                v-for="item in generos"
                                 :key="item.id"
                                 class="relative flex h-full items-center"
                             >

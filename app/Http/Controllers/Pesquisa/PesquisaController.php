@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Pesquisa;
 
+use App\Enums\EstadoLivro;
 use App\Http\Controllers\Controller;
+use App\Models\Idiomas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,9 +15,16 @@ class PesquisaController extends Controller
     /**
      * Renderiza a pagina de pesquisa
      */
-    public function mostrar(Request $request): Response
+    public function mostrarPesquisa(Request $request): Response
     {
         $generos = Generos::all();
-        return Inertia::render('Pesquisa', ['generos' => $generos]);
+        $idiomas = Idiomas::all();
+        $estados = EstadoLivro::values();
+
+        return Inertia::render('Pesquisa', [
+            "estados" => $estados,
+            "generos" => $generos,
+            "idiomas" => $idiomas
+        ]);
     }
 }
