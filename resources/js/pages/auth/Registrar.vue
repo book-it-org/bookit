@@ -122,7 +122,7 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="documento">CPF/CPNJ</Label>
+                    <Label for="documento">CPF/CNPJ</Label>
                     <Input
                         id="documento"
                         type="text"

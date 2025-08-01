@@ -107,8 +107,9 @@ withDefaults(defineProps<Props>(), { limpo: false });
                     </div>
 
                     <div :class="cn('ml-auto flex items-center space-x-2', limpo && 'col-3')">
-                        <template v-if="auth.user">
+                        
                             <Button
+                            v-if="auth.user"
                                 variant="ghost"
                                 size="sm"
                                 as-child
@@ -136,7 +137,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
                                 </Link>
                             </Button>
 
-                            <DropdownMenu>
+                            <DropdownMenu v-if="auth.user">
                                 <DropdownMenuTrigger :as-child="true">
                                     <Button
                                         variant="ghost"
@@ -161,8 +162,8 @@ withDefaults(defineProps<Props>(), { limpo: false });
                                     <UserMenuContent :user="auth.user" />
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                        </template>
-                        <template v-else>
+                    
+                        <template v-if="!auth.user">
                             <Button variant="ghost" size="sm" as-child class="group cursor-pointer">
                                 <Link href="/entrar">
                                     <User class="size-5 opacity-80 group-hover:opacity-100" />
