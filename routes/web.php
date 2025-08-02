@@ -18,3 +18,4 @@ require __DIR__ . '/pedidos.php';
 require __DIR__ . '/anuncios.php';
 require __DIR__ . '/chat.php';
 require __DIR__ . '/pesquisa.php';
+require __DIR__ . '/endereco.php';
