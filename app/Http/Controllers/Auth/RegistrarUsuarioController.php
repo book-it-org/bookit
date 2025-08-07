@@ -28,7 +28,7 @@ class RegistrarUsuarioController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function registrarUsuario(Request $request): RedirectResponse
+    public function criarUsuario(Request $request): RedirectResponse
     {
         $request->merge([
             'senha_confirmation' => $request->confirmacao_senha,

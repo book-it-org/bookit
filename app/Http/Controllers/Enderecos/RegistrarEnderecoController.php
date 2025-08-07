@@ -15,7 +15,7 @@ class RegistrarEnderecoController extends Controller
         return Inertia::render('enderecos/Registrar');
     }
 
-    public function registrarEndereco(Request $request): RedirectResponse
+    public function criarEndereco(Request $request): RedirectResponse
     {
         $request->validate([
             'usuarios_id' => 'required|exists:usuarios,id',
