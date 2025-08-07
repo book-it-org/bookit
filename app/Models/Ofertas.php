@@ -15,7 +15,7 @@ class Ofertas extends Model
         'titulo_livro',
         'autor_livro',
         'estado_livro',
-        'isbn',
+        'isbn_livro',
         'data_publicacao_livro',
         'ativo'
     ];

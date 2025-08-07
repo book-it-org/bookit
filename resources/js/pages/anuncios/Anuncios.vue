@@ -14,7 +14,7 @@ import { HandCoins } from 'lucide-vue-next';
             <div class="flex items-center justify-between">
                 <Heading title="Seus anúncios" />
                 <Button as-child>
-                    <Link :href="route('anunciar')">
+                    <Link :href="route('anuncios.formulario')">
                         <HandCoins />
                         Anunciar
                     </Link>

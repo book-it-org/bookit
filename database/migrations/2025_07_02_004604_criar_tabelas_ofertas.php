@@ -28,7 +28,7 @@ return new class extends Migration
         });
 
         Schema::create('ofertas_generos', function (Blueprint $table) {
-            $table->primary(['ofertas_id', 'generos_id']);
+            $table->id();
             $table->foreignId('ofertas_id')->constrained('ofertas')->onDelete('cascade');
             $table->foreignId('generos_id')->constrained('generos')->onDelete('cascade');
         });

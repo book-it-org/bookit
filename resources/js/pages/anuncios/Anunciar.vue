@@ -30,16 +30,16 @@ defineProps<Props>();
 const passo = ref(1);
 
 const form = useForm({
-    titulo_livro: '',
-    autor_livro: '',
+    titulo_livro: 'dsadas',
+    autor_livro: 'dasdsadas',
     estado_livro: 'usado',
-    genero_livro: '',
-    isbn_livro: '',
-    idioma_livro: '',
-    data_publicacao_livro: '',
-    titulo: '',
-    descricao: '',
-    preco: '',
+    generos_id: '1',
+    isbn_livro: '1233161474100',
+    idiomas_id: '1',
+    data_publicacao_livro: '2023-01-01',
+    titulo: 'dasnkdsa',
+    descricao: 'dasldsaad',
+    preco: '50',
     imagens: [] as File[],
 });
 
@@ -58,9 +58,10 @@ const submit = () => {
         return;
     }
 
-    // form.post(route('registrar'), {
-    //     // onFinish: () => form.reset('senha', 'confirmacao_senha'),
-    // });
+    form.post(route('oferta.criar'), {
+
+       
+    });
 };
 </script>
 
@@ -113,9 +114,9 @@ const submit = () => {
                         <InputError :message="form.errors.estado_livro" />
                     </div>
                     <div class="grid gap-2">
-                        <Label for="idioma_livro">Idioma</Label>
-                        <Select v-model="form.idioma_livro">
-                            <SelectTrigger class="w-full" name="idioma_livro" :tabindex="4">
+                        <Label for="idiomas_id">Idioma</Label>
+                        <Select v-model="form.idiomas_id">
+                            <SelectTrigger class="w-full" name="idiomas_id" :tabindex="4">
                                 <SelectValue :placeholder="'Selecione'" />
                             </SelectTrigger>
                             <SelectContent>
@@ -127,12 +128,12 @@ const submit = () => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <InputError :message="form.errors.idioma_livro" />
+                        <InputError :message="form.errors.idiomas_id" />
                     </div>
                     <div class="grid gap-2">
-                        <Label for="genero_livro">Gênero</Label>
-                        <Select v-model="form.genero_livro">
-                            <SelectTrigger class="w-full" name="genero_livro" :tabindex="5">
+                        <Label for="generos_id">Gênero</Label>
+                        <Select v-model="form.generos_id">
+                            <SelectTrigger class="w-full" name="generos_id" :tabindex="5">
                                 <SelectValue :placeholder="'Selecione'" />
                             </SelectTrigger>
                             <SelectContent>
@@ -144,7 +145,7 @@ const submit = () => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <InputError :message="form.errors.genero_livro" />
+                        <InputError :message="form.errors.generos_id" />
                     </div>
                     <div class="grid gap-2">
                         <Label for="data_publicacao_livro">Data de Publicação</Label>
@@ -263,12 +264,12 @@ const submit = () => {
                                 />
                             </div>
                             <div class="grid gap-2">
-                                <Label for="genero_livro">Gênero</Label>
+                                <Label for="generos_id">Gênero</Label>
                                 <Input
-                                    id="genero_livro"
+                                    id="generos_id"
                                     type="text"
                                     :model-value="
-                                        generos.find((g) => g.value === form.genero_livro)?.label
+                                        generos.find((g) => g.value === form.generos_id)?.label
                                     "
                                     disabled
                                 />
