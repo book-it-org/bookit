@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string("nome", 100);
             $table->string("sigla", 2);
-
         });
 
         Schema::create("paises", function (Blueprint $table) {
@@ -32,7 +31,7 @@ return new class extends Migration
             $table->string("logradouro", 255);
             $table->string("numero", 10);
             $table->string("complemento", 255)->nullable();
-            $table->string("bairro", 255);
+            $table->string("bairro", 100);
             $table->string("cep", 9);
             $table->timestamps();
         });

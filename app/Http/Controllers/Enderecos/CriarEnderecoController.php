@@ -6,21 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Enderecos;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use \App\Models\Estados;
+use \App\Models\Paises;
 
-class RegistrarEnderecoController extends Controller
+class CriarEnderecoController extends Controller
 {
     public function mostrar(): \Inertia\Response
     {
-        return Inertia::render('enderecos/Registrar');
+        return Inertia::render('enderecos/AdicionarEndereco', [
+            'estados' => Estados::all()
+        ]);
     }
 
     public function criarEndereco(Request $request): RedirectResponse
     {
         $request->validate([
-            'usuarios_id' => 'required|exists:usuarios,id',
             'estados_id' => 'required|exists:estados,id',
-            'paises_id' => 'required|exists:paises,id',
             'logradouro' => 'required|string|max:255',
             'numero' => 'required|string|max:255',
             'complemento' => 'nullable|string|max:255',
@@ -28,8 +31,9 @@ class RegistrarEnderecoController extends Controller
             'cep' => 'required|string|max:8'
         ]);
 
-        Enderecos::create($request->all());
+        $data = array_merge($request->all(), ['usuarios_id' => Auth::id()]);
+        Enderecos::create($data);
 
-        return to_route('config.conta');
+        return to_route('enderecos');
     }
 }

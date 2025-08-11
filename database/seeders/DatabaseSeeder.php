@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             GenerosSeeder::class,
-            IdiomasSeeder::class
+            IdiomasSeeder::class,
+            EstadosSeeder::class,
         ]);
     }
 }

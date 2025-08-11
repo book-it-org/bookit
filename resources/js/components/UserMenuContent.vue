@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import UserInfo from '@/components/UserInfo.vue';
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { HandCoins, LogOut, MessageSquareMore, Package, Settings, ShoppingCart } from 'lucide-vue-next';
+import {
+    HandCoins,
+    LogOut,
+    MapPinHouse,
+    MessageSquareMore,
+    Package,
+    Settings,
+    ShoppingCart,
+} from 'lucide-vue-next';
 
 interface Props {
     user: User;
@@ -37,6 +50,12 @@ defineProps<Props>();
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem :as-child="true">
+            <Link class="block w-full" :href="route('enderecos')" prefetch as="button">
+                <MapPinHouse class="mr-2 h-4 w-4" />
+                Endereços
+            </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="route('config.conta')" prefetch as="button">
                 <Settings class="mr-2 h-4 w-4" />
                 Conta
@@ -60,7 +79,13 @@ defineProps<Props>();
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
-        <Link class="block w-full" method="post" :href="route('sair')" @click="handleLogout" as="button">
+        <Link
+            class="block w-full"
+            method="post"
+            :href="route('sair')"
+            @click="handleLogout"
+            as="button"
+        >
             <LogOut class="mr-2 h-4 w-4" />
             Sair
         </Link>

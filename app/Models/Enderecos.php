@@ -9,11 +9,11 @@ class Enderecos extends Model
     protected $fillable = [
         'usuarios_id',
         'estados_id',
-        'paises_id',
         'logradouro',
         'numero',
         'complemento',
         'bairro',
+        'cidade',
         'cep'
     ];
 }

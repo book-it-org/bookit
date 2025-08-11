@@ -180,8 +180,8 @@ const submit = () => {
                     :href="route('entrar')"
                     class="underline underline-offset-4"
                     :tabindex="11"
-                    >Log in</TextLink
-                >
+                    >Log in
+                </TextLink>
             </div>
         </form>
     </AuthBase>

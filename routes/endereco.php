@@ -1,8 +1,13 @@
 <?php
 
-use App\Http\Controllers\Enderecos\RegistrarEnderecoController;
+use App\Http\Controllers\Enderecos\CriarEnderecoController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Enderecos\EnderecoController;
 
-Route::get('endereco/criar', [RegistrarEnderecoController::class, 'mostrar'])->name('endereco.formulario');
-Route::post('endereco/criar', [RegistrarEnderecoController::class, 'criarEndereco'])->name('endereco.criar');
+# Frontend
+Route::get('enderecos', [EnderecoController::class, 'mostrar'])->name('enderecos');
+Route::get('enderecos/adicionar', [CriarEnderecoController::class, 'mostrar'])->name('enderecos.adicionar');
+
+# Backend
+Route::post('enderecos', [CriarEnderecoController::class, 'criarEndereco'])->name('enderecos.criar');
 
