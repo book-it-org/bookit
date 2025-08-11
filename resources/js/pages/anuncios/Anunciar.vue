@@ -33,9 +33,9 @@ const form = useForm({
     titulo_livro: 'dsadas',
     autor_livro: 'dasdsadas',
     estado_livro: 'usado',
-    generos_id: '1',
+    generos_id: 1,
     isbn_livro: '1233161474100',
-    idiomas_id: '1',
+    idiomas_id: 1,
     data_publicacao_livro: '2023-01-01',
     titulo: 'dasnkdsa',
     descricao: 'dasldsaad',
@@ -58,10 +58,7 @@ const submit = () => {
         return;
     }
 
-    form.post(route('oferta.criar'), {
-
-       
-    });
+    form.post(route('oferta.criar'), {});
 };
 </script>
 
@@ -69,9 +66,9 @@ const submit = () => {
     <Head title="BookIt - Anunciar oferta" />
     <AnunciarLayout :passo="passo">
         <form @submit.prevent="submit" class="grid gap-6">
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid gap-6 sm:grid-cols-2">
                 <template v-if="passo === 1">
-                    <div class="col-span-2 grid gap-2">
+                    <div class="grid gap-2 sm:col-span-2">
                         <Label for="titulo">Título do Livro</Label>
                         <Input
                             id="titulo"
@@ -106,7 +103,7 @@ const submit = () => {
                                 <SelectGroup>
                                     <SelectLabel>Estado</SelectLabel>
                                     <SelectItem v-for="e in estados" :key="e" :value="e">
-                                        {{ e }}
+                                        {{ e.toUpperCase() }}
                                     </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
@@ -333,7 +330,7 @@ const submit = () => {
                         </div>
                     </div>
                 </template>
-                <div class="col-span-2 grid grid-cols-2 gap-8">
+                <div class="grid col-span-2 sm:gap-8 sm:grid-cols-2">
                     <Button
                         @click="passo--"
                         class="mt-2 w-full"

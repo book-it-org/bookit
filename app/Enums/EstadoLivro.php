@@ -5,9 +5,9 @@ namespace App\Enums;
 enum EstadoLivro: string
 {
 
-    case  NOVO = 'NOVO';
-    case USADO = 'USADO';
-    case DESGASTADO = 'DESGASTADO';
+    case  NOVO = 'novo';
+    case USADO = 'usado';
+    case DESGASTADO = 'desgastado';
 
     public static function values(): array
     {
