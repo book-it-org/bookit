@@ -6,7 +6,6 @@ import { Endereco } from '@/types/api';
 import { PageProps } from '@inertiajs/core';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
-import export_default from 'reka-ui/resolver';
 
 interface Props extends PageProps {
     enderecos: Endereco[];
@@ -14,8 +13,6 @@ interface Props extends PageProps {
 
 const page = usePage<Props>();
 const enderecos = page.props.enderecos || [];
-
-console.log(enderecos)
 </script>
 
 <template>
