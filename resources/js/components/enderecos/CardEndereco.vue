@@ -2,6 +2,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPinHouse, Trash2Icon } from 'lucide-vue-next';
 import Button from '../ui/button/Button.vue';
+import { Endereco } from '@/types/api';
+
+interface Props {
+    endereco: Endereco;
+}
+
+defineProps<Props>();
 </script>
 
 <template>
@@ -9,7 +16,7 @@ import Button from '../ui/button/Button.vue';
         <CardHeader class="flex items-center justify-between">
             <div class="flex items-center">
                 <MapPinHouse class="mr-2 h-4 w-4" />
-                <CardTitle>Avenida Jonas Marcos 212</CardTitle>
+                <CardTitle>{{ endereco.logradouro}} - {{ endereco.numero}}</CardTitle>
             </div>
             <Button size="icon" variant="destructive">
                 <Trash2Icon />
@@ -17,10 +24,10 @@ import Button from '../ui/button/Button.vue';
         </CardHeader>
         <CardContent>
             <CardDescription>
-                <span>Cidade, Estado, CEP 12123123</span>
+                <span>{{endereco.cidade}}, {{ endereco.estado.nome }}, CEP {{endereco.cep}}</span>
             </CardDescription>
             <CardDescription>
-                <span>Complemento do endereço</span>
+                <span>{{ endereco.complemento}}</span>
             </CardDescription>
         </CardContent>
     </Card>

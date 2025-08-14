@@ -19,8 +19,13 @@ export interface Estado {
     nome: string;
 }
 
-export interface Pais {
+export interface Endereco {
     id: number;
-    sigla: string;
-    nome: string;
+    cep: string;
+    logradouro: string;
+    numero: string;
+    complemento?: string;
+    bairro: string;
+    cidade: string;
+    estado: Estado;
 }

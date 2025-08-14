@@ -2,8 +2,20 @@
 import CardEndereco from '@/components/enderecos/CardEndereco.vue';
 import Button from '@/components/ui/button/Button.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Endereco } from '@/types/api';
+import { PageProps } from '@inertiajs/core';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
+import export_default from 'reka-ui/resolver';
+
+interface Props extends PageProps {
+    enderecos: Endereco[];
+}
+
+const page = usePage<Props>();
+const enderecos = page.props.enderecos || [];
+
+console.log(enderecos)
 </script>
 
 <template>
@@ -22,7 +34,11 @@ import { Plus } from 'lucide-vue-next';
                         Adicionar Endereço
                     </Link>
                 </Button>
-                <CardEndereco v-for="index in 5" :key="index"></CardEndereco>
+                <CardEndereco
+                    v-for="endereco in enderecos"
+                    :endereco="endereco"
+                    :key="endereco.id"
+                />
             </div>
         </div>
     </AppLayout>

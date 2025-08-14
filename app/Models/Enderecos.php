@@ -16,4 +16,15 @@ class Enderecos extends Model
         'cidade',
         'cep'
     ];
+
+    public function estado()
+    {
+        return $this->belongsTo(Estados::class, 'estados_id');
+
+    }
+
+    public static function porUsuario($id)
+    {
+        return self::with('estado')->where('usuarios_id', $id)->get();
+    }
 }
