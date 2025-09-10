@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             GenerosSeeder::class,
             IdiomasSeeder::class,
             EstadosSeeder::class,
+            PapeisSeeder::class,
         ]);
     }
 }
