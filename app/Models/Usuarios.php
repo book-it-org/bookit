@@ -25,6 +25,7 @@ class Usuarios extends Authenticatable
         'email',
         'telefone',
         'documento',
+        'papeis_id',
         'senha_hash'
     ];
 
@@ -62,6 +63,11 @@ class Usuarios extends Authenticatable
     public function papel()
     {
         return $this->belongsTo(Papeis::class, 'papeis_id');
+    }
+
+    public function verificarAdmin()
+    {
+        return $this->papeis_id === 0;
     }
 
 }

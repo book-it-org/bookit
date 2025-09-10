@@ -15,6 +15,10 @@ class AutenticarUsuarioAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if ($request->user()->verificarAdmin()) {
+            return $next($request);
+        }else{
+            abort(403, 'você é plebe');
+        }
     }
 }
