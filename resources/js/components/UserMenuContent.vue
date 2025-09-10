@@ -6,7 +6,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import type { User } from '@/types';
+import type { Usuario } from '@/types/api';
 import { Link, router } from '@inertiajs/vue3';
 import {
     HandCoins,
@@ -19,7 +19,7 @@ import {
 } from 'lucide-vue-next';
 
 interface Props {
-    user: User;
+    user: Usuario;
 }
 
 const handleLogout = () => {

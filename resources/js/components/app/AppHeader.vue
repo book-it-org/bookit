@@ -2,7 +2,7 @@
 import AppBarraPesquisa from '@/components/app/AppBarraPesquisa.vue';
 import AppLogo from '@/components/app/AppLogo.vue';
 import AppLogoIcon from '@/components/app/AppLogoIcon.vue';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -20,8 +20,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import { cn } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { Genero } from '@/types/api';
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
 import { computed } from 'vue';
@@ -30,7 +30,7 @@ interface Props {
     limpo: boolean;
 }
 
-interface PageProps extends InertiaPageProps {
+interface PageProps extends SharedData {
     generos?: Genero[];
 }
 
@@ -65,12 +65,12 @@ withDefaults(defineProps<Props>(), { limpo: false });
                                 <nav class="-mx-3 space-y-1">
                                     <div class="text-muted-foreground pl-3 text-xs">Gêneros</div>
                                     <Link
-                                        v-for="item in generosEmDestaque"
-                                        :key="item.id"
-                                        :href="route('pesquisa', { genero: item.id })"
+                                        v-for="genero in generos"
+                                        :key="genero.id"
+                                        :href="route('pesquisa', { genero: genero.id })"
                                         class="hover:bg-accent flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium"
                                     >
-                                        {{ item.nome }}
+                                        {{ genero.nome }}
                                     </Link>
                                 </nav>
                                 <!-- <div class="flex flex-col space-y-4">
@@ -107,61 +107,58 @@ withDefaults(defineProps<Props>(), { limpo: false });
                     </div>
 
                     <div :class="cn('ml-auto flex items-center space-x-2', limpo && 'col-3')">
-
-                            <Button
+                        <Button
                             v-if="auth.user"
-                                variant="ghost"
-                                size="sm"
-                                as-child
-                                class="group hidden cursor-pointer lg:flex"
-                            >
-                                <Link href="/chat">
-                                    <MessageSquareMore
-                                        class="size-5 opacity-80 group-hover:opacity-100"
-                                    />
-                                    <span>Chat</span>
-                                </Link>
-                            </Button>
+                            variant="ghost"
+                            size="sm"
+                            as-child
+                            class="group hidden cursor-pointer lg:flex"
+                        >
+                            <Link href="/chat">
+                                <MessageSquareMore
+                                    class="size-5 opacity-80 group-hover:opacity-100"
+                                />
+                                <span>Chat</span>
+                            </Link>
+                        </Button>
 
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                as-child
-                                class="group hidden cursor-pointer lg:flex"
-                            >
-                                <Link href="/carrinho">
-                                    <ShoppingCart
-                                        class="size-5 opacity-80 group-hover:opacity-100"
-                                    />
-                                    <span>Carrinho</span>
-                                </Link>
-                            </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            as-child
+                            class="group hidden cursor-pointer lg:flex"
+                        >
+                            <Link href="/carrinho">
+                                <ShoppingCart class="size-5 opacity-80 group-hover:opacity-100" />
+                                <span>Carrinho</span>
+                            </Link>
+                        </Button>
 
-                            <DropdownMenu v-if="auth.user">
-                                <DropdownMenuTrigger :as-child="true">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        class="focus-within:ring-primary relative size-10 w-auto rounded-full p-1 focus-within:ring-2"
-                                    >
-                                        <Avatar class="size-8 overflow-hidden rounded-full">
-                                            <AvatarImage
-                                                v-if="auth.user.avatar"
-                                                :src="auth.user.avatar"
-                                                :alt="auth.user.name"
-                                            />
-                                            <AvatarFallback
-                                                class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
-                                            >
-                                                {{ getInitials(auth.user?.name) }}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" class="w-56">
-                                    <UserMenuContent :user="auth.user" />
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                        <DropdownMenu v-if="auth.user">
+                            <DropdownMenuTrigger :as-child="true">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="focus-within:ring-primary relative size-10 w-auto rounded-full p-1 focus-within:ring-2"
+                                >
+                                    <Avatar class="size-8 overflow-hidden rounded-full">
+                                        <!-- <AvatarImage
+                                            v-if="auth.user.avatar"
+                                            :src="auth.user.avatar"
+                                            :alt="auth.user.name"
+                                        /> -->
+                                        <AvatarFallback
+                                            class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
+                                        >
+                                            {{ getInitials(auth.user?.nome) }}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" class="w-56">
+                                <UserMenuContent :user="auth.user" />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
 
                         <template v-if="!auth.user">
                             <Button variant="ghost" size="sm" as-child class="group cursor-pointer">
@@ -181,18 +178,18 @@ withDefaults(defineProps<Props>(), { limpo: false });
                     <NavigationMenu class="flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch">
                             <NavigationMenuItem
-                                v-for="item in generos"
-                                :key="item.id"
+                                v-for="genero in generos"
+                                :key="genero.id"
                                 class="relative flex h-full items-center"
                             >
-                                <Link :href="route('pesquisa', { genero: item.id })">
+                                <Link :href="route('pesquisa', { genero: genero.id })">
                                     <NavigationMenuLink
                                         :class="[
                                             navigationMenuTriggerStyle(),
                                             'h-9 cursor-pointer px-3',
                                         ]"
                                     >
-                                        {{ item.nome }}
+                                        {{ genero.nome }}
                                     </NavigationMenuLink>
                                 </Link>
                             </NavigationMenuItem>
