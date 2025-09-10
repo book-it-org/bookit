@@ -55,4 +55,13 @@ class Usuarios extends Authenticatable
     {
         return $this->senha_hash;
     }
+
+    /**
+     * Relacionamento com o modelo Papeis
+     */
+    public function papel()
+    {
+        return $this->belongsTo(Papeis::class, 'papeis_id');
+    }
+
 }
