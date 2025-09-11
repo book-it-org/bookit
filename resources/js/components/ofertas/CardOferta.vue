@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Oferta } from '@/types/api';
 import { router } from '@inertiajs/vue3';
 import { ShoppingCart } from 'lucide-vue-next';
 import Button from '../ui/button/Button.vue';
@@ -9,8 +10,14 @@ import CardFooter from '../ui/card/CardFooter.vue';
 import CardHeader from '../ui/card/CardHeader.vue';
 import CardTitle from '../ui/card/CardTitle.vue';
 
+interface Props {
+    oferta: Oferta;
+}
+
+const props = defineProps<Props>();
+
 function irParaOferta() {
-    router.visit(route('oferta', { id: '1' }));
+    router.visit(route('oferta', { id: props.oferta.id }));
 }
 
 function irParaCarrinho() {
@@ -19,23 +26,24 @@ function irParaCarrinho() {
 </script>
 
 <template>
-    <Card class="group relative w-auto gap-2 p-3 cursor-pointer" @click="irParaOferta">
-        <div class="bg-white p-4 rounded-2xl">
+    <Card class="group relative w-auto cursor-pointer gap-2 p-3" @click="irParaOferta">
+        <div class="rounded-2xl bg-white p-4">
             <img
                 src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
                 alt=""
-        /></div>
+            />
+        </div>
         <CardHeader class="px-0.5">
-            <CardTitle class="cursor-pointer font-bold group-hover:underline leading-6">
-                Percy Jackson e o Mar de Monstros
+            <CardTitle class="cursor-pointer leading-6 font-bold group-hover:underline">
+                {{ props.oferta.titulo_livro }}
             </CardTitle>
         </CardHeader>
         <CardContent class="px-0.5">
-            <CardDescription>Rick Riordan</CardDescription>
+            <CardDescription>{{ props.oferta.autor_livro }}</CardDescription>
         </CardContent>
         <CardFooter class="flex justify-between px-0.5">
             <p class="text-amber-200">3,5/5</p>
-            <p class="text-emerald-500">R$39,99</p>
+            <p class="text-emerald-500">R${{ props.oferta.preco }}</p>
         </CardFooter>
         <Button
             variant="secondary"

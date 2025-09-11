@@ -1,21 +1,38 @@
 <script setup lang="ts">
 import { Input } from '@/components/ui/input';
-import { router } from '@inertiajs/vue3';
+import { SharedData } from '@/types';
+import { router, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-const pesquisa = ref('');
+interface PageProps extends SharedData {
+    filtros?: {
+        pesquisa: string;
+    };
+}
+
+const page = usePage<PageProps>();
+const pesquisaInicial = page.props.filtros?.pesquisa || '';
+const pesquisa = ref(pesquisaInicial);
 
 const submit = () => {
-    router.get(
-        route('pesquisa'),
-        {
-            pesquisa: pesquisa.value,
-        },
-        {
-            preserveState: true,
-            preserveScroll: true,
-        },
-    );
+    const currentParams = new URLSearchParams(window.location.search);
+    const params: Record<string, string> = {};
+
+    ['genero', 'idioma', 'estado', 'min', 'max', 'ordem'].forEach((key) => {
+        const value = currentParams.get(key);
+        if (value && value !== '*' && value !== '') {
+            params[key] = value;
+        }
+    });
+
+    if (pesquisa.value.trim()) {
+        params.pesquisa = pesquisa.value.trim();
+    }
+
+    router.get(route('pesquisa'), params, {
+        preserveState: true,
+        preserveScroll: true,
+    });
 };
 </script>
 

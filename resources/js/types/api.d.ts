@@ -51,3 +51,24 @@ export interface Endereco {
     cidade: string;
     estado: Estado;
 }
+
+export interface Oferta {
+    id: number;
+    usuarios_id: number;
+    idiomas_id: number;
+    titulo: string;
+    descricao: string;
+    preco: number;
+    ativo: boolean;
+    titulo_livro: string;
+    autor_livro: string;
+    estado_livro: string;
+    isbn_livro: string;
+    data_publicacao_livro: string;
+    created_at: string;
+    updated_at: string;
+
+    usuario?: Usuario;
+    idioma?: Idioma;
+    generos?: Genero[];
+}

@@ -10,7 +10,8 @@ class OfertasSeeder extends Seeder
     public function run(): void
     {
         $usuarios = DB::table('usuarios')->where('papeis_id', 2)->pluck('id');
-        $idiomaPortugues = DB::table('idiomas')->where('nome', 'PORTUGUES')->first()->id ?? 1;
+        $idiomas = DB::table('idiomas')->pluck('id')->toArray();
+        $generos = DB::table('generos')->pluck('id')->toArray();
 
         $livros = [
             ['titulo' => 'Dom Casmurro', 'autor' => 'Machado de Assis', 'isbn' => '9788525406262'],
@@ -31,18 +32,18 @@ class OfertasSeeder extends Seeder
         ];
 
         $estados = ['novo', 'usado', 'desgastado'];
-        $ofertas = [];
 
         foreach ($usuarios as $usuarioId) {
             for ($i = 0; $i < 3; $i++) {
                 $livro = $livros[array_rand($livros)];
                 $estado = $estados[array_rand($estados)];
+                $idiomaAleatorio = $idiomas[array_rand($idiomas)];
 
                 $preco = rand(1000, 15000) / 100;
 
-                $ofertas[] = [
+                $ofertaId = DB::table('ofertas')->insertGetId([
                     'usuarios_id' => $usuarioId,
-                    'idiomas_id' => $idiomaPortugues,
+                    'idiomas_id' => $idiomaAleatorio,
                     'titulo' => $livro['titulo'] . ' - ' . ucfirst($estado),
                     'descricao' => 'Livro em estado ' . $estado . '. ' . $livro['titulo'] . ' de ' . $livro['autor'] . '. Uma excelente obra da literatura brasileira.',
                     'preco' => $preco,
@@ -54,12 +55,22 @@ class OfertasSeeder extends Seeder
                     'ativo' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
-                ];
-            }
-        }
+                ]);
 
-        foreach ($ofertas as $oferta) {
-            DB::table('ofertas')->insert($oferta);
+                $quantidadeGeneros = rand(1, 2);
+                $generosAleatorios = array_rand(array_flip($generos), $quantidadeGeneros);
+
+                if (!is_array($generosAleatorios)) {
+                    $generosAleatorios = [$generosAleatorios];
+                }
+
+                foreach ($generosAleatorios as $generoId) {
+                    DB::table('ofertas_generos')->insert([
+                        'ofertas_id' => $ofertaId,
+                        'generos_id' => $generoId,
+                    ]);
+                }
+            }
         }
     }
 }

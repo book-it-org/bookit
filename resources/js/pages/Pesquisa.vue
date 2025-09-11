@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import CardOferta from '@/components/ofertas/CardOferta.vue';
 import PesquisaLayout from '@/layouts/PesquisaLayout.vue';
+import { SharedData } from '@/types';
+import { Oferta } from '@/types/api';
 import { formatarSearchParam } from '@/utils';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
+
+interface PageProps extends SharedData {
+    ofertas: Oferta[];
+}
+
+const page = usePage<PageProps>();
+const ofertas = computed(() => page.props.ofertas);
 
 const titulo = computed(() => {
     const params = new URLSearchParams(window.location.search);
@@ -23,19 +32,7 @@ const titulo = computed(() => {
     <Head :title="titulo" />
     <PesquisaLayout>
         <div class="grid grid-cols-3 gap-8">
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
-            <CardOferta />
+            <CardOferta v-for="oferta in ofertas" :oferta="oferta" :key="oferta.id" />
         </div>
     </PesquisaLayout>
 </template>

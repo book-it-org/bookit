@@ -48,7 +48,7 @@ class Usuarios extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'senha_hash' => 'hashed',
         ];
     }
 

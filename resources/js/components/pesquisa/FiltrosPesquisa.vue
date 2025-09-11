@@ -11,37 +11,59 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import usePesquisa from '@/composables/useFiltros';
+import { SharedData } from '@/types';
 import { Genero, Idioma } from '@/types/api';
-import { PageProps } from '@inertiajs/core';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { Button } from '../ui/button';
 
-interface Props extends PageProps {
+interface Filtros {
+    genero: string;
+    idioma: string;
+    estado: string;
+    min: string;
+    max: string;
+    ordem: string;
+    pesquisa: string;
+}
+
+interface Props extends SharedData {
     idiomas: Idioma[];
     generos: Genero[];
     estados: string[];
+    filtros: Filtros;
 }
 
+const pesquisar = usePesquisa();
 const page = usePage<Props>();
-const params = new URLSearchParams(window.location.search);
-
 const { idiomas, generos, estados } = page.props;
 
 const form = useForm({
-    ordem: params.get('ordem') || 'mais_relevante',
-    genero: params.get('genero') || '*',
-    idioma: params.get('idioma') || '*',
-    estado: params.get('estado') || '*',
-    data_lancamento: params.get('data_lancamento') || '',
-    preco_min: params.get('preco_min') || '',
-    preco_max: params.get('preco_max') || '',
+    genero: page.props.filtros.genero,
+    idioma: page.props.filtros.idioma,
+    estado: page.props.filtros.estado,
+    min: page.props.filtros.min,
+    max: page.props.filtros.max,
+    ordem: page.props.filtros.ordem,
 });
 
 const opcoesOrdem = [
-    { id: 'mais_relevante', nome: 'MAIS RELEVANTE' },
-    { id: 'menos_relevante', nome: 'MENOS RELEVANTE' },
-    { id: 'recentes', nome: 'MAIS RECENTES' },
-    { id: 'antigos', nome: 'MAIS ANTIGOS' },
+    { id: 'preco_asc', nome: 'MENOR PREÇO' },
+    { id: 'preco_desc', nome: 'MAIOR PREÇO' },
+    { id: 'data_asc', nome: 'MAIS ANTIGOS' },
+    { id: 'data_desc', nome: 'MAIS RECENTES' },
 ];
+
+function submit() {
+    pesquisar({
+        genero: form.genero,
+        idioma: form.idioma,
+        estado: form.estado,
+        min: form.min,
+        max: form.max,
+        ordem: form.ordem,
+    });
+}
 </script>
 
 <template>
@@ -50,7 +72,7 @@ const opcoesOrdem = [
             <CardTitle>Filtros</CardTitle>
         </CardHeader>
         <CardContent>
-            <div class="grid gap-4">
+            <form class="grid gap-4" @submit.prevent="submit">
                 <div class="grid gap-2">
                     <Label for="ordem">Ordenar por</Label>
                     <Select v-model="form.ordem">
@@ -60,8 +82,12 @@ const opcoesOrdem = [
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Ordenar por</SelectLabel>
-                                <SelectItem v-for="op in opcoesOrdem" :key="op.id" :value="op.id">
-                                    {{ op.nome }}
+                                <SelectItem
+                                    v-for="opcao in opcoesOrdem"
+                                    :key="opcao.id"
+                                    :value="opcao.id"
+                                >
+                                    {{ opcao.nome }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
@@ -77,8 +103,12 @@ const opcoesOrdem = [
                             <SelectGroup>
                                 <SelectLabel>Gênero</SelectLabel>
                                 <SelectItem value="*">Todos</SelectItem>
-                                <SelectItem v-for="g in generos" :key="g.id" :value="g.id">
-                                    {{ g.nome }}
+                                <SelectItem
+                                    v-for="genero in generos"
+                                    :key="genero.id"
+                                    :value="String(genero.id)"
+                                >
+                                    {{ genero.nome }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
@@ -94,8 +124,12 @@ const opcoesOrdem = [
                             <SelectGroup>
                                 <SelectLabel>Idioma</SelectLabel>
                                 <SelectItem value="*">Todos</SelectItem>
-                                <SelectItem v-for="i in idiomas" :key="i.id" :value="i.id">
-                                    {{ i.nome }}
+                                <SelectItem
+                                    v-for="idioma in idiomas"
+                                    :key="idioma.id"
+                                    :value="String(idioma.id)"
+                                >
+                                    {{ idioma.nome }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
@@ -111,21 +145,12 @@ const opcoesOrdem = [
                             <SelectGroup>
                                 <SelectLabel>Estado</SelectLabel>
                                 <SelectItem value="*">Todos</SelectItem>
-                                <SelectItem v-for="e in estados" :key="e" :value="e">
-                                    {{ e }}
+                                <SelectItem v-for="estado in estados" :key="estado" :value="estado">
+                                    {{ estado.toUpperCase() }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                </div>
-                <div class="grid gap-2">
-                    <Label for="data_lancamento">Data de Lançamento</Label>
-                    <Input
-                        id="data_lancamento"
-                        type="date"
-                        v-model="form.data_lancamento"
-                        placeholder="Data de lançamento"
-                    />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="grid gap-2">
@@ -134,7 +159,7 @@ const opcoesOrdem = [
                             id="preco_min"
                             type="number"
                             min="0"
-                            v-model="form.preco_min"
+                            v-model="form.min"
                             placeholder="Mínimo"
                         />
                     </div>
@@ -144,12 +169,13 @@ const opcoesOrdem = [
                             id="preco_max"
                             type="number"
                             min="0"
-                            v-model="form.preco_max"
+                            v-model="form.max"
                             placeholder="Máximo"
                         />
                     </div>
                 </div>
-            </div>
+                <Button type="submit">Filtrar</Button>
+            </form>
         </CardContent>
     </Card>
 </template>
