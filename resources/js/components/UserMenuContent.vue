@@ -15,8 +15,10 @@ import {
     MessageSquareMore,
     Package,
     Settings,
+    Shield,
     ShoppingCart,
 } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 interface Props {
     user: Usuario;
@@ -26,7 +28,10 @@ const handleLogout = () => {
     router.flushAll();
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+const isAdmin = computed(() => {
+    return props.user && props.user.papeis_id === 0;
+});
 </script>
 
 <template>
@@ -77,6 +82,17 @@ defineProps<Props>();
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
+
+    <template v-if="isAdmin">
+        <DropdownMenuSeparator />
+        <DropdownMenuItem :as-child="true">
+            <Link class="block w-full" prefetch :href="route('admin')" as="button">
+                <Shield class="mr-2 h-4 w-4" />
+                Administrador
+            </Link>
+        </DropdownMenuItem>
+    </template>
+
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
         <Link
