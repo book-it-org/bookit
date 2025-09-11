@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Ofertas;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Ofertas;
 use App\Models\Generos;
+
 
 class OfertaController extends Controller
 {
@@ -19,5 +21,12 @@ class OfertaController extends Controller
             'id_oferta' => $id,
             'generos' => $generos
         ]);
+    }
+
+    public function desativarOferta(string $id)
+    {
+        $oferta = Ofertas::findOrFail($id);
+        $oferta->desativar();
+        return redirect()->back()->with('success', 'Oferta desativada com sucesso.');
     }
 }

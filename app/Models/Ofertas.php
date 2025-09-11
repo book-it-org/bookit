@@ -19,4 +19,10 @@ class Ofertas extends Model
         'data_publicacao_livro',
         'ativo'
     ];
+
+    public function desativar()
+    {
+        $this->ativo = false;
+        $this->save();
+    }
 }
