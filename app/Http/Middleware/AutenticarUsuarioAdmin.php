@@ -17,7 +17,7 @@ class AutenticarUsuarioAdmin
     {
         if ($request->user()->verificarAdmin()) {
             return $next($request);
-        }else{
+        } else {
             abort(403, 'você é plebe');
         }
     }

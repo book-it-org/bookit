@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppLayout from '@/layouts/AppLayout.vue';
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -21,6 +22,9 @@ const auth = computed(() => page.props.auth);
 withDefaults(defineProps<Props>(), { limpo: false });
 </script>
 
-<template>Você é admin!</template>
-
-<style></style>
+<template>
+    <Head title="Seu marketplace de livros" />
+    <AppLayout header-limpo>
+        <p>Você é admin!</p>
+    </AppLayout>
+</template>
