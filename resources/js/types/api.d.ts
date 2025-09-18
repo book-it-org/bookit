@@ -68,7 +68,7 @@ export interface Oferta {
     created_at: string;
     updated_at: string;
 
-    usuario?: Usuario;
-    idioma?: Idioma;
-    generos?: Genero[];
+    usuario: Usuario;
+    idioma: Idioma;
+    generos: Genero[];
 }

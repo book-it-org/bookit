@@ -2,15 +2,30 @@
 import TopicoInformacaoOferta from '@/components/ofertas/TopicoInformacaoOferta.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Genero } from '@/types/api';
 import { Package, ShoppingCartIcon, StarHalfIcon, StarIcon } from 'lucide-vue-next';
 
-const titulo = 'Percy Jackson e o Mar de Monstros';
+interface Props {
+    titulo: string;
+    preco: number;
+    tituloLivro: string;
+    autor: string;
+    idioma: string;
+    dataPublicacao: string;
+    editora: string;
+    estado: string;
+    isbn: string;
+    generos: Genero[];
+}
+
+const props = defineProps<Props>();
+const genero = props.generos.map((g) => g.nome).join(', ');
 </script>
 
 <template>
     <div class="flex w-full flex-col gap-4">
         <div class="flex w-full flex-col gap-4">
-            <h1 class="text-3xl font-semibold">Percy Jackson e o Mar de Monstros</h1>
+            <h1 class="text-3xl font-semibold">{{ titulo }}</h1>
             <div class="flex items-center gap-0.5">
                 <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
                 <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
@@ -20,7 +35,7 @@ const titulo = 'Percy Jackson e o Mar de Monstros';
                 <span class="text-sm"> (3 avaliações) </span>
             </div>
             <div>
-                <span class="text-primary text-3xl font-semibold">R$ 57,50</span>
+                <span class="text-primary text-3xl font-semibold">R$ {{ preco }}</span>
             </div>
 
             <div class="flex gap-4">
@@ -37,14 +52,14 @@ const titulo = 'Percy Jackson e o Mar de Monstros';
         <div>
             <h2 class="mb-4 text-xl font-semibold">Informações do Livro</h2>
             <div class="grid grid-cols-2 gap-x-8 gap-y-4">
-                <TopicoInformacaoOferta titulo="Título" :conteudo="titulo" />
-                <TopicoInformacaoOferta titulo="Autor" conteudo="Rick Riordan" />
-                <TopicoInformacaoOferta titulo="Idioma" conteudo="Português" />
-                <TopicoInformacaoOferta titulo="Data de publicação" conteudo="2019" />
-                <TopicoInformacaoOferta titulo="Editora" conteudo="Intrínseca" />
-                <TopicoInformacaoOferta titulo="Estado" conteudo="Novo" />
-                <TopicoInformacaoOferta titulo="ISBN" conteudo="9788533613379" />
-                <TopicoInformacaoOferta titulo="Gênero" conteudo="Ficção, Fantasia, Aventura" />
+                <TopicoInformacaoOferta titulo="Título" :conteudo="tituloLivro" />
+                <TopicoInformacaoOferta titulo="Autor" :conteudo="autor" />
+                <TopicoInformacaoOferta titulo="Idioma" :conteudo="idioma" />
+                <TopicoInformacaoOferta titulo="Data de publicação" :conteudo="dataPublicacao" />
+                <TopicoInformacaoOferta titulo="Editora" :conteudo="editora" />
+                <TopicoInformacaoOferta titulo="Estado" :conteudo="estado" />
+                <TopicoInformacaoOferta titulo="ISBN" :conteudo="isbn" />
+                <TopicoInformacaoOferta titulo="Gênero" :conteudo="genero" />
             </div>
         </div>
     </div>
