@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utils\Slugger;
 use Illuminate\Database\Eloquent\Model;
 
 class Ofertas extends Model
@@ -22,7 +23,7 @@ class Ofertas extends Model
 
     public function generos()
     {
-        return $this->belongsToMany(OfertasGenero::class, 'ofertas_generos', 'ofertas_id', 'generos_id');
+        return $this->belongsToMany(Generos::class, 'ofertas_generos', 'ofertas_id', 'generos_id');
     }
 
     public function idioma()
@@ -30,9 +31,14 @@ class Ofertas extends Model
         return $this->belongsTo(Idiomas::class, 'idiomas_id');
     }
 
-    public function usuarios()
+    public function usuario()
     {
         return $this->belongsTo(Usuarios::class, 'usuarios_id');
+    }
+
+    public function tituloParaSlug()
+    {
+        return Slugger::slugify($this->titulo);
     }
 
     public static function pesquisarOferta(
