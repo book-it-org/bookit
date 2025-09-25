@@ -18,7 +18,8 @@ class Ofertas extends Model
         'estado_livro',
         'isbn_livro',
         'data_publicacao_livro',
-        'ativo'
+        'ativo',
+        'bloqueado'
     ];
 
     public function generos()
@@ -107,5 +108,37 @@ class Ofertas extends Model
         });
 
         return $query->get();
+    }
+
+    public function desativar()
+    {
+        $this->ativo = false;
+        $this->save();
+    }
+
+    public function ativar()
+    {
+        $this->ativo = true;
+        $this->save();
+    }
+
+    public function bloquear()
+    {
+        $this->bloqueado = true;
+        $this->save();
+    }
+
+    public function desbloquear()
+    {
+        $this->bloqueado = false;
+        $this->save();
+    }
+
+    public function alterarPreco(float $novoPreco)
+    {
+        if($novoPreco >= 10.00){
+            $this->preco = $novoPreco;
+            $this->save();
+        }
     }
 }

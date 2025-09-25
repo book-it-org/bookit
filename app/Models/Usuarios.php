@@ -25,7 +25,6 @@ class Usuarios extends Authenticatable
         'email',
         'telefone',
         'documento',
-        'papeis_id',
         'senha_hash'
     ];
 
