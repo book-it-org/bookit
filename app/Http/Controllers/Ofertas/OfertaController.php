@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ofertas;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Ofertas;
 use App\Models\Generos;
 
 
