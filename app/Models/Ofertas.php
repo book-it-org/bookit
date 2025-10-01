@@ -181,4 +181,12 @@ class Ofertas extends Model
 
         return $oferta;
     }
+
+    public static function ofertasRecomendadas()
+    {
+        return self::where('ativo', true)
+            ->inRandomOrder()
+            ->limit(20)
+            ->get();
+    }
 }
