@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\Generos;
+use App\Models\Ofertas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Ofertas;
 
 class HomeController extends Controller
 {
@@ -18,7 +18,11 @@ class HomeController extends Controller
     {
         $recomendadas = Ofertas::ofertasRecomendadas();
         $generos = Generos::all();
-        return Inertia::render('Home', ['generos' => $generos, 
-        'recomendadas' => $recomendadas]);
+
+        return Inertia::render('Home', [
+            'generos' => $generos,
+            'recomendadas' => $recomendadas
+            ]
+        );
     }
 }
