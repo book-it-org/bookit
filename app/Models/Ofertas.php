@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Utils\Slugger;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Ofertas extends Model
 {
@@ -20,7 +19,7 @@ class Ofertas extends Model
         'isbn_livro',
         'data_publicacao_livro',
         'ativo',
-        'bloqueado'
+        'bloqueado',
     ];
 
     public function generos()
@@ -109,7 +108,7 @@ class Ofertas extends Model
         });
 
         return $query->get();
-    }   
+    }
 
     public function desativar()
     {
@@ -137,13 +136,17 @@ class Ofertas extends Model
 
     public function alterarPreco(float $novoPreco)
     {
-        if($novoPreco >= 10.00){
+        if ($novoPreco >= 10.00) {
             $this->preco = $novoPreco;
             $this->save();
         }
     }
 
-    public function ofertasRecomendadas(){
-        return DB::table('ofertas')->where('ativo', true)->inRandomOrder()->limit(20)->get();
+    public static function ofertasRecomendadas()
+    {
+        return self::where('ativo', true)
+            ->inRandomOrder()
+            ->limit(20)
+            ->get();
     }
 }
