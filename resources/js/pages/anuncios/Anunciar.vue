@@ -14,32 +14,41 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AnunciarLayout from '@/layouts/anuncios/AnunciarLayout.vue';
-import { Genero, Idioma } from '@/types/api';
-import { Head, useForm } from '@inertiajs/vue3';
+import { SharedData } from '@/types';
+import { Genero, Idioma, Oferta } from '@/types/api';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-interface Props {
+interface PageProps extends SharedData {
     idiomas: Idioma[];
     generos: Genero[];
     estados: string[];
+    oferta?: Oferta;
+    editando: boolean;
 }
 
-defineProps<Props>();
+const page = usePage<PageProps>();
+const props = computed(() => page.props);
+const idiomas = computed(() => props.value.idiomas || []);
+const generos = computed(() => props.value.generos || []);
+const estados = computed(() => props.value.estados || []);
 
 const passo = ref(1);
+const editando = computed(() => props.value.editando);
+const ofertaParaEditar = computed(() => props.value.oferta);
 
 const form = useForm({
-    titulo_livro: 'dsadas',
-    autor_livro: 'dasdsadas',
-    estado_livro: 'usado',
-    generos_id: 1,
-    isbn_livro: '1233161474100',
-    idiomas_id: 1,
-    data_publicacao_livro: '2023-01-01',
-    titulo: 'dasnkdsa',
-    descricao: 'dasldsaad',
-    preco: '50',
+    titulo_livro: editando.value ? (ofertaParaEditar.value?.titulo_livro || '') : '',
+    autor_livro: editando.value ? (ofertaParaEditar.value?.autor_livro || '') : '',
+    estado_livro: editando.value ? (ofertaParaEditar.value?.estado_livro || '') : '',
+    generos_id: editando.value ? (ofertaParaEditar.value?.generos?.[0]?.id || 1) : 1,
+    isbn_livro: editando.value ? (ofertaParaEditar.value?.isbn_livro || '') : '',
+    idiomas_id: editando.value ? (ofertaParaEditar.value?.idiomas_id || 1) : 1,
+    data_publicacao_livro: editando.value ? (ofertaParaEditar.value?.data_publicacao_livro || '') : '',
+    titulo: editando.value ? (ofertaParaEditar.value?.titulo || '') : '',
+    descricao: editando.value ? (ofertaParaEditar.value?.descricao || '') : '',
+    preco: editando.value ? String(ofertaParaEditar.value?.preco || '') : '',
     imagens: [] as File[],
 });
 
@@ -53,21 +62,34 @@ function handleImagensChange(e: Event) {
 }
 
 const submit = () => {
-    if (passo.value < 3) {
+    if (passo.value < 3 && !editando.value) {
         passo.value++;
         return;
     }
 
-    form.post(route('oferta.criar'), {});
+    if (editando.value && ofertaParaEditar.value) {
+        // editar oferta
+        form.put(route('oferta.editar', { id: ofertaParaEditar.value.id }));
+    } else {
+        // criar oferta
+        form.post(route('oferta.criar'), {});
+    }
 };
+
+// se estiver editando, pula direto para o passo 2 (informações da oferta)
+watch(editando, (novoValor) => {
+    if (novoValor) {
+        passo.value = 2;
+    }
+}, { immediate: true });
 </script>
 
 <template>
-    <Head title="BookIt - Anunciar oferta" />
+    <Head :title="editando ? 'BookIt - Editar oferta' : 'BookIt - Anunciar oferta'" />
     <AnunciarLayout :passo="passo">
         <form @submit.prevent="submit" class="grid gap-6">
             <div class="grid gap-6 sm:grid-cols-2">
-                <template v-if="passo === 1">
+                <template v-if="passo === 1 && !editando">
                     <div class="grid gap-2 sm:col-span-2">
                         <Label for="titulo">Título do Livro</Label>
                         <Input
@@ -169,7 +191,35 @@ const submit = () => {
                     </div>
                 </template>
 
+                <!-- campos não editáveis quando está editando -->
                 <template v-else-if="passo === 2">
+                    <template v-if="editando">
+                        <div class="col-span-2 mb-4">
+                            <h3 class="text-lg font-semibold mb-2">Informações do Livro (não editáveis)</h3>
+                            <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <Label>Título do Livro</Label>
+                                    <p class="font-medium">{{ form.titulo_livro }}</p>
+                                </div>
+                                <div>
+                                    <Label>Autor</Label>
+                                    <p class="font-medium">{{ form.autor_livro }}</p>
+                                </div>
+                                <div>
+                                    <Label>Estado</Label>
+                                    <p class="font-medium">{{ form.estado_livro.toUpperCase() }}</p>
+                                </div>
+                                <div>
+                                    <Label>Gênero</Label>
+                                    <p class="font-medium">
+                                        {{ generos.find(g => g.id === form.generos_id)?.nome || 'N/A' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- campos editáveis -->
                     <div class="col-span-2 grid gap-2">
                         <Label for="titulo">Título da Oferta</Label>
                         <Input
@@ -201,11 +251,12 @@ const submit = () => {
                             required
                             :tabindex="10"
                             v-model="form.preco"
-                            placeholder="R$ 50,00"
+                            step="0.01"
+                            placeholder="50"
                         />
                         <InputError :message="form.errors.preco" />
                     </div>
-                    <div class="col-span-2 grid gap-2">
+                    <div v-if="!editando" class="col-span-2 grid gap-2">
                         <Label for="imagens">Imagens</Label>
                         <Input
                             id="imagens"
@@ -227,7 +278,7 @@ const submit = () => {
                     </div>
                 </template>
 
-                <template v-else-if="passo === 3">
+                <template v-else-if="passo === 3 && !editando">
                     <div class="col-span-2 grid gap-2">
                         <h2 class="mb-2 text-lg font-bold">Confirme seus dados</h2>
                         <div class="grid grid-cols-2 gap-6">
@@ -254,9 +305,7 @@ const submit = () => {
                                 <Input
                                     id="estado_livro"
                                     type="text"
-                                    :model-value="
-                                        estados.find((e) => e.value === form.estado_livro)?.label
-                                    "
+                                    :model-value="form.estado_livro"
                                     disabled
                                 />
                             </div>
@@ -265,9 +314,7 @@ const submit = () => {
                                 <Input
                                     id="generos_id"
                                     type="text"
-                                    :model-value="
-                                        generos.find((g) => g.value === form.generos_id)?.label
-                                    "
+                                    :model-value="generos.find(g => g.id === form.generos_id)?.nome || 'N/A'"
                                     disabled
                                 />
                             </div>
@@ -326,30 +373,34 @@ const submit = () => {
                                         class="h-20 w-20 rounded object-cover"
                                     />
                                 </div>
+                                <p v-else class="text-muted-foreground">Nenhuma imagem selecionada</p>
                             </div>
                         </div>
                     </div>
                 </template>
-                <div class="grid col-span-2 sm:gap-8 sm:grid-cols-2">
-                    <Button
-                        @click="passo--"
-                        class="mt-2 w-full"
-                        :tabindex="20"
-                        type="button"
-                        :disabled="form.processing || passo === 1"
-                    >
-                        Retornar
-                    </Button>
-                    <Button
-                        type="submit"
-                        class="mt-2 w-full"
-                        :tabindex="21"
-                        :disabled="form.processing"
-                    >
-                        <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                        {{ passo === 3 ? 'Anunciar' : 'Avançar' }}
-                    </Button>
-                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <Button
+                    type="button"
+                    variant="outline"
+                    @click="passo > 1 ? passo-- : null"
+                    :disabled="passo === 1 || (editando && passo === 2)"
+                >
+                    Voltar
+                </Button>
+                <Button type="submit" :disabled="form.processing">
+                    <LoaderCircle v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
+                    <span v-if="editando">
+                        Salvar alterações
+                    </span>
+                    <span v-else-if="passo < 3">
+                        Continuar
+                    </span>
+                    <span v-else>
+                        Anunciar livro
+                    </span>
+                </Button>
             </div>
         </form>
     </AnunciarLayout>
