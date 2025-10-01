@@ -19,7 +19,7 @@ class Ofertas extends Model
         'isbn_livro',
         'data_publicacao_livro',
         'ativo',
-        'bloqueado'
+        'bloqueado',
     ];
 
     public function generos()
@@ -112,33 +112,73 @@ class Ofertas extends Model
 
     public function desativar()
     {
-        $this->ativo = false;
-        $this->save();
+        self::update([
+            'ativo' => false,
+        ]);
     }
 
     public function ativar()
     {
-        $this->ativo = true;
-        $this->save();
+        self::update([
+            'ativo' => true,
+        ]);
     }
 
     public function bloquear()
     {
-        $this->bloqueado = true;
-        $this->save();
+        self::update([
+            'bloqueado' => true,
+        ]);
     }
 
     public function desbloquear()
     {
-        $this->bloqueado = false;
-        $this->save();
+        self::update([
+            'bloqueado' => false,
+        ]);
     }
 
-    public function alterarPreco(float $novoPreco)
+    public function editar($titulo, $descricao, $preco)
     {
-        if($novoPreco >= 10.00){
-            $this->preco = $novoPreco;
-            $this->save();
-        }
+        self::update([
+            'titulo' => $titulo,
+            'descricao' => $descricao,
+            'preco' => $preco,
+        ]);
+    }
+
+    public static function buscarOfertaPorIdEUsuario($id, $usuarioId)
+    {
+        return self::where('id', $id)
+            ->where('usuarios_id', $usuarioId)
+            ->firstOrFail();
+    }
+
+    public static function buscarOfertasDoUsuario($usuarioId)
+    {
+        return self::where('usuarios_id', $usuarioId)
+            ->with(['generos', 'idioma'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public static function buscarOfertaParaEdicao($id, $usuarioId)
+    {
+        return self::where('id', $id)
+            ->where('usuarios_id', $usuarioId)
+            ->with(['generos', 'idioma'])
+            ->first();
+    }
+
+    public static function criarOfertaComGenero(array $dados, $generoId)
+    {
+        $oferta = self::create($dados);
+
+        OfertasGenero::create([
+            'ofertas_id' => $oferta->id,
+            'generos_id' => $generoId,
+        ]);
+
+        return $oferta;
     }
 }

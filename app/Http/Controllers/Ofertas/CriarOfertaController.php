@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Ofertas;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Ofertas;
 use Illuminate\Http\RedirectResponse;
-use App\Models\Ofertas ;
-use App\Models\OfertasGenero;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 class CriarOfertaController extends Controller
 {
-
     public function criarOferta(Request $request): RedirectResponse
     {
         $request->validate([
@@ -29,13 +27,23 @@ class CriarOfertaController extends Controller
         ]);
 
         $data = array_merge($request->all(), ['usuarios_id' => Auth::id()]);
-        $oferta = Ofertas::create($data);
+        $oferta = Ofertas::criarOfertaComGenero($data, $request->generos_id);
 
-        OfertasGenero::create([
-            'ofertas_id' => $oferta->id,
-            'generos_id' => $request->generos_id,
+        return Redirect::route('anuncios');
+    }
+
+    public function editarOferta(Request $request, $id): RedirectResponse
+    {
+        $oferta = Ofertas::buscarOfertaPorIdEUsuario($id, Auth::id());
+
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descricao' => 'required|string|max:1000',
+            'preco' => 'required|numeric|min:0',
         ]);
 
-        return to_route('home');
+        $oferta->editar(...$request->all());
+
+        return Redirect::route('anuncios');
     }
 }
