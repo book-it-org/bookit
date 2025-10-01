@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Anuncios;
 use App\Http\Controllers\Controller;
 use App\Models\Ofertas;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EditarAnuncioController extends Controller
 {
@@ -15,9 +16,9 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($oferta->usuarios_id === $usuario->id) {
             $oferta->desativar();
-            return redirect()->back()->with('success', 'Oferta desativada com sucesso.');
+            return Inertia::redirect('anuncios.desativar', ['id' => $id]);
         }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para desativar esta oferta.');
+            abort(403, 'Você não tem permissão para desativar esta oferta.');
         }
     }
 
@@ -28,9 +29,9 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($oferta->usuarios_id === $usuario->id && !$oferta->bloqueado) {
             $oferta->ativar();
-            return redirect()->back()->with('success', 'Oferta ativada com sucesso.');
+            return Inertia::redirect('anuncios.ativar', ['id' => $id]);
         }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para ativar esta oferta.');
+            abort(403, 'Você não tem permissão para ativar esta oferta.');
         }
 
     }
@@ -43,9 +44,9 @@ class EditarAnuncioController extends Controller
         if ($usuario->verificarAdmin()) {
             $oferta->bloquear();
             $oferta->desativar();
-            return redirect()->back()->with('success', 'Oferta bloqueada com sucesso.');
+            return Inertia::redirect('anuncios.bloquear', ['id' => $id]);
         }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para bloquear esta oferta.');
+            abort(403, 'Você não tem permissão para bloquear esta oferta.');
         }
 
     }
@@ -57,9 +58,9 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($usuario->verificarAdmin()) {
             $oferta->desbloquear();
-            return redirect()->back()->with('success', 'Oferta desbloqueada com sucesso.');
+            return  Inertia::redirect('anuncios.desbloquear', ['id' => $id]);
         }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para desbloquear esta oferta.');
+            abort(403, 'Você não tem permissão para desbloquear esta oferta.');
         }
 
     }
@@ -72,9 +73,9 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($oferta->usuarios_id === $usuario->id && $novoPreco !== null) {
             $oferta->alterarPreco($novoPreco);
-            return redirect()->back()->with('success', 'Preço da oferta alterado com sucesso.');
+            return Inertia::redirect('anuncios.alterar-preco', ['id' => $id]);
         }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para alterar o preço desta oferta.');
+            abort(403, 'Você não tem permissão para alterar o preço desta oferta.');
         }
     }
 }

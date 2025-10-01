@@ -14,4 +14,5 @@ Route::middleware('auth')->group(function () {
     Route::post('anuncios/{id}/ativar', [EditarAnuncioController::class, 'ativarOferta'])->name('anuncios.ativar');
     Route::post('anuncios/{id}/bloquear', [EditarAnuncioController::class, 'bloquearOferta'])->name('anuncios.bloquear');
     Route::post('anuncios/{id}/desbloquear', [EditarAnuncioController::class, 'desbloquearOferta'])->name('anuncios.desbloquear');
+    Route::post('anuncios/{id}/alterar-preco', [EditarAnuncioController::class, 'alterarPreco'])->name('anuncios.alterar-preco');
 });
