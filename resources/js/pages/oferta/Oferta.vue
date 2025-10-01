@@ -1,27 +1,54 @@
 <script setup lang="ts">
+import BotoesAcaoOferta from '@/components/ofertas/BotoesAcaoOferta.vue';
 import ImagensOferta from '@/components/ofertas/ImagensOferta.vue';
 import InformacoesOferta from '@/components/ofertas/InformacoesOferta.vue';
 import InformacoesVendedorOferta from '@/components/ofertas/InformacoesVendedorOferta.vue';
+import FlashNotification from '@/components/ui/FlashNotification.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { SharedData } from '@/types';
 import { Oferta } from '@/types/api';
 import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 interface PageProps extends SharedData {
     oferta: Oferta;
+    permissoes?: {
+        podeGerenciar: boolean;
+        admin: boolean;
+        dono: boolean;
+        podeAtivar: boolean;
+    };
 }
 
 const page = usePage<PageProps>();
-const oferta = page.props.oferta;
+const oferta = computed(() => page.props.oferta);
+const permissoes = computed(
+    () =>
+        page.props.permissoes || {
+            podeGerenciar: false,
+            admin: false,
+            dono: false,
+            podeAtivar: false,
+        },
+);
 </script>
 
 <template>
     <Head :title="oferta.titulo" />
     <AppLayout>
+        <FlashNotification />
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <BotoesAcaoOferta
+                :oferta-id="oferta.id"
+                :ativo="oferta.ativo"
+                :bloqueado="oferta.bloqueado"
+                :permissoes="permissoes"
+            />
+
             <div class="col-span-1">
                 <ImagensOferta />
             </div>
+
             <div class="col-span-1">
                 <InformacoesOferta
                     :titulo="oferta.titulo"
@@ -36,6 +63,7 @@ const oferta = page.props.oferta;
                     editora="Genérica"
                 />
             </div>
+
             <div class="md:col-span-2">
                 <InformacoesVendedorOferta
                     :descricao="oferta.descricao"

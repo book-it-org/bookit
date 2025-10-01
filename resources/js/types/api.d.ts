@@ -60,6 +60,7 @@ export interface Oferta {
     descricao: string;
     preco: number;
     ativo: boolean;
+    bloqueado: boolean;
     titulo_livro: string;
     autor_livro: string;
     estado_livro: string;
