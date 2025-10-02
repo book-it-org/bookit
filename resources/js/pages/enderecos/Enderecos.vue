@@ -6,13 +6,14 @@ import { Endereco } from '@/types/api';
 import { PageProps } from '@inertiajs/core';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 interface Props extends PageProps {
     enderecos: Endereco[];
 }
 
 const page = usePage<Props>();
-const enderecos = page.props.enderecos || [];
+const enderecos = computed(() => page.props.enderecos || []);
 </script>
 
 <template>

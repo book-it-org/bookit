@@ -36,7 +36,7 @@ const form = useForm({
 
 const submit = () => {
     console.log(form);
-    form.post(route('enderecos.criar'), {
+    form.post(route('endereco.criar'), {
         onSuccess: () => {
             console.log('Endereço adicionado com sucesso!');
         },
