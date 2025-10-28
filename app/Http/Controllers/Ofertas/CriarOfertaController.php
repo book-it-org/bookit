@@ -42,7 +42,7 @@ class CriarOfertaController extends Controller
             'preco' => 'required|numeric|min:0',
         ]);
 
-        $oferta->editar(...$request->all());
+        $oferta->editar($request->titulo, $request->descricao, $request->preco);
 
         return Redirect::route('anuncios');
     }

@@ -58,7 +58,7 @@ export interface Oferta {
     idiomas_id: number;
     titulo: string;
     descricao: string;
-    preco: number;
+    preco: number | string;
     ativo: boolean;
     bloqueado: boolean;
     titulo_livro: string;
@@ -72,4 +72,10 @@ export interface Oferta {
     usuario: Usuario;
     idioma: Idioma;
     generos: Genero[];
+}
+
+interface Carrinho {
+    id: number | string;
+    ofertas_id: number;
+    ofertas?: Oferta;
 }

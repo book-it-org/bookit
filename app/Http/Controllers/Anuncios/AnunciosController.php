@@ -16,7 +16,7 @@ class AnunciosController extends Controller
      */
     public function mostrarAnuncios(Request $request): Response
     {
-        $usuario = Auth::user();
+        $usuario = $request->user();
         $ofertas = Ofertas::buscarOfertasDoUsuario($usuario->id);
 
         return Inertia::render('anuncios/Anuncios', [

@@ -3,7 +3,9 @@ import TopicoInformacaoOferta from '@/components/ofertas/TopicoInformacaoOferta.
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Genero } from '@/types/api';
+import { router } from '@inertiajs/vue3';
 import { Package, ShoppingCartIcon, StarHalfIcon, StarIcon } from 'lucide-vue-next';
+import { ref, computed } from 'vue';
 
 interface Props {
     titulo: string;
@@ -16,10 +18,62 @@ interface Props {
     estado: string;
     isbn: string;
     generos: Genero[];
+    ofertaId: number;
 }
 
 const props = defineProps<Props>();
 const genero = props.generos.map((g) => g.nome).join(', ');
+const adicionandoCarrinho = ref(false);
+
+const jaNoCarrinho = computed(() => {
+    try {
+        const cookie = document.cookie
+            .split(';')
+            .find(row => row.trim().startsWith('carrinho='));
+
+        if (cookie) {
+            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+            return carrinhoData.some((item: any) => item.ofertas_id === props.ofertaId);
+        }
+    } catch (error) {
+        console.error('Erro ao verificar carrinho:', error);
+    }
+    return false;
+});
+
+function toggleCarrinho() {
+    if (adicionandoCarrinho.value) return;
+
+    adicionandoCarrinho.value = true;
+
+    if (jaNoCarrinho.value) {
+        const cookie = document.cookie
+            .split(';')
+            .find(row => row.trim().startsWith('carrinho='));
+
+        if (cookie) {
+            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+            const item = carrinhoData.find((item: any) => item.ofertas_id === props.ofertaId);
+
+            if (item) {
+                router.delete(route('carrinho.remover'), {
+                    data: { item_id: item.id },
+                    onFinish: () => {
+                        adicionandoCarrinho.value = false;
+                    }
+                });
+            }
+        }
+    } else {
+        router.post(route('carrinho.adicionar'), {
+            oferta_id: props.ofertaId
+        }, {
+            onFinish: () => {
+                adicionandoCarrinho.value = false;
+            }
+        });
+    }
+}
 </script>
 
 <template>
@@ -43,8 +97,19 @@ const genero = props.generos.map((g) => g.nome).join(', ');
                     <Package />
                     Comprar agora
                 </Button>
-                <Button size="lg" class="">
+                <Button
+                    size="lg"
+                    @click="toggleCarrinho"
+                    :disabled="adicionandoCarrinho"
+                    :variant="jaNoCarrinho ? 'destructive' : 'default'"
+                >
                     <ShoppingCartIcon />
+                    <span v-if="adicionandoCarrinho">
+                        {{ jaNoCarrinho ? 'Removendo...' : 'Adicionando...' }}
+                    </span>
+                    <span v-else>
+                        {{ jaNoCarrinho ? 'Remover' : 'Adicionar' }}
+                    </span>
                 </Button>
             </div>
         </div>

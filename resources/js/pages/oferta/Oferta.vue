@@ -56,10 +56,11 @@ const permissoes = computed(
                     :titulo-livro="oferta.titulo_livro"
                     :estado="oferta.estado_livro"
                     :isbn="oferta.isbn_livro"
-                    :preco="oferta.preco"
+                    :preco="oferta.preco as number"
                     :data-publicacao="oferta.data_publicacao_livro"
                     :generos="oferta.generos"
                     :idioma="oferta.idioma.nome"
+                    :oferta-id="oferta.id"
                     editora="Genérica"
                 />
             </div>

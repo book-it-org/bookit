@@ -34,7 +34,7 @@ class EditarAnuncioController extends Controller
         }
 
     }
-    
+
     public function bloquearOferta(Request $request)
     {
         $id = $request->route()->parameter('id');
