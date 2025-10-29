@@ -36,14 +36,26 @@ class CarrinhoController extends Controller
 
         if ($request->user()) {
             $id_usuario = $request->user()->id;
-            Carrinhos::criarItem($id_usuario, $oferta_id);
+            $resultado = Carrinhos::criarItem($id_usuario, $oferta_id);
+
+            if ($resultado == null) {
+                return back()->withErrors(['error' => 'Essa oferta já está no carrinho.']);
+            }
         } else {
             $cookie = json_decode($request->cookie('carrinho', '[]'), true);
 
-            $cookie[] = [
-                'id' => uniqid(),
-                'ofertas_id' => $oferta_id,
-            ];
+            foreach ($cookie as $item) {
+                if ($item['ofertas_id'] == $oferta_id) {
+                    return back()->withErrors(['error' => 'Essa oferta já está no carrinho.']);
+                }
+            }
+
+            $resultado =  [
+                 'id' => uniqid(),
+                 'ofertas_id' => $oferta_id,
+             ];
+
+            $cookie[] = $resultado;
 
             $json = json_encode($cookie);
             $tempo = 60 * 24 * 7;

@@ -31,7 +31,10 @@ class Carrinhos extends Model
     public static function porCookie(array $cookie): Collection
     {
         $ids_ofertas = collect($cookie)->pluck('ofertas_id')->unique()->values();
-        $ofertas = Ofertas::whereIn('id', $ids_ofertas)->get()->keyBy('id');
+
+        $query = Ofertas::query();
+        $query->whereIn('id', $ids_ofertas);
+        $ofertas = $query->get()->keyBy('id');
 
         return collect($cookie)->map(function ($item) use ($ofertas) {
             return (object) [
@@ -44,6 +47,14 @@ class Carrinhos extends Model
 
     public static function criarItem(int $id_usuario, int $item_id)
     {
+        $existe = self::where('usuarios_id', $id_usuario)
+            ->where('ofertas_id', $item_id)
+            ->exists();
+
+        if ($existe) {
+            return null;
+        }
+
         return self::create([
             'usuarios_id' => $id_usuario,
             'ofertas_id' => $item_id,
