@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('carrinhos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("usuario_id")->constrained("usuarios")->onDelete("cascade");
+            $table->foreignId("usuarios_id")->constrained("usuarios")->onDelete("cascade");
             $table->foreignId("ofertas_id")->constrained("ofertas")->onDelete("cascade");
             $table->timestamps();
         });
