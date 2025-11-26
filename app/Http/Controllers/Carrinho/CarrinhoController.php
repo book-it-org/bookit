@@ -62,20 +62,20 @@ class CarrinhoController extends Controller
             cookie()->queue('carrinho', $json, $tempo);
         }
 
-        return redirect()->back()->with('success', 'Item adicionado ao carrinho com sucesso!');
+        return back()->with('success', 'Item adicionado ao carrinho com sucesso!');
     }
 
     public function remover(Request $request)
     {
-        $item_id = $request->input('item_id');
+        $oferta_id = $request->input('oferta_id');
 
         if ($request->user()) {
             $id_usuario = $request->user()->id;
-            Carrinhos::excluirItemPorIdEUsuario($id_usuario, $item_id);
+            Carrinhos::excluirItemPorIdEUsuario($id_usuario, $oferta_id);
         } else {
             $cookie = json_decode($request->cookie('carrinho', '[]'), true);
-            $updatedCart = array_filter($cookie, function ($item) use ($item_id) {
-                return $item['id'] != $item_id;
+            $updatedCart = array_filter($cookie, function ($item) use ($oferta_id) {
+                return $item['ofertas_id'] != $oferta_id;
             });
 
             cookie()->queue('carrinho', json_encode(array_values($updatedCart)), 60 * 24 * 7);

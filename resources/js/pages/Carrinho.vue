@@ -43,8 +43,8 @@ const totalComFrete = computed(() => total.value + frete);
             </div>
 
             <div v-else class="flex flex-col items-center justify-center py-16">
-                <h2 class="text-2xl font-bold text-gray-600 mb-2">Seu carrinho está vazio</h2>
-                <p class="text-gray-500">Adicione alguns livros para continuar</p>
+                <h2 class="text-2xl font-bold text-neutral-600 mb-2">Seu carrinho está vazio</h2>
+                <p class="text-neutral-500">Adicione alguns livros para continuar</p>
             </div>
 
             <Card v-if="carrinho.length > 0" class="items-center p-6">

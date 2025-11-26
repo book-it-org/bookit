@@ -45,10 +45,20 @@ class Carrinhos extends Model
         });
     }
 
-    public static function criarItem(int $id_usuario, int $item_id)
+    public static function itemEstaNoCarrinho(int $id_usuario, int $id_item): bool
     {
+        return self::where('usuarios_id', $id_usuario)
+            ->where('ofertas_id', $id_item)
+            ->exists();
+    }
+
+    public static function criarItem(int $id_usuario, int $id_item)
+    {
+        // primeiro verificar se o item existe, pois um usuário
+        // não pode ter o mesmo item mais de uma vez no carrinho
+
         $existe = self::where('usuarios_id', $id_usuario)
-            ->where('ofertas_id', $item_id)
+            ->where('ofertas_id', $id_item)
             ->exists();
 
         if ($existe) {
@@ -57,16 +67,16 @@ class Carrinhos extends Model
 
         return self::create([
             'usuarios_id' => $id_usuario,
-            'ofertas_id' => $item_id,
+            'ofertas_id' => $id_item,
         ]);
     }
 
-    public static function excluirItemPorIdEUsuario(int $id_usuario, int $item_id)
+    public static function excluirItemPorIdEUsuario(int $id_usuario, int $oferta_id)
     {
         $query = self::query();
 
         $query->where('usuarios_id', $id_usuario);
-        $query->where('id', $item_id);
+        $query->where('ofertas_id', $oferta_id);
 
         return $query->delete();
     }

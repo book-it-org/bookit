@@ -5,13 +5,14 @@ import { Separator } from '@/components/ui/separator';
 import { Genero } from '@/types/api';
 import { router } from '@inertiajs/vue3';
 import { Package, ShoppingCartIcon, StarHalfIcon, StarIcon } from 'lucide-vue-next';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
     titulo: string;
     preco: number;
     tituloLivro: string;
     autor: string;
+    estaNoCarrinho: boolean;
     idioma: string;
     dataPublicacao: string;
     editora: string;
@@ -25,21 +26,7 @@ const props = defineProps<Props>();
 const genero = props.generos.map((g) => g.nome).join(', ');
 const adicionandoCarrinho = ref(false);
 
-const jaNoCarrinho = computed(() => {
-    try {
-        const cookie = document.cookie
-            .split(';')
-            .find(row => row.trim().startsWith('carrinho='));
-
-        if (cookie) {
-            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-            return carrinhoData.some((item: any) => item.ofertas_id === props.ofertaId);
-        }
-    } catch (error) {
-        console.error('Erro ao verificar carrinho:', error);
-    }
-    return false;
-});
+const jaNoCarrinho = computed(() => props.estaNoCarrinho);
 
 function toggleCarrinho() {
     if (adicionandoCarrinho.value) return;
@@ -47,31 +34,24 @@ function toggleCarrinho() {
     adicionandoCarrinho.value = true;
 
     if (jaNoCarrinho.value) {
-        const cookie = document.cookie
-            .split(';')
-            .find(row => row.trim().startsWith('carrinho='));
-
-        if (cookie) {
-            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-            const item = carrinhoData.find((item: any) => item.ofertas_id === props.ofertaId);
-
-            if (item) {
-                router.delete(route('carrinho.remover'), {
-                    data: { item_id: item.id },
-                    onFinish: () => {
-                        adicionandoCarrinho.value = false;
-                    }
-                });
-            }
-        }
-    } else {
-        router.post(route('carrinho.adicionar'), {
-            oferta_id: props.ofertaId
-        }, {
+        router.delete(route('carrinho.remover'), {
+            data: { oferta_id: props.ofertaId },
             onFinish: () => {
                 adicionandoCarrinho.value = false;
-            }
+            },
         });
+    } else {
+        router.post(
+            route('carrinho.adicionar'),
+            {
+                oferta_id: props.ofertaId,
+            },
+            {
+                onFinish: () => {
+                    adicionandoCarrinho.value = false;
+                },
+            },
+        );
     }
 }
 </script>

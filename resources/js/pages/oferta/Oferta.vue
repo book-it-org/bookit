@@ -12,6 +12,7 @@ import { computed } from 'vue';
 
 interface PageProps extends SharedData {
     oferta: Oferta;
+    estaNoCarrinho: boolean;
     permissoes?: {
         podeGerenciar: boolean;
         admin: boolean;
@@ -22,6 +23,7 @@ interface PageProps extends SharedData {
 
 const page = usePage<PageProps>();
 const oferta = computed(() => page.props.oferta);
+const estaNoCarrinho = computed(() => page.props.estaNoCarrinho);
 const permissoes = computed(
     () =>
         page.props.permissoes || {
@@ -61,6 +63,7 @@ const permissoes = computed(
                     :generos="oferta.generos"
                     :idioma="oferta.idioma.nome"
                     :oferta-id="oferta.id"
+                    :esta-no-carrinho="estaNoCarrinho"
                     editora="Genérica"
                 />
             </div>

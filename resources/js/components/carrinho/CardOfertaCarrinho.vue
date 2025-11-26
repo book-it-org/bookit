@@ -26,7 +26,7 @@ function removerDoCarrinho() {
     removendoItem.value = true;
     router.delete(route('carrinho.remover'), {
         data: {
-            item_id: props.item.id
+            oferta_id: props.item.ofertas_id
         },
         onFinish: () => {
             removendoItem.value = false;

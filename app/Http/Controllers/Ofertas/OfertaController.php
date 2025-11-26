@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ofertas;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrinhos;
 use App\Models\Generos;
 use App\Models\Ofertas;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class OfertaController extends Controller
     {
         $oferta = Ofertas::where('id', $id)->with(['generos', 'idioma', 'usuario'])->first();
 
-        if (!$oferta) {
+        if (! $oferta) {
             abort(404, 'Oferta não encontrada.');
         }
 
@@ -34,24 +35,42 @@ class OfertaController extends Controller
         $generos = Generos::all();
 
         $usuario = auth()->user();
+
         $podeGerenciar = false;
         $admin = false;
         $dono = false;
+        $estaNoCarrinho = false;
 
         if ($usuario) {
             $admin = $usuario->verificarAdmin();
             $dono = $oferta->usuarios_id === $usuario->id;
             $podeGerenciar = $admin || $dono;
+
+            $estaNoCarrinho = Carrinhos::itemEstaNoCarrinho(
+                $usuario->id,
+                $oferta->id
+            );
+        } else {
+            $cookie = request()->cookie('carrinho', '[]');
+            $carrinho = json_decode($cookie, true);
+
+            foreach ($carrinho as $item) {
+                if ($item['ofertas_id'] == $oferta->id) {
+                    $estaNoCarrinho = true;
+                    break;
+                }
+            }
         }
 
         return Inertia::render('oferta/Oferta', [
             'oferta' => $oferta,
             'generos' => $generos,
+            'estaNoCarrinho' => $estaNoCarrinho,
             'permissoes' => [
                 'podeGerenciar' => $podeGerenciar,
                 'admin' => $admin,
                 'dono' => $dono,
-                'podeAtivar' => $dono && !$oferta->bloqueado,
+                'podeAtivar' => $dono && ! $oferta->bloqueado,
             ],
         ]);
     }

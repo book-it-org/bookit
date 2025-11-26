@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Oferta } from '@/types/api';
 import { router } from '@inertiajs/vue3';
-import { ShoppingCart, Check } from 'lucide-vue-next';
-import { ref, computed } from 'vue';
+import { ShoppingCart } from 'lucide-vue-next';
+import { ref } from 'vue';
 import Button from '../ui/button/Button.vue';
 import Card from '../ui/card/Card.vue';
 import CardContent from '../ui/card/CardContent.vue';
@@ -18,58 +18,29 @@ interface Props {
 const props = defineProps<Props>();
 const adicionandoCarrinho = ref(false);
 
-const jaNoCarrinho = computed(() => {
-    try {
-        const cookie = document.cookie
-            .split(';')
-            .find(row => row.trim().startsWith('carrinho='));
-
-        if (cookie) {
-            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-            return carrinhoData.some((item: any) => item.ofertas_id === props.oferta.id);
-        }
-    } catch (error) {
-        console.error('Erro ao verificar carrinho:', error);
-    }
-    return false;
-});
-
 function irParaOferta() {
     router.visit(route('oferta', { id: props.oferta.id }));
 }
 
-function toggleCarrinho() {
+function adicionarCarrinho() {
     if (adicionandoCarrinho.value) return;
 
     adicionandoCarrinho.value = true;
 
-    if (jaNoCarrinho.value) {
-        const cookie = document.cookie
-            .split(';')
-            .find(row => row.trim().startsWith('carrinho='));
-
-        if (cookie) {
-            const carrinhoData = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-            const item = carrinhoData.find((item: any) => item.ofertas_id === props.oferta.id);
-
-            if (item) {
-                router.delete(route('carrinho.remover'), {
-                    data: { item_id: item.id },
-                    onFinish: () => {
-                        adicionandoCarrinho.value = false;
-                    }
-                });
-            }
-        }
-    } else {
-        router.post(route('carrinho.adicionar'), {
-            oferta_id: props.oferta.id
-        }, {
+    router.post(
+        route('carrinho.adicionar'),
+        {
+            oferta_id: props.oferta.id,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['errors', 'flash'],
             onFinish: () => {
                 adicionandoCarrinho.value = false;
-            }
-        });
-    }
+            },
+        },
+    );
 }
 </script>
 
@@ -97,11 +68,10 @@ function toggleCarrinho() {
             variant="secondary"
             size="icon"
             class="absolute top-4 right-4 hidden group-hover:flex"
-            @click.stop="toggleCarrinho"
+            @click.stop="adicionarCarrinho"
             :disabled="adicionandoCarrinho"
         >
-            <Check v-if="jaNoCarrinho" class="text-green-600" />
-            <ShoppingCart v-else />
+            <ShoppingCart />
         </Button>
     </Card>
 </template>
