@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\EntrarRequest;
+use App\Models\Carrinhos;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use function PHPUnit\Framework\isArray;
 
 class EntrarUsuarioController extends Controller
 {
@@ -32,6 +34,16 @@ class EntrarUsuarioController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $cookie = json_decode(($request->cookie('carrinho') ?? '[]'), true);
+        if (is_array($cookie) && count($cookie) > 0) {
+            $id_usuario = $request->user()->id;
+
+            foreach ($cookie as $item) {
+                Carrinhos::criarItem($id_usuario,$item['ofertas_id']);
+            }
+
+        }
 
         return redirect()->intended(route('home', absolute: false));
     }
