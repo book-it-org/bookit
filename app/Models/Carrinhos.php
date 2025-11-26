@@ -23,7 +23,7 @@ class Carrinhos extends Model
         $query = self::query();
 
         $query->where('usuarios_id', $id_usuario);
-        $query->with('ofertas');
+        $query->with(['ofertas', 'ofertas.usuario']);
 
         return $query->get();
     }
@@ -34,6 +34,7 @@ class Carrinhos extends Model
 
         $query = Ofertas::query();
         $query->whereIn('id', $ids_ofertas);
+        $query->with('usuario');
         $ofertas = $query->get()->keyBy('id');
 
         return collect($cookie)->map(function ($item) use ($ofertas) {

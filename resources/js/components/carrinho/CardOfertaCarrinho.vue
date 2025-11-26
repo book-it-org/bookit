@@ -26,42 +26,45 @@ function removerDoCarrinho() {
     removendoItem.value = true;
     router.delete(route('carrinho.remover'), {
         data: {
-            oferta_id: props.item.ofertas_id
+            oferta_id: props.item.ofertas_id,
         },
         onFinish: () => {
             removendoItem.value = false;
-        }
+        },
     });
 }
 </script>
 <template>
     <Card class="flex flex-col gap-4 p-4">
         <div class="flex gap-4">
-            <Card class="bg-white p-2 shrink-0">
+            <Card class="shrink-0 bg-white p-2">
                 <img
-                    class="w-20 h-24 object-cover rounded"
+                    class="h-24 w-20 rounded object-cover"
                     src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
                     alt="Capa do livro"
                 />
             </Card>
 
-            <div class="flex flex-col justify-between flex-1 min-w-0">
+            <div class="flex min-w-0 flex-1 flex-col justify-between">
                 <div>
-                    <CardTitle class="font-bold text-base leading-tight mb-1 line-clamp-2">
+                    <CardTitle class="mb-1 line-clamp-2 text-base leading-tight font-bold">
                         {{ item.ofertas?.titulo_livro || 'Título não disponível' }}
                     </CardTitle>
                     <CardDescription class="text-sm">
-                        <p class="mb-1">Autor: {{ item.ofertas?.autor_livro || 'Não informado' }}</p>
+                        <p class="mb-1">
+                            Autor: {{ item.ofertas?.autor_livro || 'Não informado' }}
+                        </p>
                         <p class="text-sky-600">
-                            Vendido por {{ item.ofertas?.usuario?.nome }} {{ item.ofertas?.usuario?.sobrenome }}
+                            Vendido por {{ item.ofertas?.usuario?.nome }}
+                            {{ item.ofertas?.usuario?.sobrenome }}
                         </p>
                     </CardDescription>
                 </div>
 
-                <div class="flex justify-between items-end mt-2">
+                <div class="mt-2 flex items-end justify-between">
                     <div>
-                        <p class="text-sm text-yellow-500 mb-1">★★★☆☆ 3,5/5</p>
-                        <p class="text-emerald-600 font-semibold text-lg">
+                        <p class="mb-1 text-sm text-yellow-500">★★★☆☆ 3,5/5</p>
+                        <p class="text-lg font-semibold text-emerald-600">
                             R$ {{ formatarPreco(item.ofertas?.preco) }}
                         </p>
                     </div>
@@ -72,7 +75,7 @@ function removerDoCarrinho() {
                         :disabled="removendoItem"
                         class="shrink-0"
                     >
-                        <Trash2Icon class="w-4 h-4" />
+                        <Trash2Icon class="h-4 w-4" />
                     </Button>
                 </div>
             </div>

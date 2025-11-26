@@ -58,11 +58,16 @@ function adicionarCarrinho() {
             </CardTitle>
         </CardHeader>
         <CardContent class="px-0.5">
-            <CardDescription>{{ props.oferta.autor_livro }}</CardDescription>
+            <CardDescription>
+                <p>
+                    {{ props.oferta.autor_livro }}
+                </p>
+                <p>Ed. Companhia das Letras</p>
+            </CardDescription>
         </CardContent>
         <CardFooter class="flex justify-between px-0.5">
-            <p class="text-amber-200">3,5/5</p>
-            <p class="text-emerald-500">R${{ props.oferta.preco }}</p>
+            <p class="text-yellow-500">3,5/5</p>
+            <p class="text-emerald-600">R${{ props.oferta.preco }}</p>
         </CardFooter>
         <Button
             variant="secondary"
