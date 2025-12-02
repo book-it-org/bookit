@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Utils\Slugger;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Ofertas extends Model
 {
@@ -52,6 +53,16 @@ class Ofertas extends Model
         ?string $ordem = null
     ) {
         $query = self::query();
+
+        // excluir ofertas inativas, bloqueadas ou que estão em pedidos não cancelados
+        $query->where('ativo', true)
+            ->where('bloqueado', false)
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('pedidos')
+                    ->whereColumn('pedidos.oferta_id', 'ofertas.id')
+                    ->whereIn('pedidos.estado', ['pendente', 'andamento', 'concluido']);
+            });
 
         // pesquisa por texto
         $query->when($pesquisa, function ($query, $pesquisa) {
@@ -185,6 +196,13 @@ class Ofertas extends Model
     public static function ofertasRecomendadas()
     {
         return self::where('ativo', true)
+            ->where('bloqueado', false)
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('pedidos')
+                    ->whereColumn('pedidos.oferta_id', 'ofertas.id')
+                    ->whereIn('pedidos.estado', ['pendente', 'andamento', 'concluido']);
+            })
             ->inRandomOrder()
             ->limit(20)
             ->get();

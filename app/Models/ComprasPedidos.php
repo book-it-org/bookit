@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transacoes extends Model
+class ComprasPedidos extends Model
 {
     protected $fillable = [
         'compra_id',
-        'pago',
-        'valor',
-        'tipo',
-        'pago_em'
+        'pedido_id',
     ];
 }

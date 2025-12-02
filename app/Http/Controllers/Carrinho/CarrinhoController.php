@@ -39,14 +39,14 @@ class CarrinhoController extends Controller
             $resultado = Carrinhos::criarItem($id_usuario, $oferta_id);
 
             if ($resultado == null) {
-                return back()->withErrors(['error' => 'Essa oferta já está no carrinho.']);
+                return back()->withErrors(['erro' => 'Essa oferta já está no carrinho.']);
             }
         } else {
             $cookie = json_decode($request->cookie('carrinho', '[]'), true);
 
             foreach ($cookie as $item) {
                 if ($item['ofertas_id'] == $oferta_id) {
-                    return back()->withErrors(['error' => 'Essa oferta já está no carrinho.']);
+                    return back()->withErrors(['erro' => 'Essa oferta já está no carrinho.']);
                 }
             }
 
@@ -62,7 +62,9 @@ class CarrinhoController extends Controller
             cookie()->queue('carrinho', $json, $tempo);
         }
 
-        return back()->with('success', 'Item adicionado ao carrinho com sucesso!');
+        return back()->with('flash', [
+            'sucesso' => 'Item adicionado ao carrinho com sucesso!',
+        ]);
     }
 
     public function remover(Request $request)
@@ -81,7 +83,9 @@ class CarrinhoController extends Controller
             cookie()->queue('carrinho', json_encode(array_values($updatedCart)), 60 * 24 * 7);
         }
 
-        return redirect()->back()->with('success', 'Item removido do carrinho com sucesso!');
+        return redirect()->back()->with('flash', [
+            'sucesso' => 'Item removido do carrinho com sucesso!',
+        ]);
     }
 
     public function limpar(Request $request)
@@ -93,6 +97,8 @@ class CarrinhoController extends Controller
             cookie()->queue(cookie()->forget('carrinho'));
         }
 
-        return redirect()->back()->with('success', 'Carrinho limpo com sucesso!');
+        return redirect()->back()->with('flash',[
+            'sucesso' => 'Carrinho limpo com sucesso!',
+        ] );
     }
 }

@@ -15,9 +15,12 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($oferta->usuarios_id === $usuario->id) {
             $oferta->desativar();
-            return redirect()->back()->with('success', 'Oferta desativada com sucesso.');
-        }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para desativar esta oferta.');
+
+            return redirect()->back()->with('flash', [
+                'sucesso' => 'Oferta desativada com sucesso.',
+            ]);
+        } else {
+            return redirect()->back()->with('flash', ['erro' => 'Você não tem permissão para desativar esta oferta.']);
         }
     }
 
@@ -26,11 +29,16 @@ class EditarAnuncioController extends Controller
         $id = $request->route()->parameter('id');
         $oferta = Ofertas::findOrFail($id);
         $usuario = $request->user();
-        if ($oferta->usuarios_id === $usuario->id && !$oferta->bloqueado) {
+        if ($oferta->usuarios_id === $usuario->id && ! $oferta->bloqueado) {
             $oferta->ativar();
-            return redirect()->back()->with('success', 'Oferta ativada com sucesso.');
-        }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para ativar esta oferta.');
+
+            return redirect()->back()->with('flash', [
+                'sucesso' => 'Oferta ativada com sucesso.',
+            ]);
+        } else {
+            return redirect()->back()->with('flash', [
+                'erro' => 'Você não tem permissão para ativar esta oferta.',
+            ]);
         }
 
     }
@@ -43,9 +51,14 @@ class EditarAnuncioController extends Controller
         if ($usuario->verificarAdmin()) {
             $oferta->bloquear();
             $oferta->desativar();
-            return redirect()->back()->with('success', 'Oferta bloqueada com sucesso.');
-        }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para bloquear esta oferta.');
+
+            return redirect()->back()->with('flash', [
+                'sucesso' => 'Oferta bloqueada com sucesso.',
+            ]);
+        } else {
+            return redirect()->back()->with('flash', [
+                'erro' => 'Você não tem permissão para bloquear esta oferta.',
+            ]);
         }
 
     }
@@ -57,9 +70,14 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($usuario->verificarAdmin()) {
             $oferta->desbloquear();
-            return redirect()->back()->with('success', 'Oferta desbloqueada com sucesso.');
-        }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para desbloquear esta oferta.');
+
+            return redirect()->back()->with('flash', [
+                'sucesso' => 'Oferta desbloqueada com sucesso.',
+            ]);
+        } else {
+            return redirect()->back()->with('flash', [
+                'erro' => 'Você não tem permissão para desbloquear esta oferta.',
+            ]);
         }
 
     }
@@ -72,9 +90,14 @@ class EditarAnuncioController extends Controller
         $usuario = $request->user();
         if ($oferta->usuarios_id === $usuario->id && $novoPreco !== null) {
             $oferta->alterarPreco($novoPreco);
-            return redirect()->back()->with('success', 'Preço da oferta alterado com sucesso.');
-        }else{
-            return redirect()->back()->with('error', 'Você não tem permissão para alterar o preço desta oferta.');
+
+            return redirect()->back()->with('flash', [
+                'sucesso' => 'Preço da oferta alterado com sucesso.',
+            ]);
+        } else {
+            return redirect()->back()->with('flash', [
+                'erro' => 'Você não tem permissão para alterar o preço desta oferta ou o novo preço é inválido.',
+            ]);
         }
     }
 }

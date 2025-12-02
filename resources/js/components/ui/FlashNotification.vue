@@ -3,28 +3,28 @@ import { usePage } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 
 interface Flash {
-    success?: string;
-    error?: string;
+    sucesso?: string;
+    erro?: string;
 }
 
 const page = usePage();
 const flash = computed(() => page.props.flash as Flash | undefined);
 
 const showNotification = ref(false);
-const notificationType = ref<'success' | 'error'>('success');
+const notificationType = ref<'sucesso' | 'erro'>('sucesso');
 const notificationMessage = ref('');
 
 watch(flash, (newFlash) => {
-    if (newFlash?.success) {
-        notificationType.value = 'success';
-        notificationMessage.value = newFlash.success;
+    if (newFlash?.sucesso) {
+        notificationType.value = 'sucesso';
+        notificationMessage.value = newFlash.sucesso;
         showNotification.value = true;
         setTimeout(() => {
             showNotification.value = false;
         }, 5000);
-    } else if (newFlash?.error) {
-        notificationType.value = 'error';
-        notificationMessage.value = newFlash.error;
+    } else if (newFlash?.erro) {
+        notificationType.value = 'erro';
+        notificationMessage.value = newFlash.erro;
         showNotification.value = true;
         setTimeout(() => {
             showNotification.value = false;
@@ -52,15 +52,15 @@ const closeNotification = () => {
         >
             <div
                 :class="{
-                    'bg-green-50 border border-green-200': notificationType === 'success',
-                    'bg-red-50 border border-red-200': notificationType === 'error'
+                    'bg-green-50 border border-green-200': notificationType === 'sucesso',
+                    'bg-red-50 border border-red-200': notificationType === 'erro'
                 }"
                 class="rounded-lg p-4 shadow-lg"
             >
                 <div class="flex">
                     <div class="flex-shrink-0">
                         <svg
-                            v-if="notificationType === 'success'"
+                            v-if="notificationType === 'sucesso'"
                             class="h-5 w-5 text-green-400"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -87,8 +87,8 @@ const closeNotification = () => {
                     <div class="ml-3">
                         <p
                             :class="{
-                                'text-green-800': notificationType === 'success',
-                                'text-red-800': notificationType === 'error'
+                                'text-green-800': notificationType === 'sucesso',
+                                'text-red-800': notificationType === 'erro'
                             }"
                             class="text-sm font-medium"
                         >
@@ -100,8 +100,8 @@ const closeNotification = () => {
                             <button
                                 @click="closeNotification"
                                 :class="{
-                                    'text-green-500 hover:bg-green-100': notificationType === 'success',
-                                    'text-red-500 hover:bg-red-100': notificationType === 'error'
+                                    'text-green-500 hover:bg-green-100': notificationType === 'sucesso',
+                                    'text-red-500 hover:bg-red-100': notificationType === 'erro'
                                 }"
                                 class="inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2"
                             >
