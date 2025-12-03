@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class CriarOfertaController extends Controller
 {
@@ -22,11 +23,28 @@ class CriarOfertaController extends Controller
             'titulo_livro' => 'required|string|max:255',
             'autor_livro' => 'required|string|max:255',
             'estado_livro' => 'required',
-            'isbn_livro' => 'required|string|max:13',
+            'isbn_livro' => 'required|digits_between:10,13',
+            'editora' => 'nullable|string|max:255',
             'data_publicacao_livro' => 'required|date',
+            'imagens' => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $data = array_merge($request->all(), ['usuarios_id' => Auth::id()]);
+
+        // store first uploaded image as capa_url (public disk)
+        if ($request->hasFile('imagens')) {
+            $files = $request->file('imagens');
+            if (is_array($files) && count($files) > 0) {
+                $file = $files[0];
+                $path = $file->store('ofertas', 'public');
+                $data['capa_url'] = Storage::url($path);
+            } elseif ($files) {
+                $path = $files->store('ofertas', 'public');
+                $data['capa_url'] = Storage::url($path);
+            }
+        }
+
         $oferta = Ofertas::criarOfertaComGenero($data, $request->generos_id);
 
         return Redirect::route('anuncios');
@@ -36,13 +54,30 @@ class CriarOfertaController extends Controller
     {
         $oferta = Ofertas::buscarOfertaPorIdEUsuario($id, Auth::id());
 
+
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descricao' => 'required|string|max:1000',
             'preco' => 'required|numeric|min:0',
+            'editora' => 'nullable|string|max:255',
+            'imagens' => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $oferta->editar($request->titulo, $request->descricao, $request->preco);
+        $capaUrl = null;
+        if ($request->hasFile('imagens')) {
+            $files = $request->file('imagens');
+            if (is_array($files) && count($files) > 0) {
+                $file = $files[0];
+                $path = $file->store('ofertas', 'public');
+                $capaUrl = Storage::url($path);
+            } elseif ($files) {
+                $path = $files->store('ofertas', 'public');
+                $capaUrl = Storage::url($path);
+            }
+        }
+
+        $oferta->editar($request->titulo, $request->descricao, $request->preco, $request->editora ?? null, $capaUrl);
 
         return Redirect::route('anuncios');
     }

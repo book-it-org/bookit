@@ -116,6 +116,9 @@ const submit = () => {
                         :tabindex="6"
                         autocomplete="telefone"
                         v-model="form.telefone"
+                        maxlength="15"
+                        inputmode="tel"
+                        pattern="[0-9()\-+\s]+"
                         placeholder="(00) 00000-0000"
                     />
                     <InputError :message="form.errors.telefone" />
@@ -130,6 +133,9 @@ const submit = () => {
                         :tabindex="7"
                         autocomplete="documento"
                         v-model="form.documento"
+                        maxlength="14"
+                        inputmode="numeric"
+                        pattern="[0-9.\-\/]+"
                         placeholder="000.000.000-00"
                     />
                     <InputError :message="form.errors.documento" />

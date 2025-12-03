@@ -51,6 +51,8 @@ class OfertasSeeder extends Seeder
                     'autor_livro' => $livro['autor'],
                     'estado_livro' => $estado,
                     'isbn_livro' => $livro['isbn'],
+                    'editora' => 'Editora Exemplo',
+                    'capa_url' => 'https://lh6.googleusercontent.com/proxy/EwR7dYBwBBkGApuX1Sjuo89Z3mAThn3czvbnt1aS4AhSWxuG9JT5YAnr2y_tBzsMuK_HXuupUi7hAgjh',
                     'data_publicacao_livro' => now()->subYears(rand(5, 50))->format('Y-m-d H:i:s'),
                     'ativo' => true,
                     'created_at' => now(),

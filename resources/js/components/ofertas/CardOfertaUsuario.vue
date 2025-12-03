@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Oferta } from '@/types/api';
 import { router } from '@inertiajs/vue3';
-import { Edit, Eye, Pause, Play } from 'lucide-vue-next';
+import { Edit, Eye, Pause, Play, ShoppingCart } from 'lucide-vue-next';
 import { ref } from 'vue';
 import Button from '../ui/button/Button.vue';
 import Card from '../ui/card/Card.vue';
@@ -60,16 +60,25 @@ function getStatusText() {
 
 <template>
     <Card class="group relative w-auto gap-2 p-3">
-        <div class="absolute top-3 right-3 z-10">
-            <span :class="getStatusClass()" class="rounded-full px-2 py-1 text-xs font-medium">
-                {{ getStatusText() }}
-            </span>
+        <div class="absolute top-3 right-3 z-10 space-y-1">
+            <div>
+                <span :class="getStatusClass()" class="rounded-full px-2 py-1 text-xs font-medium">
+                    {{ getStatusText() }}
+                </span>
+            </div>
+            <div v-if="props.oferta.compra_concluida" class="mt-1">
+                <span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-800">Concluída (paga)</span>
+            </div>
+            <div v-else-if="props.oferta.em_compra" class="mt-1">
+                <span class="rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-800">Em compra</span>
+            </div>
         </div>
 
         <div class="rounded-2xl bg-white p-4">
             <img
-                src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
-                alt=""
+                :src="props.oferta.capa_url || 'https://via.placeholder.com/140x200'"
+                alt="Capa do livro"
+                class="w-36 h-48 object-cover rounded"
             />
         </div>
 
@@ -90,34 +99,49 @@ function getStatusText() {
         </CardContent>
 
         <CardFooter class="flex justify-between px-0.5">
-            <p class="font-bold text-yellow-500">3,5/5</p>
-            <p class="font-bold text-emerald-500">R$ {{ props.oferta.preco }}</p>
-            <div class="flex gap-2">
-                <Button variant="outline" size="sm" @click="irParaOferta" title="Ver oferta">
-                    <Eye class="h-4 w-4" />
-                </Button>
+            <div class="flex w-full flex-col gap-2">
+                <div class="flex w-full items-center justify-between">
+                    <p class="font-bold text-emerald-500">R$ {{ props.oferta.preco }}</p>
+                </div>
+                <div class="flex w-full justify-end gap-2">
+                    <Button variant="outline" size="sm" @click="irParaOferta" title="Ver oferta">
+                        <Eye class="h-4 w-4" />
+                    </Button>
 
-                <Button
-                    v-if="!oferta.bloqueado"
-                    variant="outline"
-                    size="sm"
-                    @click="editarOferta"
-                    title="Editar oferta"
-                >
-                    <Edit class="h-4 w-4" />
-                </Button>
+                    <Button
+                        v-if="props.oferta.em_compra"
+                        variant="outline"
+                        size="sm"
+                        @click.prevent="
+                            router.visit(route('anuncio.visualizar', { id: props.oferta.id }))
+                        "
+                        title="Ver compra deste anúncio"
+                    >
+                        <ShoppingCart class="h-4 w-4" />
+                    </Button>
 
-                <Button
-                    v-if="!oferta.bloqueado"
-                    :variant="oferta.ativo ? 'destructive' : 'default'"
-                    size="sm"
-                    @click="alternarStatus"
-                    :disabled="loading"
-                    :title="oferta.ativo ? 'Desativar oferta' : 'Ativar oferta'"
-                >
-                    <Pause v-if="oferta.ativo" class="h-4 w-4" />
-                    <Play v-else class="h-4 w-4" />
-                </Button>
+                    <Button
+                        v-if="!props.oferta.bloqueado"
+                        variant="outline"
+                        size="sm"
+                        @click="editarOferta"
+                        title="Editar oferta"
+                    >
+                        <Edit class="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        v-if="!props.oferta.bloqueado && !props.oferta.em_compra"
+                        :variant="props.oferta.ativo ? 'destructive' : 'default'"
+                        size="sm"
+                        @click="alternarStatus"
+                        :disabled="loading"
+                        :title="props.oferta.ativo ? 'Desativar oferta' : 'Ativar oferta'"
+                    >
+                        <Pause v-if="props.oferta.ativo" class="h-4 w-4" />
+                        <Play v-else class="h-4 w-4" />
+                    </Button>
+                </div>
             </div>
         </CardFooter>
     </Card>

@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Genero } from '@/types/api';
 import { Link, usePage } from '@inertiajs/vue3';
-import { Menu, MessageSquareMore, ShoppingCart, User } from 'lucide-vue-next';
+import { Menu, ShoppingCart, User } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
@@ -107,7 +107,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
                     </div>
 
                     <div :class="cn('ml-auto flex items-center space-x-2', limpo && 'col-3')">
-                        <Button
+                        <!-- <Button
                             v-if="auth.user"
                             variant="ghost"
                             size="sm"
@@ -120,7 +120,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
                                 />
                                 <span>Chat</span>
                             </Link>
-                        </Button>
+                        </Button> -->
 
                         <Button
                             variant="ghost"

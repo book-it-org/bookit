@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pedidos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrinhos;
+use App\Models\Enderecos;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,6 +25,9 @@ class ConfirmarPedidoController extends Controller
         $id_usuario = $usuario->id;
         $pedidos = Carrinhos::porUsuario($id_usuario);
 
+        // enderecos do usuario para escolha no checkout
+        $enderecos = Enderecos::porUsuario($id_usuario);
+
         // formas de pagamento simples — ajuste conforme seu modelo/DB
         $formasPagamento = [
             'pix', 'debito', 'credito', 'boleto',
@@ -32,6 +36,7 @@ class ConfirmarPedidoController extends Controller
         return Inertia::render('pedidos/ConfirmarPedido', [
             'pedidos' => $pedidos,
             'formasPagamento' => $formasPagamento,
+            'enderecos' => $enderecos,
         ]);
     }
 }

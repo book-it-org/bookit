@@ -47,6 +47,7 @@ const form = useForm({
     idiomas_id: editando.value ? (ofertaParaEditar.value?.idiomas_id || 1) : 1,
     data_publicacao_livro: editando.value ? (ofertaParaEditar.value?.data_publicacao_livro || '') : '',
     titulo: editando.value ? (ofertaParaEditar.value?.titulo || '') : '',
+    editora: editando.value ? (ofertaParaEditar.value?.editora || '') : '',
     descricao: editando.value ? (ofertaParaEditar.value?.descricao || '') : '',
     preco: editando.value ? String(ofertaParaEditar.value?.preco || '') : '',
     imagens: [] as File[],
@@ -69,12 +70,55 @@ const submit = () => {
 
     if (editando.value && ofertaParaEditar.value) {
         // editar oferta
-        form.put(route('oferta.editar', { id: ofertaParaEditar.value.id }));
+        form.put(route('oferta.editar', { id: ofertaParaEditar.value.id }), {
+            onError: (errors: Record<string, any>) => {
+                determineStepFromErrors(errors);
+            },
+        });
     } else {
         // criar oferta
-        form.post(route('oferta.criar'), {});
+        form.post(route('oferta.criar'), {
+            onError: (errors: Record<string, any>) => {
+                determineStepFromErrors(errors);
+            },
+        });
     }
 };
+
+function determineStepFromErrors(errors: Record<string, any> | null) {
+    if (!errors) return;
+    const step1Fields = [
+        'titulo_livro',
+        'autor_livro',
+        'estado_livro',
+        'idiomas_id',
+        'generos_id',
+        'data_publicacao_livro',
+        'isbn_livro',
+        'editora',
+    ];
+
+    const step2Fields = [
+        'titulo',
+        'descricao',
+        'preco',
+        'imagens',
+    ];
+
+    const keys = Object.keys(errors || {});
+    for (const k of keys) {
+        if (step1Fields.includes(k)) {
+            passo.value = 1;
+            return;
+        }
+    }
+    for (const k of keys) {
+        if (step2Fields.includes(k)) {
+            passo.value = 2;
+            return;
+        }
+    }
+}
 
 // se estiver editando, pula direto para o passo 2 (informações da oferta)
 watch(editando, (novoValor) => {
@@ -90,18 +134,31 @@ watch(editando, (novoValor) => {
         <form @submit.prevent="submit" class="grid gap-6">
             <div class="grid gap-6 sm:grid-cols-2">
                 <template v-if="passo === 1 && !editando">
-                    <div class="grid gap-2 sm:col-span-2">
-                        <Label for="titulo">Título do Livro</Label>
-                        <Input
-                            id="titulo"
-                            type="text"
-                            required
-                            autofocus
-                            :tabindex="1"
-                            v-model="form.titulo_livro"
-                            placeholder="Percy Jackson e o Ladrão de Raios"
-                        />
-                        <InputError :message="form.errors.titulo_livro" />
+                    <div class="grid grid-cols-2 gap-4 sm:col-span-2">
+                        <div class="grid gap-2">
+                            <Label for="titulo">Título do Livro</Label>
+                            <Input
+                                id="titulo"
+                                type="text"
+                                required
+                                autofocus
+                                :tabindex="1"
+                                v-model="form.titulo_livro"
+                                placeholder="Percy Jackson e o Ladrão de Raios"
+                            />
+                            <InputError :message="form.errors.titulo_livro" />
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="editora">Editora</Label>
+                            <Input
+                                id="editora"
+                                type="text"
+                                :tabindex="2"
+                                v-model="form.editora"
+                                placeholder="Companhia das Letras"
+                            />
+                            <InputError :message="form.errors.editora" />
+                        </div>
                     </div>
                     <div class="grid gap-2">
                         <Label for="nome">Autor</Label>
@@ -183,9 +240,12 @@ watch(editando, (novoValor) => {
                             id="isbn_livro"
                             type="text"
                             required
+                            maxlength="13"
+                            inputmode="numeric"
+                            pattern="[0-9-]+"
                             :tabindex="7"
                             v-model="form.isbn_livro"
-                            placeholder="978-3-16-148410-0"
+                            placeholder="9783161484100"
                         />
                         <InputError :message="form.errors.isbn_livro" />
                     </div>
@@ -196,7 +256,7 @@ watch(editando, (novoValor) => {
                     <template v-if="editando">
                         <div class="col-span-2 mb-4">
                             <h3 class="text-lg font-semibold mb-2">Informações do Livro (não editáveis)</h3>
-                            <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="grid grid-cols-2 gap-4 p-4 bg-neutral-50 rounded-lg">
                                 <div>
                                     <Label>Título do Livro</Label>
                                     <p class="font-medium">{{ form.titulo_livro }}</p>
@@ -297,6 +357,15 @@ watch(editando, (novoValor) => {
                                     id="autor_livro"
                                     type="text"
                                     :model-value="form.autor_livro"
+                                    disabled
+                                />
+                            </div>
+                            <div class="col-span-2 grid gap-2">
+                                <Label for="editora">Editora</Label>
+                                <Input
+                                    id="editora"
+                                    type="text"
+                                    :model-value="form.editora"
                                     disabled
                                 />
                             </div>

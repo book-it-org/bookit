@@ -66,12 +66,19 @@ export interface Oferta {
     estado_livro: string;
     isbn_livro: string;
     data_publicacao_livro: string;
+    editora?: string;
+    capa_url?: string | null;
     created_at: string;
     updated_at: string;
 
     usuario: Usuario;
     idioma: Idioma;
     generos: Genero[];
+    em_compra?: boolean;
+    pedido_id?: number | null;
+    compra_concluida?: boolean;
+    compra_concluida_id?: number | null;
+    vendedor_nota?: number | null;
 }
 
 interface Carrinho {

@@ -40,7 +40,7 @@ function removerDoCarrinho() {
             <Card class="shrink-0 bg-white p-2">
                 <img
                     class="h-24 w-20 rounded object-cover"
-                    src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
+                    :src="item.ofertas?.capa_url || 'https://via.placeholder.com/120x160'"
                     alt="Capa do livro"
                 />
             </Card>
@@ -63,7 +63,7 @@ function removerDoCarrinho() {
 
                 <div class="mt-2 flex items-end justify-between">
                     <div>
-                        <p class="mb-1 text-sm text-yellow-500">★★★☆☆ 3,5/5</p>
+                        <p class="mb-1 text-sm text-yellow-500">{{ item.ofertas?.vendedor_nota ? item.ofertas.vendedor_nota + '/5' : '—' }}</p>
                         <p class="text-lg font-semibold text-emerald-600">
                             R$ {{ formatarPreco(item.ofertas?.preco) }}
                         </p>

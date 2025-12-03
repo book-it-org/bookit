@@ -48,8 +48,9 @@ function adicionarCarrinho() {
     <Card class="group relative w-auto cursor-pointer gap-2 p-3" @click="irParaOferta">
         <div class="rounded-2xl bg-white p-4">
             <img
-                src="https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg"
-                alt=""
+                :src="props.oferta.capa_url || 'https://via.placeholder.com/140x200'"
+                alt="Capa do livro"
+                class="w-36 h-48 object-cover rounded"
             />
         </div>
         <CardHeader class="px-0.5">
@@ -62,11 +63,11 @@ function adicionarCarrinho() {
                 <p>
                     {{ props.oferta.autor_livro }}
                 </p>
-                <p>Ed. Companhia das Letras</p>
+                <p>{{ props.oferta.editora || '—' }}</p>
             </CardDescription>
         </CardContent>
         <CardFooter class="flex justify-between px-0.5">
-            <p class="text-yellow-500">3,5/5</p>
+            <p class="text-yellow-500">{{ props.oferta.vendedor_nota ? props.oferta.vendedor_nota + '/5' : '—' }}</p>
             <p class="text-emerald-600">R${{ props.oferta.preco }}</p>
         </CardFooter>
         <Button

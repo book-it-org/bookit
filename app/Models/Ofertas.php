@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Utils\Slugger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pedidos;
+use App\Models\Compras;
+use App\Models\Avaliacoes;
 
 class Ofertas extends Model
 {
@@ -16,6 +19,8 @@ class Ofertas extends Model
         'preco',
         'titulo_livro',
         'autor_livro',
+        'editora',
+        'capa_url',
         'estado_livro',
         'isbn_livro',
         'data_publicacao_livro',
@@ -71,7 +76,8 @@ class Ofertas extends Model
                     ->orWhere('descricao', 'ilike', "%{$pesquisa}%")
                     ->orWhere('titulo_livro', 'ilike', "%{$pesquisa}%")
                     ->orWhere('isbn_livro', 'ilike', "%{$pesquisa}%")
-                    ->orWhere('autor_livro', 'ilike', "%{$pesquisa}%");
+                        ->orWhere('autor_livro', 'ilike', "%{$pesquisa}%")
+                        ->orWhere('editora', 'ilike', "%{$pesquisa}%");
             });
         });
 
@@ -118,7 +124,14 @@ class Ofertas extends Model
             };
         });
 
-        return $query->get();
+        $results = $query->get();
+
+        // attach vendedor rating to each oferta
+        return $results->map(function ($o) {
+            $nota = Avaliacoes::where('vendedor_id', $o->usuarios_id)->avg('nota');
+            $o->vendedor_nota = $nota ? round($nota, 1) : null;
+            return $o;
+        })->toArray();
     }
 
     public function desativar()
@@ -149,13 +162,23 @@ class Ofertas extends Model
         ]);
     }
 
-    public function editar($titulo, $descricao, $preco)
+    public function editar($titulo, $descricao, $preco, $editora = null, $capa_url = null)
     {
-        self::update([
+        $dados = [
             'titulo' => $titulo,
             'descricao' => $descricao,
             'preco' => $preco,
-        ]);
+        ];
+
+        if (!is_null($editora)) {
+            $dados['editora'] = $editora;
+        }
+
+        if (!is_null($capa_url)) {
+            $dados['capa_url'] = $capa_url;
+        }
+
+        self::update($dados);
     }
 
     public static function buscarOfertaPorIdEUsuario($id, $usuarioId)
@@ -167,10 +190,40 @@ class Ofertas extends Model
 
     public static function buscarOfertasDoUsuario($usuarioId)
     {
-        return self::where('usuarios_id', $usuarioId)
+        $ofertas = self::where('usuarios_id', $usuarioId)
             ->with(['generos', 'idioma'])
             ->orderBy('created_at', 'desc')
             ->get();
+
+        // adicionar informacao se a oferta está envolvida em algum pedido/compras
+        return $ofertas->map(function ($o) {
+            $pedido = Pedidos::where('oferta_id', $o->id)
+                ->where('estado', '!=', 'cancelado')
+                ->with('compras')
+                ->first();
+
+            $o->em_compra = $pedido ? true : false;
+            $o->pedido_id = $pedido ? $pedido->id : null;
+
+            // checar se existe alguma compra associada ao pedido que esteja paga/concluida
+            $o->compra_concluida = false;
+            $o->compra_concluida_id = null;
+            if ($pedido && $pedido->compras) {
+                foreach ($pedido->compras as $c) {
+                    if (in_array($c->estado, ['pago', 'concluido'])) {
+                        $o->compra_concluida = true;
+                        $o->compra_concluida_id = $c->id;
+                        break;
+                    }
+                }
+            }
+
+            // vendedor nota media
+            $nota = Avaliacoes::where('vendedor_id', $o->usuarios_id)->avg('nota');
+            $o->vendedor_nota = $nota ? round($nota, 1) : null;
+
+            return $o;
+        })->toArray();
     }
 
     public static function buscarOfertaParaEdicao($id, $usuarioId)
@@ -195,7 +248,7 @@ class Ofertas extends Model
 
     public static function ofertasRecomendadas()
     {
-        return self::where('ativo', true)
+        $results = self::where('ativo', true)
             ->where('bloqueado', false)
             ->whereNotExists(function ($q) {
                 $q->select(DB::raw(1))
@@ -206,5 +259,11 @@ class Ofertas extends Model
             ->inRandomOrder()
             ->limit(20)
             ->get();
+
+        return $results->map(function ($o) {
+            $nota = Avaliacoes::where('vendedor_id', $o->usuarios_id)->avg('nota');
+            $o->vendedor_nota = $nota ? round($nota, 1) : null;
+            return $o;
+        })->toArray();
     }
 }

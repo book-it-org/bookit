@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Carrinho;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrinhos;
+use App\Models\Ofertas;
+use App\Models\Pedidos;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,26 +36,47 @@ class CarrinhoController extends Controller
     {
         $oferta_id = $request->input('oferta_id');
 
+        $esta_em_pedido = Pedidos::where('oferta_id', $oferta_id)
+            ->where('estado', '!=', 'cancelado')
+            ->exists();
+
+        $bloqueada_ou_inativa = Ofertas::where('id', $oferta_id)
+            ->where(function ($query) {
+                $query->where('bloqueado', true)
+                    ->orWhere('ativo', false);
+            })
+            ->exists();
+
+        if ($esta_em_pedido || $bloqueada_ou_inativa) {
+            return back()->with('flash', [
+                'erro' => 'Essa oferta não está disponível para compra no momento.',
+            ]);
+        }
+
         if ($request->user()) {
             $id_usuario = $request->user()->id;
             $resultado = Carrinhos::criarItem($id_usuario, $oferta_id);
 
+            if ($resultado === false) {
+                return back()->with('flash', ['erro' => 'Essa oferta não está disponível para compra no momento.']);
+            }
+
             if ($resultado == null) {
-                return back()->withErrors(['erro' => 'Essa oferta já está no carrinho.']);
+                return back()->with('flash', ['erro' => 'Essa oferta já está no carrinho.']);
             }
         } else {
             $cookie = json_decode($request->cookie('carrinho', '[]'), true);
 
             foreach ($cookie as $item) {
                 if ($item['ofertas_id'] == $oferta_id) {
-                    return back()->withErrors(['erro' => 'Essa oferta já está no carrinho.']);
+                    return back()->with('flash', ['erro' => 'Essa oferta já está no carrinho.']);
                 }
             }
 
-            $resultado =  [
-                 'id' => uniqid(),
-                 'ofertas_id' => $oferta_id,
-             ];
+            $resultado = [
+                'id' => uniqid(),
+                'ofertas_id' => $oferta_id,
+            ];
 
             $cookie[] = $resultado;
 
@@ -97,8 +120,8 @@ class CarrinhoController extends Controller
             cookie()->queue(cookie()->forget('carrinho'));
         }
 
-        return redirect()->back()->with('flash',[
+        return redirect()->back()->with('flash', [
             'sucesso' => 'Carrinho limpo com sucesso!',
-        ] );
+        ]);
     }
 }

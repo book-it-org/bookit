@@ -42,7 +42,7 @@ const comprasPorEstado = computed(() => page.props.comprasPorEstado || {});
                     <h2 class="text-lg font-semibold mb-4">Em andamento</h2>
                     <div class="flex flex-col gap-4">
                         <CardPedido v-for="compra in comprasPorEstado.em_andamento || []" :key="compra.id" :compra="compra" />
-                        <div v-if="(comprasPorEstado.em_andamento || []).length === 0" class="text-sm text-gray-500">Nenhuma compra em andamento.</div>
+                        <div v-if="(comprasPorEstado.em_andamento || []).length === 0" class="text-sm text-neutral-500">Nenhuma compra em andamento.</div>
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@ const comprasPorEstado = computed(() => page.props.comprasPorEstado || {});
                     <h2 class="text-lg font-semibold mb-4">Pago</h2>
                     <div class="flex flex-col gap-4">
                         <CardPedido v-for="compra in comprasPorEstado.pago || []" :key="compra.id" :compra="compra" />
-                        <div v-if="(comprasPorEstado.pago || []).length === 0" class="text-sm text-gray-500">Nenhuma compra paga.</div>
+                        <div v-if="(comprasPorEstado.pago || []).length === 0" class="text-sm text-neutral-500">Nenhuma compra paga.</div>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@ const comprasPorEstado = computed(() => page.props.comprasPorEstado || {});
                     <h2 class="text-lg font-semibold mb-4">Cancelado</h2>
                     <div class="flex flex-col gap-4">
                         <CardPedido v-for="compra in comprasPorEstado.cancelado || []" :key="compra.id" :compra="compra" />
-                        <div v-if="(comprasPorEstado.cancelado || []).length === 0" class="text-sm text-gray-500">Nenhuma compra cancelada.</div>
+                        <div v-if="(comprasPorEstado.cancelado || []).length === 0" class="text-sm text-neutral-500">Nenhuma compra cancelada.</div>
                     </div>
                 </div>
             </div>

@@ -57,13 +57,28 @@ class Carrinhos extends Model
     {
         // primeiro verificar se o item existe, pois um usuário
         // não pode ter o mesmo item mais de uma vez no carrinho
-
         $existe = self::where('usuarios_id', $id_usuario)
             ->where('ofertas_id', $id_item)
             ->exists();
 
         if ($existe) {
             return null;
+        }
+
+        // não permitir adicionar ao carrinho se a oferta estiver em um pedido ativo (não cancelado)
+        $foi_em_pedido = \App\Models\Pedidos::where('oferta_id', $id_item)
+            ->where('estado', '!=', 'cancelado')
+            ->exists();
+
+        if ($foi_em_pedido) {
+            // sinaliza indisponibilidade com false (diferente de null que indica "já no carrinho")
+            return false;
+        }
+
+        // não permitir adicionar ao carrinho se o usuário for o dono da oferta
+        $oferta = \App\Models\Ofertas::find($id_item);
+        if ($oferta && $oferta->usuarios_id === $id_usuario) {
+            return false;
         }
 
         return self::create([

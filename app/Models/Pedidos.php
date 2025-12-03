@@ -10,7 +10,10 @@ class Pedidos extends Model
         'vendedor_id',
         'comprador_id',
         'oferta_id',
-        'estado'
+        'endereco_id',
+        'estado',
+        'confirmacao_recebimento',
+        'confirmado_recebimento_at',
     ];
 
     public function vendedor()
@@ -31,5 +34,10 @@ class Pedidos extends Model
     public function compras()
     {
         return $this->belongsToMany(Compras::class, 'compras_pedidos', 'pedido_id', 'compra_id');
+    }
+
+    public function endereco()
+    {
+        return $this->belongsTo(Enderecos::class, 'endereco_id');
     }
 }

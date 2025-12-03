@@ -21,11 +21,13 @@ import { capitalize, computed, ref } from 'vue';
 interface PageProps extends SharedData {
     pedidos: Carrinho[];
     formasPagamento: string[];
+    enderecos: any[];
 }
 
 const page = usePage<PageProps>();
 const pedidos = computed(() => page.props.pedidos || []);
 const formasPagamento = computed(() => page.props.formasPagamento || []);
+const enderecos = computed(() => page.props.enderecos || []);
 
 const formatarPreco = (preco: any): number => {
     return parseFloat(preco?.toString() || '0') || 0;
@@ -41,6 +43,7 @@ const frete = 10.42;
 const totalComFrete = computed(() => subtotal.value + frete);
 
 const selectedForma = ref<number | null>(null);
+const selectedEndereco = ref<number | null>(null);
 
 function confirmPedido() {
     if (!selectedForma.value) {
@@ -48,8 +51,14 @@ function confirmPedido() {
         return;
     }
 
+    if (!selectedEndereco.value) {
+        window.alert('Selecione um endereço para envio');
+        return;
+    }
+
     router.post(route('comprar'), {
         forma_pagamento: selectedForma.value,
+        endereco_id: selectedEndereco.value,
     });
 }
 </script>
@@ -100,6 +109,25 @@ function confirmPedido() {
                                                 :value="f"
                                             >
                                                 {{ capitalize(f) }}
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="grid gap-2">
+                                <Label for="endereco">Endereço de envio</Label>
+                                <Select v-model="selectedEndereco">
+                                    <SelectTrigger class="w-full" name="endereco" :tabindex="4">
+                                        <SelectValue :placeholder="'Selecione um endereço'" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Endereços</SelectLabel>
+                                            <SelectItem v-for="e in enderecos" :key="e.id" :value="e.id">
+                                                {{ e.logradouro }} {{ e.numero }} - {{ e.cidade }}
                                             </SelectItem>
                                         </SelectGroup>
                                     </SelectContent>

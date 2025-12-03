@@ -7,6 +7,7 @@ use App\Models\Carrinhos;
 use App\Models\Compras;
 use App\Models\ComprasPedidos;
 use App\Models\Pedidos;
+use App\Models\Enderecos;
 use App\Models\Transacoes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,18 @@ class ComprasController extends Controller
             Inertia::render('auth/Entrar');
         }
 
-        $forma_pagamento = $request->input('forma_pagamento', 'pix');
+            $forma_pagamento = $request->input('forma_pagamento', 'pix');
+            $endereco_id = $request->input('endereco_id');
+
+            // endereco precisa ser enviado
+            if (! $endereco_id) {
+                return redirect()->back()->with('flash', ['erro' => 'Selecione um endereço para envio.']);
+            }
+
+            $endereco = Enderecos::where('id', $endereco_id)->where('usuarios_id', $usuario->id)->first();
+            if (! $endereco) {
+                return redirect()->back()->with('flash', ['erro' => 'Endereço inválido.']);
+            }
 
         try {
             DB::beginTransaction();
@@ -72,6 +84,7 @@ class ComprasController extends Controller
                     'vendedor_id' => $item->ofertas->usuarios_id,
                     'comprador_id' => $usuario->id,
                     'oferta_id' => $item->ofertas_id,
+                    'endereco_id' => $endereco->id,
                     'estado' => 'andamento',
                 ]);
 

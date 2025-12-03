@@ -99,7 +99,7 @@ function efetuarPagamento() {
                                 Efetuar pagamento (simulado)
                             </Button>
                         </div>
-                        <div v-else class="text-sm text-gray-500">Pagamento indisponível.</div>
+                        <div v-else class="text-sm text-neutral-500">Pagamento indisponível.</div>
 
                         <Dialog>
                             <DialogTrigger as-child>

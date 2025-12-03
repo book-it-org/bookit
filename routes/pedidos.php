@@ -16,6 +16,10 @@ Route::middleware('auth')->group(function () {
     // visualizar uma compra/pedido
     Route::get('pedido/{id}/visualizar', [PedidosController::class, 'visualizar'])->name('pedido.visualizar');
     Route::post('pedido/{id}/cancelar', [PedidosController::class, 'cancelar'])->name('pedido.cancelar');
+    Route::post('pedido/{id}/confirmar-recebimento', [PedidosController::class, 'confirmarRecebimento'])->name('pedido.confirmar.recebimento');
+
+    // avaliar vendedor para um pedido específico
+    Route::post('pedido/{pedido}/avaliar', [\App\Http\Controllers\Avaliacoes\AvaliacoesController::class, 'store'])->name('pedido.avaliar');
 
     Route::post('pedido/comprar', [ComprasController::class, 'comprar'])->name('comprar');
 });

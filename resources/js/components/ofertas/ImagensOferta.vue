@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { defineProps } from 'vue';
 
-const img = ref(
-    'https://images-americanas.b2w.io/produtos/3518714892/imagens/usado-percy-jackson-o-mar-de-monstros-livro-dois/3518714892_1_large.jpg',
-);
+interface Props {
+    src?: string | null;
+}
+
+const props = defineProps<Props>();
 </script>
 
 <template>
     <div>
         <figure class="w-full">
-            <img :src="img" alt="alt da imagem" class="w-full rounded-2xl" />
+            <img :src="props.src || 'https://via.placeholder.com/360x480'" alt="Capa do livro" class="w-full rounded-2xl object-cover" />
         </figure>
     </div>
 </template>

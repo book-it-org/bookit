@@ -15,21 +15,51 @@ interface Props {
     estaNoCarrinho: boolean;
     idioma: string;
     dataPublicacao: string;
-    editora: string;
+    editora?: string;
     estado: string;
     isbn: string;
     generos: Genero[];
     ofertaId: number;
+    pedidoIndisponivel?: boolean;
+    dono?: boolean;
+    vendedorNota?: number | null;
 }
 
-const props = defineProps<Props>();
-const genero = props.generos.map((g) => g.nome).join(', ');
+const props = withDefaults(defineProps<Props>(), {
+    pedidoIndisponivel: false,
+    dono: false,
+    vendedorNota: null,
+});
+    const genero = props.generos.map((g) => g.nome).join(', ');
 const adicionandoCarrinho = ref(false);
+
+    const nota = computed(() => (props.vendedorNota ?? null));
+
+    const starConfig = computed(() => {
+        const full = nota.value ? Math.floor(nota.value) : 0;
+        const decimal = nota.value ? nota.value - full : 0;
+        let fullStars = full;
+        let halfStars = 0;
+
+        if (decimal >= 0.75) {
+            fullStars += 1;
+        } else if (decimal >= 0.25) {
+            halfStars = 1;
+        }
+
+        const emptyStars = 5 - fullStars - halfStars;
+        return { fullStars, halfStars, emptyStars };
+    });
 
 const jaNoCarrinho = computed(() => props.estaNoCarrinho);
 
 function toggleCarrinho() {
     if (adicionandoCarrinho.value) return;
+
+    if (props.pedidoIndisponivel || props.dono) {
+        // evitar adicionar ao carrinho se indisponível ou se o usuário for o dono
+        return;
+    }
 
     adicionandoCarrinho.value = true;
 
@@ -54,6 +84,27 @@ function toggleCarrinho() {
         );
     }
 }
+
+function comprarAgora() {
+    if (adicionandoCarrinho.value) return;
+
+    if (props.pedidoIndisponivel || props.dono) {
+        return;
+    }
+
+    adicionandoCarrinho.value = true;
+
+    router.post(
+        route('carrinho.adicionar'),
+        { oferta_id: props.ofertaId },
+        {
+            onFinish: () => {
+                adicionandoCarrinho.value = false;
+                router.visit(route('pedido.confirmar'));
+            },
+        },
+    );
+}
 </script>
 
 <template>
@@ -61,26 +112,41 @@ function toggleCarrinho() {
         <div class="flex w-full flex-col gap-4">
             <h1 class="text-3xl font-semibold">{{ titulo }}</h1>
             <div class="flex items-center gap-0.5">
-                <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
-                <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
-                <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
-                <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
-                <StarHalfIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
-                <span class="text-sm"> (3 avaliações) </span>
+                <template v-if="nota">
+                    <template v-for="n in starConfig.fullStars" :key="`full-${n}`">
+                        <StarIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
+                    </template>
+                    <template v-if="starConfig.halfStars === 1">
+                        <StarHalfIcon class="h-5 w-5 fill-amber-400 text-amber-400" />
+                    </template>
+                    <template v-for="n in starConfig.emptyStars" :key="`empty-${n}`">
+                        <StarIcon class="h-5 w-5 text-gray-300" />
+                    </template>
+                    <span class="text-sm"> {{ props.vendedorNota ? (props.vendedorNota + '/5') : 'Sem avaliações' }} </span>
+                </template>
+                <template v-else>
+                    <StarIcon class="h-5 w-5 text-gray-300" />
+                    <StarIcon class="h-5 w-5 text-gray-300" />
+                    <StarIcon class="h-5 w-5 text-gray-300" />
+                    <StarIcon class="h-5 w-5 text-gray-300" />
+                    <StarIcon class="h-5 w-5 text-gray-300" />
+                    <span class="text-sm"> Sem avaliações </span>
+                </template>
             </div>
             <div>
                 <span class="text-primary text-3xl font-semibold">R$ {{ preco }}</span>
             </div>
 
             <div class="flex gap-4">
-                <Button class="text-md flex-1" size="lg">
+                <Button class="text-md flex-1" size="lg" :disabled="props.pedidoIndisponivel || props.dono" @click="comprarAgora">
                     <Package />
-                    Comprar agora
+                    <span v-if="props.pedidoIndisponivel || props.dono">Pedido indisponível</span>
+                    <span v-else>Comprar agora</span>
                 </Button>
                 <Button
                     size="lg"
                     @click="toggleCarrinho"
-                    :disabled="adicionandoCarrinho"
+                    :disabled="adicionandoCarrinho || props.pedidoIndisponivel || props.dono"
                     :variant="jaNoCarrinho ? 'destructive' : 'default'"
                 >
                     <ShoppingCartIcon />

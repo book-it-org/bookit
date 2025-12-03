@@ -13,6 +13,7 @@ import { computed } from 'vue';
 interface PageProps extends SharedData {
     oferta: Oferta;
     estaNoCarrinho: boolean;
+    pedido_indisponivel?: boolean;
     permissoes?: {
         podeGerenciar: boolean;
         admin: boolean;
@@ -24,6 +25,7 @@ interface PageProps extends SharedData {
 const page = usePage<PageProps>();
 const oferta = computed(() => page.props.oferta);
 const estaNoCarrinho = computed(() => page.props.estaNoCarrinho);
+const pedidoIndisponivel = computed(() => (page.props as any).pedido_indisponivel || false);
 const permissoes = computed(
     () =>
         page.props.permissoes || {
@@ -48,7 +50,7 @@ const permissoes = computed(
             />
 
             <div class="col-span-1">
-                <ImagensOferta />
+                <ImagensOferta :src="oferta.capa_url" />
             </div>
 
             <div class="col-span-1">
@@ -63,8 +65,11 @@ const permissoes = computed(
                     :generos="oferta.generos"
                     :idioma="oferta.idioma.nome"
                     :oferta-id="oferta.id"
+                    :vendedor-nota="oferta.vendedor_nota"
                     :esta-no-carrinho="estaNoCarrinho"
-                    editora="Genérica"
+                    :pedido-indisponivel="pedidoIndisponivel"
+                    :dono="permissoes.dono"
+                    :editora="oferta.editora"
                 />
             </div>
 

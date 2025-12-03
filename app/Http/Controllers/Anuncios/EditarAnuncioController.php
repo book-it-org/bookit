@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Anuncios;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ofertas;
+use App\Models\Pedidos;
 use Illuminate\Http\Request;
 
 class EditarAnuncioController extends Controller
@@ -13,15 +14,21 @@ class EditarAnuncioController extends Controller
         $id = $request->route()->parameter('id');
         $oferta = Ofertas::findOrFail($id);
         $usuario = $request->user();
-        if ($oferta->usuarios_id === $usuario->id) {
-            $oferta->desativar();
-
-            return redirect()->back()->with('flash', [
-                'sucesso' => 'Oferta desativada com sucesso.',
-            ]);
-        } else {
+        if ($oferta->usuarios_id !== $usuario->id) {
             return redirect()->back()->with('flash', ['erro' => 'Você não tem permissão para desativar esta oferta.']);
         }
+
+        // não permitir desativar se a oferta estiver em um pedido ativo
+        $pedidoAtivo = Pedidos::where('oferta_id', $oferta->id)->where('estado', '!=', 'cancelado')->exists();
+        if ($pedidoAtivo) {
+            return redirect()->back()->with('flash', ['erro' => 'Não é possível desativar esta oferta enquanto ela estiver em um pedido ativo.']);
+        }
+
+        $oferta->desativar();
+
+        return redirect()->back()->with('flash', [
+            'sucesso' => 'Oferta desativada com sucesso.',
+        ]);
     }
 
     public function ativarOferta(Request $request)
@@ -29,18 +36,25 @@ class EditarAnuncioController extends Controller
         $id = $request->route()->parameter('id');
         $oferta = Ofertas::findOrFail($id);
         $usuario = $request->user();
-        if ($oferta->usuarios_id === $usuario->id && ! $oferta->bloqueado) {
-            $oferta->ativar();
-
-            return redirect()->back()->with('flash', [
-                'sucesso' => 'Oferta ativada com sucesso.',
-            ]);
-        } else {
-            return redirect()->back()->with('flash', [
-                'erro' => 'Você não tem permissão para ativar esta oferta.',
-            ]);
+        if ($oferta->usuarios_id !== $usuario->id) {
+            return redirect()->back()->with('flash', ['erro' => 'Você não tem permissão para ativar esta oferta.']);
         }
 
+        // não permitir bloquear se a oferta estiver em um pedido ativo
+        $pedidoAtivo = Pedidos::where('oferta_id', $oferta->id)->where('estado', '!=', 'cancelado')->exists();
+        if ($pedidoAtivo) {
+            return redirect()->back()->with('flash', ['erro' => 'Não é possível bloquear esta oferta enquanto ela estiver em um pedido ativo.']);
+        }
+
+        if ($oferta->bloqueado) {
+            return redirect()->back()->with('flash', ['erro' => 'Não é possível ativar uma oferta bloqueada.']);
+        }
+
+        $oferta->ativar();
+
+        return redirect()->back()->with('flash', [
+            'sucesso' => 'Oferta bloqueada com sucesso.',
+        ]);
     }
 
     public function bloquearOferta(Request $request)

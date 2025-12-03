@@ -41,8 +41,8 @@ class RegistrarUsuarioController extends Controller
             'data_nascimento' => 'required|date',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Usuarios::class,
             'senha' => ['required', 'confirmed', Rules\Password::defaults()],
-            'telefone' => 'required|string|max:15|unique:'.Usuarios::class,
-            'documento' => 'required|string|max:14|unique:'.Usuarios::class
+            'telefone' => ['required','string','max:15','unique:'.Usuarios::class,'regex:/^[0-9()\-+\s]+$/'],
+            'documento' => ['required','string','max:14','unique:'.Usuarios::class,'regex:/^[0-9.\-\/]+$/']
         ]);
 
         $user = Usuarios::create([

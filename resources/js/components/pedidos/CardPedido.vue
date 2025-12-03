@@ -46,9 +46,9 @@ function formatoPreco(v: number | null | undefined) {
         <div class="flex items-center justify-between gap-4">
             <div class="flex-1">
                 <Link :href="route('pedido.visualizar', { id: compra.id })" class="block">
-                    <div class="text-sm text-gray-500">Compra #{{ compra.id }}</div>
+                    <div class="text-sm text-neutral-500">Compra #{{ compra.id }}</div>
                     <div class="font-medium">{{ formatoPreco(compra.preco_total) }}</div>
-                    <div class="text-xs text-gray-400">{{ compra.estado }}</div>
+                    <div class="text-xs text-neutral-400">{{ compra.estado }}</div>
                 </Link>
             </div>
 
@@ -74,7 +74,7 @@ function formatoPreco(v: number | null | undefined) {
                         <div class="font-semibold">
                             {{ pedido.oferta?.titulo || pedido.oferta?.titulo_livro }}
                         </div>
-                        <div class="text-sm text-gray-600">{{ pedido.oferta?.autor_livro }}</div>
+                        <div class="text-sm text-neutral-600">{{ pedido.oferta?.autor_livro }}</div>
                         <div class="text-sm text-emerald-500">
                             {{ formatoPreco(pedido.oferta?.preco ?? null) }}
                         </div>
