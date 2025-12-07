@@ -73,7 +73,7 @@ export interface Oferta {
 
     usuario: Usuario;
     idioma: Idioma;
-    generos: Genero[];
+    genero: Genero | null;
     em_compra?: boolean;
     pedido_id?: number | null;
     compra_concluida?: boolean;

@@ -41,9 +41,13 @@ class OfertasSeeder extends Seeder
 
                 $preco = rand(1000, 15000) / 100;
 
+                // pick a single genero for the oferta (schema now uses ofertas.generos_id)
+                $generoAleatorio = $generos[array_rand($generos)];
+
                 $ofertaId = DB::table('ofertas')->insertGetId([
                     'usuarios_id' => $usuarioId,
                     'idiomas_id' => $idiomaAleatorio,
+                    'generos_id' => $generoAleatorio,
                     'titulo' => $livro['titulo'] . ' - ' . ucfirst($estado),
                     'descricao' => 'Livro em estado ' . $estado . '. ' . $livro['titulo'] . ' de ' . $livro['autor'] . '. Uma excelente obra da literatura brasileira.',
                     'preco' => $preco,
@@ -59,19 +63,7 @@ class OfertasSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
 
-                $quantidadeGeneros = rand(1, 2);
-                $generosAleatorios = array_rand(array_flip($generos), $quantidadeGeneros);
-
-                if (!is_array($generosAleatorios)) {
-                    $generosAleatorios = [$generosAleatorios];
-                }
-
-                foreach ($generosAleatorios as $generoId) {
-                    DB::table('ofertas_generos')->insert([
-                        'ofertas_id' => $ofertaId,
-                        'generos_id' => $generoId,
-                    ]);
-                }
+                // previously inserted into pivot; now generos_id is stored on ofertas
             }
         }
     }

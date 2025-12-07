@@ -18,7 +18,7 @@ interface Props {
     editora?: string;
     estado: string;
     isbn: string;
-    generos: Genero[];
+    genero: Genero | null;
     ofertaId: number;
     pedidoIndisponivel?: boolean;
     dono?: boolean;
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
     dono: false,
     vendedorNota: null,
 });
-    const genero = props.generos.map((g) => g.nome).join(', ');
+    const genero = props.genero ? props.genero.nome : '';
 const adicionandoCarrinho = ref(false);
 
     const nota = computed(() => (props.vendedorNota ?? null));

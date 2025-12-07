@@ -42,7 +42,7 @@ const form = useForm({
     titulo_livro: editando.value ? (ofertaParaEditar.value?.titulo_livro || '') : '',
     autor_livro: editando.value ? (ofertaParaEditar.value?.autor_livro || '') : '',
     estado_livro: editando.value ? (ofertaParaEditar.value?.estado_livro || '') : '',
-    generos_id: editando.value ? (ofertaParaEditar.value?.generos?.[0]?.id || 1) : 1,
+    generos_id: editando.value ? (ofertaParaEditar.value?.genero?.id || 1) : 1,
     isbn_livro: editando.value ? (ofertaParaEditar.value?.isbn_livro || '') : '',
     idiomas_id: editando.value ? (ofertaParaEditar.value?.idiomas_id || 1) : 1,
     data_publicacao_livro: editando.value ? (ofertaParaEditar.value?.data_publicacao_livro || '') : '',

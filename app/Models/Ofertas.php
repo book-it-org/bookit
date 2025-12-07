@@ -14,6 +14,7 @@ class Ofertas extends Model
     protected $fillable = [
         'usuarios_id',
         'idiomas_id',
+        'generos_id',
         'titulo',
         'descricao',
         'preco',
@@ -28,9 +29,15 @@ class Ofertas extends Model
         'bloqueado',
     ];
 
+    public function genero()
+    {
+        return $this->belongsTo(Generos::class, 'generos_id');
+    }
+
+    // backward-compatible alias (if any code still calls ->generos)
     public function generos()
     {
-        return $this->belongsToMany(Generos::class, 'ofertas_generos', 'ofertas_id', 'generos_id');
+        return $this->genero();
     }
 
     public function idioma()
@@ -84,8 +91,7 @@ class Ofertas extends Model
         // pesquisa por genero
         $query->when($genero, function ($query, $genero) {
             if ($genero !== '*') {
-                $query->leftJoin('ofertas_generos', 'ofertas.id', '=', 'ofertas_generos.ofertas_id')
-                    ->where('ofertas_generos.generos_id', $genero);
+                $query->where('generos_id', $genero);
             }
         });
 
@@ -191,7 +197,7 @@ class Ofertas extends Model
     public static function buscarOfertasDoUsuario($usuarioId)
     {
         $ofertas = self::where('usuarios_id', $usuarioId)
-            ->with(['generos', 'idioma'])
+            ->with(['genero', 'idioma'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -230,18 +236,14 @@ class Ofertas extends Model
     {
         return self::where('id', $id)
             ->where('usuarios_id', $usuarioId)
-            ->with(['generos', 'idioma'])
+            ->with(['genero', 'idioma'])
             ->first();
     }
 
-    public static function criarOfertaComGenero(array $dados, $generoId)
+    public static function criarOferta(array $dados, $generoId)
     {
+        $dados['generos_id'] = $generoId;
         $oferta = self::create($dados);
-
-        OfertasGenero::create([
-            'ofertas_id' => $oferta->id,
-            'generos_id' => $generoId,
-        ]);
 
         return $oferta;
     }

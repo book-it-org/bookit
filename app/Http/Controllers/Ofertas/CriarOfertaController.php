@@ -45,7 +45,7 @@ class CriarOfertaController extends Controller
             }
         }
 
-        $oferta = Ofertas::criarOfertaComGenero($data, $request->generos_id);
+        $oferta = Ofertas::criarOferta($data, $request->generos_id);
 
         return Redirect::route('anuncios');
     }

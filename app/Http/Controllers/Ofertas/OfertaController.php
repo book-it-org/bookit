@@ -20,7 +20,7 @@ class OfertaController extends Controller
      */
     public function mostrar(int $id, ?string $titulo_oferta = null): Response|RedirectResponse
     {
-        $oferta = Ofertas::where('id', $id)->with(['generos', 'idioma', 'usuario'])->first();
+        $oferta = Ofertas::where('id', $id)->with(['genero', 'idioma', 'usuario'])->first();
 
         if (! $oferta) {
             abort(404, 'Oferta não encontrada.');
