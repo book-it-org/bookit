@@ -38,6 +38,10 @@ const submit = () => {
 
 <template>
     <form @submit.prevent="submit" class="w-full">
-        <Input placeholder="Percy Jackson e o Mar de Monstros..." v-model="pesquisa" />
+        <Input
+            placeholder="Percy Jackson e o Mar de Monstros..."
+            v-model="pesquisa"
+            class="bg-primary-foreground focus-visible:ring-0"
+        />
     </form>
 </template>

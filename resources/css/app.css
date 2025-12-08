@@ -88,13 +88,13 @@
 }
 
 :root {
-    --background: hsl(0 0% 100%);
+    --background: hsl(0 0% 95%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(0 0% 3.9%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(0 0% 3.9%);
-    --primary: hsl(0 0% 9%);
+    --primary: lch(51.78 51.14 257.04);
     --primary-foreground: hsl(0 0% 98%);
     --secondary: hsl(0 0% 92.1%);
     --secondary-foreground: hsl(0 0% 9%);

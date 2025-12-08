@@ -46,11 +46,11 @@ function adicionarCarrinho() {
 
 <template>
     <Card class="group relative w-auto cursor-pointer gap-2 p-3" @click="irParaOferta">
-        <div class="rounded-2xl bg-white p-4">
+        <div class="flex justify-center rounded-2xl bg-white p-4">
             <img
                 :src="props.oferta.capa_url || 'https://via.placeholder.com/140x200'"
                 alt="Capa do livro"
-                class="w-36 h-48 object-cover rounded"
+                class="h-48 w-36 rounded object-cover"
             />
         </div>
         <CardHeader class="px-0.5">
@@ -67,13 +67,15 @@ function adicionarCarrinho() {
             </CardDescription>
         </CardContent>
         <CardFooter class="flex justify-between px-0.5">
-            <p class="text-yellow-500">{{ props.oferta.vendedor_nota ? props.oferta.vendedor_nota + '/5' : '—' }}</p>
+            <p class="text-yellow-500">
+                {{ props.oferta.vendedor_nota ? props.oferta.vendedor_nota + '/5' : '—' }}
+            </p>
             <p class="text-emerald-600">R${{ props.oferta.preco }}</p>
         </CardFooter>
         <Button
             variant="secondary"
             size="icon"
-            class="absolute top-4 right-4 hidden group-hover:flex"
+            class="hover:bg-primary hover:text-primary-foreground absolute top-4 right-4 hidden group-hover:flex hover:cursor-pointer"
             @click.stop="adicionarCarrinho"
             :disabled="adicionandoCarrinho"
         >
