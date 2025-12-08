@@ -162,7 +162,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
 
                         <template v-if="!auth.user">
                             <Button variant="ghost" size="sm" as-child class="group cursor-pointer">
-                                <Link href="/entrar">
+                                <Link href="/entrar" class="text-primary-foreground">
                                     <User class="size-5 opacity-80 group-hover:opacity-100" />
                                     <span>Entrar</span>
                                 </Link>
