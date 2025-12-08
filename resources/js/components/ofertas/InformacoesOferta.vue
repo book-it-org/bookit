@@ -30,26 +30,26 @@ const props = withDefaults(defineProps<Props>(), {
     dono: false,
     vendedorNota: null,
 });
-    const genero = props.generos.map((g) => g.nome).join(', ');
+const genero = props.generos.map((g) => g.nome).join(', ');
 const adicionandoCarrinho = ref(false);
 
-    const nota = computed(() => (props.vendedorNota ?? null));
+const nota = computed(() => props.vendedorNota ?? null);
 
-    const starConfig = computed(() => {
-        const full = nota.value ? Math.floor(nota.value) : 0;
-        const decimal = nota.value ? nota.value - full : 0;
-        let fullStars = full;
-        let halfStars = 0;
+const starConfig = computed(() => {
+    const full = nota.value ? Math.floor(nota.value) : 0;
+    const decimal = nota.value ? nota.value - full : 0;
+    let fullStars = full;
+    let halfStars = 0;
 
-        if (decimal >= 0.75) {
-            fullStars += 1;
-        } else if (decimal >= 0.25) {
-            halfStars = 1;
-        }
+    if (decimal >= 0.75) {
+        fullStars += 1;
+    } else if (decimal >= 0.25) {
+        halfStars = 1;
+    }
 
-        const emptyStars = 5 - fullStars - halfStars;
-        return { fullStars, halfStars, emptyStars };
-    });
+    const emptyStars = 5 - fullStars - halfStars;
+    return { fullStars, halfStars, emptyStars };
+});
 
 const jaNoCarrinho = computed(() => props.estaNoCarrinho);
 
@@ -122,7 +122,9 @@ function comprarAgora() {
                     <template v-for="n in starConfig.emptyStars" :key="`empty-${n}`">
                         <StarIcon class="h-5 w-5 text-gray-300" />
                     </template>
-                    <span class="text-sm"> {{ props.vendedorNota ? (props.vendedorNota + '/5') : 'Sem avaliações' }} </span>
+                    <span class="text-sm">
+                        {{ props.vendedorNota ? props.vendedorNota + '/5' : 'Sem avaliações' }}
+                    </span>
                 </template>
                 <template v-else>
                     <StarIcon class="h-5 w-5 text-gray-300" />
@@ -134,11 +136,16 @@ function comprarAgora() {
                 </template>
             </div>
             <div>
-                <span class="text-primary text-3xl font-semibold">R$ {{ preco }}</span>
+                <span class="text-3xl font-semibold text-emerald-600">R$ {{ preco }}</span>
             </div>
 
             <div class="flex gap-4">
-                <Button class="text-md flex-1" size="lg" :disabled="props.pedidoIndisponivel || props.dono" @click="comprarAgora">
+                <Button
+                    class="text-md flex-1"
+                    size="lg"
+                    :disabled="props.pedidoIndisponivel || props.dono"
+                    @click="comprarAgora"
+                >
                     <Package />
                     <span v-if="props.pedidoIndisponivel || props.dono">Pedido indisponível</span>
                     <span v-else>Comprar agora</span>
@@ -167,7 +174,7 @@ function comprarAgora() {
                 <TopicoInformacaoOferta titulo="Autor" :conteudo="autor" />
                 <TopicoInformacaoOferta titulo="Idioma" :conteudo="idioma" />
                 <TopicoInformacaoOferta titulo="Data de publicação" :conteudo="dataPublicacao" />
-                <TopicoInformacaoOferta titulo="Editora" :conteudo="editora" />
+                <TopicoInformacaoOferta titulo="Editora" :conteudo="editora as string" />
                 <TopicoInformacaoOferta titulo="Estado" :conteudo="estado" />
                 <TopicoInformacaoOferta titulo="ISBN" :conteudo="isbn" />
                 <TopicoInformacaoOferta titulo="Gênero" :conteudo="genero" />

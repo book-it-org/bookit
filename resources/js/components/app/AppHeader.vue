@@ -43,7 +43,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
 </script>
 
 <template>
-    <div class="bg-background w-full">
+    <div class="bg-primary w-full">
         <div class="border-sidebar-border/80 border-b">
             <div class="flex w-full items-center px-4 lg:flex-col">
                 <!-- Mobile Menu -->
@@ -128,7 +128,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
                             as-child
                             class="group hidden cursor-pointer lg:flex"
                         >
-                            <Link href="/carrinho">
+                            <Link href="/carrinho" class="text-primary-foreground">
                                 <ShoppingCart class="size-5 opacity-80 group-hover:opacity-100" />
                                 <span>Carrinho</span>
                             </Link>
@@ -176,7 +176,9 @@ withDefaults(defineProps<Props>(), { limpo: false });
                     class="hidden w-full lg:flex lg:items-center lg:justify-center"
                 >
                     <NavigationMenu class="flex h-full items-stretch">
-                        <NavigationMenuList class="flex h-full items-stretch">
+                        <NavigationMenuList
+                            class="divide-primary-foreground flex h-full items-stretch divide-x"
+                        >
                             <NavigationMenuItem
                                 v-for="genero in generos"
                                 :key="genero.id"
@@ -186,7 +188,7 @@ withDefaults(defineProps<Props>(), { limpo: false });
                                     <NavigationMenuLink
                                         :class="[
                                             navigationMenuTriggerStyle(),
-                                            'h-9 cursor-pointer px-3',
+                                            'bg-primary text-primary-foreground h-9 cursor-pointer px-3',
                                         ]"
                                     >
                                         {{ genero.nome }}
