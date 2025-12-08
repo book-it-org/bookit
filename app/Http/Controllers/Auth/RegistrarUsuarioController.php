@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuarios;
+use App\Rules\Documento;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,8 +42,19 @@ class RegistrarUsuarioController extends Controller
             'data_nascimento' => 'required|date',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Usuarios::class,
             'senha' => ['required', 'confirmed', Rules\Password::defaults()],
-            'telefone' => ['required','string','max:15','unique:'.Usuarios::class,'regex:/^[0-9()\-+\s]+$/'],
-            'documento' => ['required','string','max:14','unique:'.Usuarios::class,'regex:/^[0-9.\-\/]+$/']
+            'telefone' => [
+                'required',
+                'string',
+                'max:15',
+                'unique:'.Usuarios::class,
+                'regex:/^\\+?\\d{9,15}$/'],
+            'documento' => [
+                'required',
+                'string',
+                'max:14',
+                'unique:'.Usuarios::class,
+                new Documento,
+            ],
         ]);
 
         $user = Usuarios::create([
@@ -53,7 +65,7 @@ class RegistrarUsuarioController extends Controller
             'email' => $request->email,
             'senha_hash' => Hash::make($request->senha),
             'telefone' => $request->telefone,
-            'documento' => $request->documento
+            'documento' => $request->documento,
         ]);
 
         event(new Registered($user));

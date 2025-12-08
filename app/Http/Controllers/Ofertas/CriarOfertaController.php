@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ofertas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ofertas;
+use App\Rules\Isbn;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class CriarOfertaController extends Controller
             'titulo_livro' => 'required|string|max:255',
             'autor_livro' => 'required|string|max:255',
             'estado_livro' => 'required',
-            'isbn_livro' => 'required|digits_between:10,13',
+            'isbn_livro' => ['required','regex:/^\d{11}$|^\d{13}$/'],
             'editora' => 'nullable|string|max:255',
             'data_publicacao_livro' => 'required|date',
             'imagens' => 'nullable|array',

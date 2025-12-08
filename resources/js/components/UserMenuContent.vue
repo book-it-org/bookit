@@ -12,8 +12,8 @@ import {
     HandCoins,
     LogOut,
     MapPinHouse,
-    MessageSquareMore,
-    Package,
+   /*  MessageSquareMore,*/
+   Package,
     Settings,
     Shield,
     ShoppingCart,
@@ -75,13 +75,13 @@ const isAdmin = computed(() => {
                 Anúncios
             </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem :as-child="true">
+  <!--       <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="route('chat')" prefetch as="button">
                 <MessageSquareMore class="mr-2 h-4 w-4" />
                 Chat
             </Link>
         </DropdownMenuItem>
-    </DropdownMenuGroup>
+     --></DropdownMenuGroup>
 
     <template v-if="isAdmin">
         <DropdownMenuSeparator />

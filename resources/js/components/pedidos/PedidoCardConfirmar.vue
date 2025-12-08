@@ -41,7 +41,7 @@ const formatarPreco = (preco: any): string => {
             <div class="mt-2 flex items-end justify-between">
                 <div>
                     <p class="text-lg font-semibold text-emerald-600">
-                        R$ {{ formatarPreco(pedido.oferta?.preco) }}
+                        R$ {{ formatarPreco(pedido.ofertas?.preco) }}
                     </p>
                 </div>
             </div>

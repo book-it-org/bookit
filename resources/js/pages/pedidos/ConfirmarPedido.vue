@@ -95,14 +95,14 @@ function confirmPedido() {
 
                         <div class="mb-4">
                             <div class="grid gap-2">
-                                <Label for="estado_livro">Estado</Label>
+                                <Label for="estado_livro">Método de Pagamento</Label>
                                 <Select v-model="selectedForma">
                                     <SelectTrigger class="w-full" name="estado_livro" :tabindex="3">
                                         <SelectValue :placeholder="'Selecione'" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectLabel>Estado</SelectLabel>
+                                            <SelectLabel>Método de Pagamento</SelectLabel>
                                             <SelectItem
                                                 v-for="f in formasPagamento"
                                                 :key="f"

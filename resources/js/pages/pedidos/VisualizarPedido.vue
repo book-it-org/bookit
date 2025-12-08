@@ -119,26 +119,30 @@ function formatarData(d: string | undefined | null) {
                                                         <Button type="submit">Confirmar recebimento</Button>
                                                     </form>
                                                 </div>
-                                                <div v-else class="text-sm text-green-600">Recebimento confirmado em: {{ formatarData(pedido.confirmado_recebimento_at) }}</div>
-                                                <div v-if="pedido.avaliado_pelo_usuario">
-                                                    <div class="text-sm">Você avaliou este pedido: <strong>{{ pedido.avaliacao?.nota }}/5</strong></div>
-                                                    <div v-if="pedido.avaliacao?.comentario" class="text-sm text-neutral-600">"{{ pedido.avaliacao.comentario }}"</div>
-                                                </div>
                                                 <div v-else>
-                                                    <form @submit.prevent="(e) => { router.post(route('pedido.avaliar', { pedido: pedido.id }), { nota: (e.target as any).nota.value, comentario: (e.target as any).comentario.value }) }">
-                                                        <div class="flex items-center gap-2">
-                                                            <label class="text-sm">Nota:</label>
-                                                            <select name="nota" class="border rounded px-2 py-1">
-                                                                <option v-for="n in [5,4,3,2,1,0]" :key="n" :value="n">{{ n }}</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mt-2">
-                                                            <textarea name="comentario" rows="2" class="w-full border rounded p-2" placeholder="Comentário (opcional)"></textarea>
-                                                        </div>
-                                                        <div class="mt-2">
-                                                            <Button type="submit">Enviar avaliação</Button>
-                                                        </div>
-                                                    </form>
+                                                    <div class="text-sm text-green-600 mb-3">Recebimento confirmado em: {{ formatarData(pedido.confirmado_recebimento_at) }}</div>
+
+                                                    <!-- Seção de avaliação - só mostra após confirmação de recebimento -->
+                                                    <div v-if="pedido.avaliado_pelo_usuario">
+                                                        <div class="text-sm">Você avaliou este pedido: <strong>{{ pedido.avaliacao?.nota }}/5</strong></div>
+                                                        <div v-if="pedido.avaliacao?.comentario" class="text-sm text-neutral-600">"{{ pedido.avaliacao.comentario }}"</div>
+                                                    </div>
+                                                    <div v-else>
+                                                        <form @submit.prevent="(e) => { router.post(route('pedido.avaliar', { pedido: pedido.id }), { nota: (e.target as any).nota.value, comentario: (e.target as any).comentario.value }) }">
+                                                            <div class="flex items-center gap-2">
+                                                                <label class="text-sm">Nota:</label>
+                                                                <select name="nota" class="border rounded px-2 py-1">
+                                                                    <option v-for="n in [5,4,3,2,1,0]" :key="n" :value="n">{{ n }}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mt-2">
+                                                                <textarea name="comentario" rows="2" class="w-full border rounded p-2" placeholder="Comentário (opcional)"></textarea>
+                                                            </div>
+                                                            <div class="mt-2">
+                                                                <Button type="submit">Enviar avaliação</Button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
 
