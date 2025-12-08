@@ -55,7 +55,7 @@ function adicionarCarrinho() {
         </div>
         <CardHeader class="px-0.5">
             <CardTitle class="cursor-pointer leading-6 font-bold group-hover:underline">
-                {{ props.oferta.titulo_livro }} {{  oferta.id }}
+                {{ props.oferta.titulo_livro }}
             </CardTitle>
         </CardHeader>
         <CardContent class="px-0.5">
