@@ -37,7 +37,7 @@ const comprasPorEstado = computed(() => page.props.comprasPorEstado || {});
     <Head title="BookIt - Pedidos" />
     <AppLayout>
         <div class="container mx-auto flex h-full flex-1 flex-col gap-6 rounded-xl py-6">
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid gap-6">
                 <div>
                     <h2 class="text-lg font-semibold mb-4">Em andamento</h2>
                     <div class="flex flex-col gap-4">

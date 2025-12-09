@@ -56,14 +56,14 @@ const submit = () => {
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="senha">Senha</Label>
-                        <TextLink
+                        <!-- <TextLink
                             v-if="canResetPassword"
                             :href="route('senha.recuperar')"
                             class="text-sm"
                             :tabindex="5"
                         >
                             Esqueceu sua senha?
-                        </TextLink>
+                        </TextLink> -->
                     </div>
                     <Input
                         id="senha"
