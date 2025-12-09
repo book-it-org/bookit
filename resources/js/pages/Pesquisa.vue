@@ -31,7 +31,7 @@ const titulo = computed(() => {
 <template>
     <Head :title="titulo" />
     <PesquisaLayout>
-        <div class="grid grid-cols-3 gap-8">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <CardOferta v-for="oferta in ofertas" :oferta="oferta" :key="oferta.id" />
         </div>
     </PesquisaLayout>
