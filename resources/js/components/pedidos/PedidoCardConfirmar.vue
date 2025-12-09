@@ -21,7 +21,7 @@ const formatarPreco = (preco: any): string => {
             <div class="h-24 w-20 overflow-hidden rounded bg-slate-100">
                 <img
                     class="h-full w-full object-cover"
-                    :src="pedido.ofertas?.capa_url || 'https://via.placeholder.com/120x160'"
+                    :src="pedido.oferta?.capa_url || 'https://via.placeholder.com/120x160'"
                     alt="Capa do livro"
                 />
             </div>
@@ -30,18 +30,18 @@ const formatarPreco = (preco: any): string => {
         <div class="flex min-w-0 flex-1 flex-col justify-between">
             <div>
                 <CardTitle class="mb-1 line-clamp-2 text-base leading-tight font-bold">
-                    {{ pedido.ofertas?.titulo_livro || 'Título não disponível' }}
+                    {{ pedido.oferta?.titulo_livro || 'Título não disponível' }}
                 </CardTitle>
                 <CardDescription class="text-sm">
-                    <p class="mb-1">Autor: {{ pedido.ofertas?.autor_livro || 'Não informado' }}</p>
-                    <p class="text-sky-600">Vendedor: {{ pedido.ofertas?.usuario?.nome }}</p>
+                    <p class="mb-1">Autor: {{ pedido.oferta?.autor_livro || 'Não informado' }}</p>
+                    <p class="text-sky-600">Vendedor: {{ pedido.oferta?.usuario?.nome }}</p>
                 </CardDescription>
             </div>
 
             <div class="mt-2 flex items-end justify-between">
                 <div>
                     <p class="text-lg font-semibold text-emerald-600">
-                        R$ {{ formatarPreco(pedido.ofertas?.preco) }}
+                        R$ {{ formatarPreco(pedido.oferta?.preco) }}
                     </p>
                 </div>
             </div>
