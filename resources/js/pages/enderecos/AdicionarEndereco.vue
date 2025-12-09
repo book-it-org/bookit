@@ -25,13 +25,13 @@ interface Props extends PageProps {
 const page = usePage<Props>();
 
 const form = useForm({
-    cep: '29704707',
-    logradouro: 'avenida david panceiri, sao miguel',
-    numero: '781',
+    cep: '',
+    logradouro: '',
+    numero: '',
     complemento: '',
-    cidade: 'Colatina',
-    bairro: 'São Miguel',
-    estados_id: 5
+    cidade: '',
+    bairro: '',
+    estados_id: null
 });
 
 const submit = () => {
