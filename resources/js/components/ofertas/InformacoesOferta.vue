@@ -34,6 +34,15 @@ const props = withDefaults(defineProps<Props>(), {
 const genero = props.genero ? props.genero.nome : '';
 const adicionandoCarrinho = ref(false);
 
+const publicacao = computed(() => {
+    const date = new Date(props.dataPublicacao);
+    return date.toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+});
+
 const nota = computed(() => props.vendedorNota ?? null);
 
 const starConfig = computed(() => {
@@ -174,7 +183,7 @@ function comprarAgora() {
                 <TopicoInformacaoOferta titulo="Título" :conteudo="tituloLivro" />
                 <TopicoInformacaoOferta titulo="Autor" :conteudo="autor" />
                 <TopicoInformacaoOferta titulo="Idioma" :conteudo="idioma" />
-                <TopicoInformacaoOferta titulo="Data de publicação" :conteudo="dataPublicacao" />
+                <TopicoInformacaoOferta titulo="Data de publicação" :conteudo="publicacao" />
                 <TopicoInformacaoOferta titulo="Editora" :conteudo="editora as string" />
                 <TopicoInformacaoOferta titulo="Estado" :conteudo="estado" />
                 <TopicoInformacaoOferta titulo="ISBN" :conteudo="isbn" />
