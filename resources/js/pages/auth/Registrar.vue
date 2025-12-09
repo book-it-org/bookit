@@ -118,7 +118,6 @@ const submit = () => {
                         v-model="form.telefone"
                         maxlength="15"
                         inputmode="tel"
-                        pattern="[0-9()\-+\s]+"
                         placeholder="(00) 00000-0000"
                     />
                     <InputError :message="form.errors.telefone" />

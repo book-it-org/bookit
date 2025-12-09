@@ -15,21 +15,11 @@ class Documento implements ValidationRule
             // CPF
             if (! $this->validarCpf($digits)) {
                 $fail('CPF inválido.');
-            } else {
-                // formatação
-                request()->merge([
-                    $attribute => $this->formatarCpf($digits),
-                ]);
             }
         } elseif (strlen($digits) === 14) {
             // CNPJ
             if (! $this->validarCnpj($digits)) {
                 $fail('CNPJ inválido.');
-            } else {
-                // formatação
-                request()->merge([
-                    $attribute => $this->formatarCnpj($digits),
-                ]);
             }
         } else {
             $fail('Documento inválido.');
@@ -85,13 +75,4 @@ class Documento implements ValidationRule
         return true;
     }
 
-    private function formatarCpf(string $cpf): string
-    {
-        return substr($cpf, 0, 3).'.'.substr($cpf, 3, 3).'.'.substr($cpf, 6, 3).'-'.substr($cpf, 9, 2);
-    }
-
-    private function formatarCnpj(string $cnpj): string
-    {
-        return substr($cnpj, 0, 2).'.'.substr($cnpj, 2, 3).'.'.substr($cnpj, 5, 3).'/'.substr($cnpj, 8, 4).'-'.substr($cnpj,12,2);
-    }
 }
