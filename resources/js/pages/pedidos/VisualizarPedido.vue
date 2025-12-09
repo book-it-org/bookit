@@ -163,7 +163,6 @@ function formatarData(d: string | undefined | null) {
                     <Card class="p-4">
                         <h4 class="font-semibold mb-2">Resumo</h4>
                         <div class="text-sm text-neutral-600">
-                            <p>ID: {{ compra.id }}</p>
                             <p>Data: {{ formatarData(compra.data_compra) }}</p>
                             <p>Estado: {{ compra.estado }}</p>
                             <p class="mt-2 font-semibold">Total: {{ formatoPreco(compra.preco_total) }}</p>
