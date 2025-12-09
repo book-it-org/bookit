@@ -20,7 +20,7 @@ const enderecos = computed(() => page.props.enderecos || []);
     <Head title="BookIt - Carrinho" />
     <AppLayout>
         <div class="container mx-auto flex h-full flex-1 flex-col items-center gap-4 rounded-xl">
-            <div class="flex w-1/2 flex-col gap-4">
+            <div class="flex w-full lg:w-1/2 flex-col gap-4">
                 <Button class="w-full" as-child>
                     <Link
                         class="block w-full"

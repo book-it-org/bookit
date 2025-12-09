@@ -52,7 +52,7 @@ const submit = () => {
     <AdicionarEnderecoLayout>
         <form @submit.prevent="submit" class="grid gap-6">
             <div class="grid grid-cols-2 gap-6">
-                <div class="col-span-2 grid grid-cols-3 gap-6">
+                <div class="col-span-2 grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="col-span-2 grid gap-2">
                         <Label for="logradouro">Logradouro</Label>
                         <Input
@@ -65,7 +65,7 @@ const submit = () => {
                         />
                         <InputError :message="form.errors.logradouro" />
                     </div>
-                    <div class="col-span-1 grid gap-2">
+                    <div class="col-span-2 lg:col-span-1 grid gap-2">
                         <Label for="numero">Número</Label>
                         <Input
                             id="numero"
@@ -78,7 +78,7 @@ const submit = () => {
                         <InputError :message="form.errors.numero" />
                     </div>
                 </div>
-                <div class="col-span-2 grid grid-cols-3 gap-6">
+                <div class="col-span-2 grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="col-span-2 grid gap-2">
                         <Label for="complemento">Complemento</Label>
                         <Input
@@ -90,7 +90,7 @@ const submit = () => {
                         />
                         <InputError :message="form.errors.complemento" />
                     </div>
-                    <div class="col-span-1 grid gap-2">
+                    <div class="col-span-2 lg:col-span-1 grid gap-2">
                         <Label for="cep">CEP</Label>
                         <Input
                             id="cep"
@@ -151,7 +151,7 @@ const submit = () => {
                 </div>
                 <Button
                     as-child
-                    class="mt-2 w-full"
+                    class="mt-2 w-full lg:col-span-1 col-span-2"
                     :tabindex="20"
                     type="button"
                     variant="outline"
@@ -161,7 +161,7 @@ const submit = () => {
                 </Button>
                 <Button
                     type="submit"
-                    class="mt-2 w-full"
+                    class="mt-2 w-full lg:col-span-1 col-span-2"
                     :tabindex="21"
                     :disabled="form.processing"
                 >
